@@ -1,12 +1,12 @@
 package com.rslakra.microservice.userservice.controller;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.controller.rest.AbstractRestController;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.parser.Parser;
-import com.rslakra.frameworks.spring.parser.csv.CsvParser;
-import com.rslakra.frameworks.spring.parser.excel.ExcelParser;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.controller.rest.AbstractRestController;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.parser.Parser;
+import com.devamatre.framework.spring.parser.csv.CsvParser;
+import com.devamatre.framework.spring.parser.excel.ExcelParser;
 import com.rslakra.microservice.userservice.filter.UserFilter;
 import com.rslakra.microservice.userservice.parser.UserParser;
 import com.rslakra.microservice.userservice.persistence.entity.User;
@@ -34,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,7 +46,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("${restPrefix}/users")
 //@Tag(name = "User Service")
-public class UserController extends AbstractRestController<User> {
+public class UserController extends AbstractRestController<User, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -87,8 +85,8 @@ public class UserController extends AbstractRestController<User> {
      * @return
      */
     @Override
-    public String getByFilter(Filter filter) {
-        return null;
+    public List<User> getByFilter(Filter filter) {
+        return userService.getByFilter(filter);
     }
 
     /**
@@ -98,7 +96,7 @@ public class UserController extends AbstractRestController<User> {
      */
     @Override
     public Page<User> getByFilter(Filter filter, Pageable pageable) {
-        return null;
+        return userService.getByFilter(filter, pageable);
     }
 
     /**
@@ -109,26 +107,8 @@ public class UserController extends AbstractRestController<User> {
      */
     @GetMapping("/filter")
     @Override
-    public List<User> getByFilter(@RequestParam Map<String, String> allParams) {
-        LOGGER.debug("+getByFilter({})", allParams);
-        List<User> users = Collections.emptyList();
-        UserFilter userFilter = new UserFilter(allParams);
-        if (userFilter.hasKeys(UserFilter.EMAIL, UserFilter.FIRST_NAME, UserFilter.LAST_NAME)) {
-        } else if (userFilter.hasKeys(UserFilter.FIRST_NAME, UserFilter.LAST_NAME)) {
-        } else if (userFilter.hasKey(UserFilter.ID)) {
-            users = Arrays.asList(userService.getById(userFilter.getLong(UserFilter.ID)));
-        } else if (userFilter.hasKey(UserFilter.EMAIL)) {
-            users = Arrays.asList(userService.getByEmail(userFilter.getValue(UserFilter.EMAIL)));
-        } else if (userFilter.hasKey(UserFilter.FIRST_NAME)) {
-            users = userService.getByFirstName(userFilter.getValue(UserFilter.FIRST_NAME));
-        } else if (userFilter.hasKey(UserFilter.LAST_NAME)) {
-            users = userService.getByLastName(userFilter.getValue(UserFilter.LAST_NAME));
-        } else {
-            users = userService.getAll();
-        }
-
-        LOGGER.debug("-getByFilter(), users: {}", users);
-        return users;
+    public List<User> getByFilter(@RequestParam Map<String, Object> allParams) {
+        return getByFilter(new UserFilter(allParams));
     }
 
     /**
@@ -139,8 +119,8 @@ public class UserController extends AbstractRestController<User> {
      */
     @GetMapping("/pageable")
     @Override
-    public Page<User> getByFilter(Map<String, String> allParams, Pageable pageable) {
-        return userService.getByFilter(null, pageable);
+    public Page<User> getByFilter(@RequestParam Map<String, Object> allParams, Pageable pageable) {
+        return getByFilter(new UserFilter(allParams), pageable);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrawebapp.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,8 +8,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.yatrawebapp.clients.VehicleClient;
 import com.rslakra.microservice.common.exception.InvalidUUIDException;
+import com.rslakra.microservice.yatrawebapp.clients.VehicleClient;
 import com.rslakra.microservice.yatrawebapp.util.TestHelpers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

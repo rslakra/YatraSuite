@@ -1,14 +1,14 @@
 package com.rslakra.microservice.yatrawebapp.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.yatrawebapp.clients.RidesClient;
 import com.rslakra.microservice.common.exception.InvalidUUIDException;
 import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.common.exception.NotFoundException;
+import com.rslakra.microservice.yatrawebapp.clients.RidesClient;
 import com.rslakra.microservice.yatrawebapp.util.TestHelpers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,10 +1,10 @@
 package com.rslakra.microservice.rideservice.controller;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.core.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.controller.rest.AbstractRestController;
-import com.rslakra.frameworks.spring.filter.Filter;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.core.exception.InvalidRequestException;
+import com.devamatre.framework.spring.controller.rest.AbstractRestController;
+import com.devamatre.framework.spring.filter.Filter;
 import com.rslakra.microservice.common.Constants;
 import com.rslakra.microservice.common.YatraUtils;
 import com.rslakra.microservice.common.exception.InvalidUUIDException;
@@ -77,7 +77,7 @@ public class RideController extends AbstractRestController<Ride, Long> {
      */
     @Override
     public List<Ride> getByFilter(Filter filter) {
-        return null;
+        return rideService.getByFilter(filter);
     }
 
     /**
@@ -97,13 +97,7 @@ public class RideController extends AbstractRestController<Ride, Long> {
     @GetMapping("/filter")
     @Override
     public List<Ride> getByFilter(@RequestParam Map<String, Object> allParams) {
-        LOGGER.debug("+getByFilter({})", allParams);
-        Payload payload = Payload.newBuilder();
-        payload.putAll(allParams);
-        List<Ride> rides = rideService.getByFilter(new RideFilter(payload));
-        LOGGER.debug("-getByFilter(), rides: {}", rides);
-        return rides;
-
+        return getByFilter(new RideFilter(allParams));
     }
 
     /**
@@ -114,7 +108,7 @@ public class RideController extends AbstractRestController<Ride, Long> {
     @GetMapping("/filter-pageable")
     @Override
     public Page<Ride> getByFilter(Map<String, Object> allParams, Pageable pageable) {
-        return null;
+        return rideService.getByFilter(new RideFilter(allParams), pageable);
     }
 
     /**

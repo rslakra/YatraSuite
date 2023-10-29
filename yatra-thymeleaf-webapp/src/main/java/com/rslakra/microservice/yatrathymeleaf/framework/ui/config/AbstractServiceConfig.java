@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrathymeleaf.framework.ui.config;
 
-import com.rslakra.frameworks.core.BeanUtils;
+import com.devamatre.framework.core.BeanUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

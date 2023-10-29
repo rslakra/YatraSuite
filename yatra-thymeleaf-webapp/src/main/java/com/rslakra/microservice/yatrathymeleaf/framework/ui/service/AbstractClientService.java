@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrathymeleaf.framework.ui.service;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.spring.persistence.Operation;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.spring.persistence.Operation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

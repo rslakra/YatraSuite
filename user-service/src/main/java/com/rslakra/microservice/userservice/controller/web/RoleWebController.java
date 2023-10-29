@@ -1,12 +1,12 @@
 package com.rslakra.microservice.userservice.controller.web;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.controller.web.AbstractWebController;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.parser.Parser;
-import com.rslakra.frameworks.spring.parser.csv.CsvParser;
-import com.rslakra.frameworks.spring.parser.excel.ExcelParser;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.controller.web.AbstractWebController;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.parser.Parser;
+import com.devamatre.framework.spring.parser.csv.CsvParser;
+import com.devamatre.framework.spring.parser.excel.ExcelParser;
 import com.rslakra.microservice.userservice.parser.RoleParser;
 import com.rslakra.microservice.userservice.persistence.entity.Role;
 import com.rslakra.microservice.userservice.service.RoleService;
@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra (rlakra)
@@ -38,7 +37,7 @@ import java.util.Optional;
  */
 @Controller
 @RequestMapping("/roles")
-public class RoleWebController extends AbstractWebController<Role> {
+public class RoleWebController extends AbstractWebController<Role, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleWebController.class);
 
@@ -53,6 +52,11 @@ public class RoleWebController extends AbstractWebController<Role> {
     public RoleWebController(RoleService roleService) {
         this.roleParser = new RoleParser();
         this.roleService = roleService;
+    }
+
+
+    public void validate(Long id) {
+
     }
 
     /**
@@ -96,7 +100,7 @@ public class RoleWebController extends AbstractWebController<Role> {
      * @return
      */
     @Override
-    public String filter(Model model, Map<String, String> allParams) {
+    public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
 
@@ -121,10 +125,10 @@ public class RoleWebController extends AbstractWebController<Role> {
      */
     @RequestMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id") Optional<Long> id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
         Role role = null;
-        if (id.isPresent()) {
-            role = roleService.getById(id.get());
+        if (BeanUtils.isNotNull(id)) {
+            role = roleService.getById(id);
         } else {
             role = new Role();
         }
@@ -142,9 +146,9 @@ public class RoleWebController extends AbstractWebController<Role> {
      */
     @RequestMapping("/delete/{id}")
     @Override
-    public String delete(Model model, @PathVariable(name = "id") Optional<Long> id) {
+    public String delete(Model model, @PathVariable(name = "id") Long id) {
         validate(id);
-        roleService.delete(id.get());
+        roleService.delete(id);
         return "redirect:/roles/list";
     }
 

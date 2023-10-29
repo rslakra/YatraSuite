@@ -76,7 +76,7 @@
                             </div>
                         </td>
                         <td class="action-button action-button-fixed-size">
-                            <a class="href-link" th:href="@{|/ui/users/${user.id}/update|}"
+                            <a class="href-link" th:href="@{|/ui/users/${user.id}|}"
                                th:attr="aria-label=${user.id == null ? 'Add' : 'Edit ' + user.email}">
                                 <i class="fa fa-pencil" style="font-size:24px;color:red">Edit</i>
                             </a>

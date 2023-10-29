@@ -1,8 +1,8 @@
 package com.rslakra.microservice.vehicleservice.dto;
 
+import com.devamatre.framework.core.ToString;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rslakra.frameworks.core.ToString;
 import com.rslakra.microservice.vehicleservice.persistence.entity.Vehicle;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

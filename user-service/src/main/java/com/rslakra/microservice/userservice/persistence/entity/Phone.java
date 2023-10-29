@@ -1,7 +1,7 @@
 package com.rslakra.microservice.userservice.persistence.entity;
 
-import com.rslakra.frameworks.core.ToString;
-import com.rslakra.frameworks.spring.persistence.entity.AbstractEntity;
+import com.devamatre.framework.core.ToString;
+import com.devamatre.framework.spring.persistence.entity.AbstractEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -47,6 +47,7 @@ public class Phone extends AbstractEntity<Long> {
     @Override
     public String toString() {
         return ToString.of(Phone.class)
+            .add("userId", getUserId())
             .add("number", getNumber())
             .add("ext", getExt())
             .toString();

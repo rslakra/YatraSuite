@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrathymeleaf.dto.vehicle;
 
-import com.rslakra.frameworks.spring.payload.dto.AbstractEntityDTO;
+import com.devamatre.framework.spring.payload.dto.AbstractEntityDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

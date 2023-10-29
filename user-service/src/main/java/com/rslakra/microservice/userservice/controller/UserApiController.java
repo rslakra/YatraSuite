@@ -1,13 +1,13 @@
 package com.rslakra.microservice.userservice.controller;
 
-import com.rslakra.frameworks.core.BeanUtils;
+import com.devamatre.framework.core.BeanUtils;
+import com.rslakra.microservice.common.dto.MessagesDTO;
+import com.rslakra.microservice.common.exception.NotFoundException;
+import com.rslakra.microservice.common.exception.UserAlreadyExistsException;
 import com.rslakra.microservice.userservice.Constants;
 import com.rslakra.microservice.userservice.dto.UserDTO;
 import com.rslakra.microservice.userservice.dto.UserResponseDTO;
 import com.rslakra.microservice.userservice.persistence.entity.User;
-import com.rslakra.microservice.common.dto.MessagesDTO;
-import com.rslakra.microservice.common.exception.NotFoundException;
-import com.rslakra.microservice.common.exception.UserAlreadyExistsException;
 import com.rslakra.microservice.userservice.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

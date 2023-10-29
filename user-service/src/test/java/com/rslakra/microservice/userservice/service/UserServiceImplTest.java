@@ -1,6 +1,6 @@
 package com.rslakra.microservice.userservice.service;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -8,9 +8,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.userservice.persistence.entity.User;
 import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.common.exception.UserAlreadyExistsException;
+import com.rslakra.microservice.userservice.persistence.entity.User;
 import com.rslakra.microservice.userservice.persistence.repository.PhoneRepository;
 import com.rslakra.microservice.userservice.persistence.repository.RoleRepository;
 import com.rslakra.microservice.userservice.persistence.repository.UserRepository;

@@ -8,13 +8,36 @@
 <!-- bodyContents:start-->
 <th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
     <div class="page-body"> <!-- pageBody:start -->
-<!--        <div sec:authorize="hasRole('USER')">Hello,</div>-->
-        <div sec:authorize="hasRole('ADMIN')">Hello, Mr. Admin</div>
-        <div sec:authorize="isAuthenticated()">Hello, <span sec:authentication="*${authUser.lastName}, *${authUser.firstName}"></span></div>
-<!--        Authenticated username:-->
-<!--        <div sec:authentication="name"></div>-->
-<!--        Authenticated user roles:-->
-<!--        <div sec:authentication="principal.authorities"></div>-->
+<div sec:authorize="isAuthenticated()">
+        <!-- This content is only shown to authenticated users. -->
+            Authenticated:
+            <p>
+                Username:
+            <div sec:authentication="name"></div>
+            </p>
+        <p>
+                Roles:
+            <div sec:authentication="principal.authorities"></div>
+            </p>
+<!--            <p>-->
+<!--                Hello, <span th:text="@{${authUser.lastName} ${authUser.firstName}}"></span>-->
+<!--            </p>-->
+            User's email:
+            <div sec:authentication="principal.email"></div>
+            User's firstName:
+            <div sec:authentication="principal.firstName"></div>
+            User's lastName:
+            <div sec:authentication="principal.lastName"></div>
+            User roles:
+            <div sec:authentication="principal.authorities"></div>
+</div>
+
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <!-- This content is only shown to administrators. -->
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <!-- This content is only shown to users. -->
+        </div>
         <div>
             <p>
                 Thymeleaf is a modern server-side Java template engine for both web and standalone environments.

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.vehicleservice.persistence.repository;
 
-import com.rslakra.frameworks.spring.persistence.repository.BaseRepository;
+import com.devamatre.framework.spring.persistence.repository.BaseRepository;
 import com.rslakra.microservice.vehicleservice.persistence.entity.LocationHistory;
 import org.springframework.stereotype.Repository;
 

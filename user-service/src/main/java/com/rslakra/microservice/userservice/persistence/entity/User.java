@@ -1,8 +1,8 @@
 package com.rslakra.microservice.userservice.persistence.entity;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.ToString;
-import com.rslakra.frameworks.core.enums.EntityStatus;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.ToString;
+import com.devamatre.framework.core.enums.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +15,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -98,8 +96,8 @@ public class User extends Person {
             .add("middleName", getMiddleName())
             .add("lastName", getLastName())
             .add("status", getStatus())
-            .add("phones", getPhones())
-            .add("roles", getRoles())
+//            .add("phones", getPhones())
+//            .add("roles", getRoles())
             .toString();
     }
 }

@@ -1,30 +1,16 @@
 package com.rslakra.microservice.yatrathymeleaf.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextDateTime;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static com.devamatre.framework.core.RandomUtils.nextDateTime;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
 
-import com.rslakra.microservice.common.exception.InvalidUUIDException;
-import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.yatrathymeleaf.dto.ride.Ride;
 import com.rslakra.microservice.yatrathymeleaf.service.RideService;
-import com.rslakra.microservice.yatrathymeleaf.util.TestHelpers;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 class RideControllerTest {
 

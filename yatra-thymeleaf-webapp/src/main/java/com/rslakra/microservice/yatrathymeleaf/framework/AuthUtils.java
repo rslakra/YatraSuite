@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrathymeleaf.framework;
 
-import com.rslakra.frameworks.core.BeanUtils;
+import com.devamatre.framework.core.BeanUtils;
 import com.rslakra.microservice.yatrathymeleaf.security.AuthUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

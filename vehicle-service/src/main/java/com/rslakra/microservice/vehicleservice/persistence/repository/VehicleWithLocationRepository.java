@@ -1,6 +1,6 @@
 package com.rslakra.microservice.vehicleservice.persistence.repository;
 
-import com.rslakra.frameworks.spring.persistence.repository.BaseRepository;
+import com.devamatre.framework.spring.persistence.repository.BaseRepository;
 import com.rslakra.microservice.vehicleservice.persistence.entity.VehicleWithLocation;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.rideservice.service;
 
-import com.rslakra.frameworks.spring.service.AbstractService;
+import com.devamatre.framework.spring.service.AbstractService;
 import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.rideservice.persistence.entity.Ride;

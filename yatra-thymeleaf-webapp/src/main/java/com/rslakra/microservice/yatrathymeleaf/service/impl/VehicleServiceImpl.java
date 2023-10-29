@@ -1,10 +1,10 @@
 package com.rslakra.microservice.yatrathymeleaf.service.impl;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.client.ApiRestClient;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.persistence.Operation;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.client.ApiRestClient;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.persistence.Operation;
 import com.rslakra.microservice.yatrathymeleaf.config.VehicleServiceConfig;
 import com.rslakra.microservice.yatrathymeleaf.dto.vehicle.Vehicle;
 import com.rslakra.microservice.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;

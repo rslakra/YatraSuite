@@ -1,12 +1,12 @@
 package com.rslakra.microservice.rideservice.util;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomId;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomInt;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomLatitude;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomLongitude;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomPercentage;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomId;
+import static com.devamatre.framework.core.RandomUtils.nextRandomInt;
+import static com.devamatre.framework.core.RandomUtils.nextRandomLatitude;
+import static com.devamatre.framework.core.RandomUtils.nextRandomLongitude;
+import static com.devamatre.framework.core.RandomUtils.nextRandomPercentage;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
 
 import com.rslakra.microservice.rideservice.dto.EndRideRequestDto;
 import com.rslakra.microservice.rideservice.dto.RideRequestDto;

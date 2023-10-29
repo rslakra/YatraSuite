@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrathymeleaf.dto.vehicle;
 
+import com.devamatre.framework.core.ToString;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rslakra.frameworks.core.ToString;
 import com.rslakra.microservice.framework.TimeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

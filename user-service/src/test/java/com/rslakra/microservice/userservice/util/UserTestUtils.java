@@ -1,14 +1,14 @@
 package com.rslakra.microservice.userservice.util;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomFirstName;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomLastName;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomPhoneNumber;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomFirstName;
+import static com.devamatre.framework.core.RandomUtils.nextRandomLastName;
+import static com.devamatre.framework.core.RandomUtils.nextRandomPhoneNumber;
 
-import com.rslakra.microservice.userservice.persistence.entity.Phone;
-import com.rslakra.microservice.userservice.persistence.entity.User;
 import com.rslakra.microservice.userservice.dto.AuthRequestDTO;
 import com.rslakra.microservice.userservice.dto.UserDTO;
+import com.rslakra.microservice.userservice.persistence.entity.Phone;
+import com.rslakra.microservice.userservice.persistence.entity.User;
 
 import java.util.Arrays;
 import java.util.List;

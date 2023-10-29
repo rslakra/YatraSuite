@@ -1,13 +1,13 @@
 package com.rslakra.microservice.vehicleservice.util;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextDateTime;
-import static com.rslakra.frameworks.core.RandomUtils.nextLatitudeBigDecimal;
-import static com.rslakra.frameworks.core.RandomUtils.nextLongitudeBigDecimal;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomId;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomInt;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomPercentage;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomString;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
+import static com.devamatre.framework.core.RandomUtils.nextDateTime;
+import static com.devamatre.framework.core.RandomUtils.nextLatitudeBigDecimal;
+import static com.devamatre.framework.core.RandomUtils.nextLongitudeBigDecimal;
+import static com.devamatre.framework.core.RandomUtils.nextRandomId;
+import static com.devamatre.framework.core.RandomUtils.nextRandomInt;
+import static com.devamatre.framework.core.RandomUtils.nextRandomPercentage;
+import static com.devamatre.framework.core.RandomUtils.nextRandomString;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rslakra.microservice.vehicleservice.dto.NewVehicleDTO;

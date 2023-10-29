@@ -1,7 +1,7 @@
 package com.rslakra.microservice.vehicleservice.service;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextDateTime;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
+import static com.devamatre.framework.core.RandomUtils.nextDateTime;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
 import static com.rslakra.microservice.vehicleservice.util.VehicleTestUtils.createVehicle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,6 +10,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.rslakra.microservice.common.exception.InvalidValueException;
+import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
+import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.vehicleservice.dto.VehicleDetailDTO;
 import com.rslakra.microservice.vehicleservice.persistence.entity.LocationHistory;
 import com.rslakra.microservice.vehicleservice.persistence.entity.Vehicle;
@@ -17,9 +20,6 @@ import com.rslakra.microservice.vehicleservice.persistence.entity.VehicleWithLoc
 import com.rslakra.microservice.vehicleservice.persistence.repository.LocationHistoryRepository;
 import com.rslakra.microservice.vehicleservice.persistence.repository.VehicleRepository;
 import com.rslakra.microservice.vehicleservice.persistence.repository.VehicleWithLocationRepository;
-import com.rslakra.microservice.common.exception.InvalidValueException;
-import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.vehicleservice.service.impl.VehicleServiceImpl;
 import com.rslakra.microservice.vehicleservice.util.VehicleTestUtils;
 import org.junit.jupiter.api.BeforeEach;

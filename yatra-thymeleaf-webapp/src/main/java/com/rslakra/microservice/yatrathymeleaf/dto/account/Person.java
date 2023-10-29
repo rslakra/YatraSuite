@@ -1,8 +1,8 @@
 package com.rslakra.microservice.yatrathymeleaf.dto.account;
 
+import com.devamatre.framework.core.ToString;
+import com.devamatre.framework.spring.payload.dto.AbstractEntityDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rslakra.frameworks.core.ToString;
-import com.rslakra.frameworks.spring.payload.dto.AbstractEntityDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

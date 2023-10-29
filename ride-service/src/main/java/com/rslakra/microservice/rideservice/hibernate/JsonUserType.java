@@ -1,7 +1,7 @@
 //package com.rslakra.microservice.rideservice.hibernate;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.rslakra.frameworks.core.BeanUtils;
+//import com.devamatre.framework.core.BeanUtils;
 //import org.hibernate.HibernateException;
 //import org.hibernate.engine.spi.SharedSessionContractImplementor;
 //import org.hibernate.usertype.UserType;

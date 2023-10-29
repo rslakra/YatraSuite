@@ -1,12 +1,13 @@
 package com.rslakra.microservice.userservice.service.impl;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.spring.exception.DuplicateRecordException;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.exception.NoRecordFoundException;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.persistence.Operation;
-import com.rslakra.frameworks.spring.service.AbstractServiceImpl;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.spring.exception.DuplicateRecordException;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.exception.NoRecordFoundException;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.persistence.Operation;
+import com.devamatre.framework.spring.service.AbstractServiceImpl;
+import com.rslakra.microservice.userservice.filter.RoleFilter;
 import com.rslakra.microservice.userservice.persistence.entity.Role;
 import com.rslakra.microservice.userservice.persistence.repository.RoleRepository;
 import com.rslakra.microservice.userservice.service.RoleService;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,7 +29,7 @@ import java.util.Optional;
  * @created 10/9/21 5:50 PM
  */
 @Service
-public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleService {
+public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements RoleService {
 
     // LOGGER
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleServiceImpl.class);
@@ -181,7 +184,20 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
      */
     @Override
     public List<Role> getByFilter(Filter filter) {
-        return roleRepository.findAll();
+        LOGGER.debug("+getByFilter({})", filter);
+        List<Role> roles = Collections.emptyList();
+        if (filter.hasKeys(Filter.ID, RoleFilter.NAME)) {
+        } else if (filter.hasKey(RoleFilter.ID)) {
+            roles = Arrays.asList(getById(filter.getLong(RoleFilter.ID)));
+        } else if (filter.hasKey(RoleFilter.NAME)) {
+            Role role = getByName(filter.getValue(RoleFilter.NAME, String.class));
+            roles = Arrays.asList(role);
+        } else {
+            roles = roleRepository.findAll();
+        }
+
+        LOGGER.debug("-getByFilter(), roles: {}", roles);
+        return roles;
     }
 
     /**

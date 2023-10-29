@@ -1,6 +1,6 @@
 package com.rslakra.microservice.userservice.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
 import static com.rslakra.microservice.userservice.util.UserTestUtils.createUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

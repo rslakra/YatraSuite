@@ -1,12 +1,12 @@
 package com.rslakra.microservice.userservice.controller.web;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.controller.web.AbstractWebController;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.parser.Parser;
-import com.rslakra.frameworks.spring.parser.csv.CsvParser;
-import com.rslakra.frameworks.spring.parser.excel.ExcelParser;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.controller.web.AbstractWebController;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.parser.Parser;
+import com.devamatre.framework.spring.parser.csv.CsvParser;
+import com.devamatre.framework.spring.parser.excel.ExcelParser;
 import com.rslakra.microservice.userservice.parser.UserParser;
 import com.rslakra.microservice.userservice.persistence.entity.User;
 import com.rslakra.microservice.userservice.service.UserService;
@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
@@ -38,7 +37,7 @@ import java.util.Optional;
  */
 @Controller
 @RequestMapping("/users")
-public class UserWebController extends AbstractWebController<User> {
+public class UserWebController extends AbstractWebController<User, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserWebController.class);
 
@@ -59,8 +58,8 @@ public class UserWebController extends AbstractWebController<User> {
     /**
      * @param id
      */
-    @Override
-    public void validate(Optional<Long> id) {
+//    @Override
+    public void validate(Long id) {
     }
 
     /**
@@ -103,7 +102,7 @@ public class UserWebController extends AbstractWebController<User> {
      * @return
      */
     @Override
-    public String filter(Model model, Map<String, String> allParams) {
+    public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
 
@@ -128,10 +127,10 @@ public class UserWebController extends AbstractWebController<User> {
      * @return
      */
     @RequestMapping(path = {"/create", "/update/{userId}"})
-    public String editObject(Model model, @PathVariable(name = "userId") Optional<Long> userId) {
+    public String editObject(Model model, @PathVariable(name = "userId", required = false) Long userId) {
         User user = null;
-        if (userId.isPresent()) {
-            user = userService.getById(userId.get());
+        if (BeanUtils.isNotNull(userId)) {
+            user = userService.getById(userId);
         } else {
             user = new User();
         }
@@ -149,9 +148,9 @@ public class UserWebController extends AbstractWebController<User> {
      */
     @RequestMapping("/delete/{userId}")
     @Override
-    public String delete(Model model, @PathVariable(name = "userId") Optional<Long> id) {
+    public String delete(Model model, @PathVariable(name = "userId") Long id) {
         validate(id);
-        userService.delete(id.get());
+        userService.delete(id);
         return "redirect:/users/list";
     }
 

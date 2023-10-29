@@ -5,7 +5,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.frameworks.core.enums.EntityStatus;
+import com.devamatre.framework.core.enums.EntityStatus;
 import com.rslakra.microservice.yatrathymeleaf.dto.account.Role;
 import com.rslakra.microservice.yatrathymeleaf.service.RoleService;
 import org.junit.jupiter.api.BeforeEach;

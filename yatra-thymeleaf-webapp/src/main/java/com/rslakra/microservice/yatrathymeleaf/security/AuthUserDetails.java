@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrathymeleaf.security;
 
-import com.rslakra.frameworks.core.ToString;
+import com.devamatre.framework.core.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

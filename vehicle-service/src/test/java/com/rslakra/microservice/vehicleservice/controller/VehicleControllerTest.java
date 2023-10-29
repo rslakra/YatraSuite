@@ -1,6 +1,6 @@
 package com.rslakra.microservice.vehicleservice.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomId;
+import static com.devamatre.framework.core.RandomUtils.nextRandomId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -11,19 +11,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rslakra.microservice.vehicleservice.dto.NewVehicleDTO;
-import com.rslakra.microservice.vehicleservice.dto.VehicleDetailDTO;
-import com.rslakra.microservice.vehicleservice.dto.VehicleIdDTO;
-import com.rslakra.microservice.vehicleservice.dto.VehicleWithHistoryDTO;
-import com.rslakra.microservice.vehicleservice.dto.VehicleWithLocationDTO;
-import com.rslakra.microservice.vehicleservice.service.VehicleService;
 import com.rslakra.microservice.common.YatraUtils;
 import com.rslakra.microservice.common.exception.InvalidUUIDException;
 import com.rslakra.microservice.common.exception.InvalidValueException;
 import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.framework.advice.AbstractResponse;
+import com.rslakra.microservice.vehicleservice.dto.NewVehicleDTO;
+import com.rslakra.microservice.vehicleservice.dto.VehicleDetailDTO;
+import com.rslakra.microservice.vehicleservice.dto.VehicleIdDTO;
+import com.rslakra.microservice.vehicleservice.dto.VehicleWithHistoryDTO;
+import com.rslakra.microservice.vehicleservice.dto.VehicleWithLocationDTO;
 import com.rslakra.microservice.vehicleservice.persistence.entity.Vehicle;
+import com.rslakra.microservice.vehicleservice.service.VehicleService;
 import com.rslakra.microservice.vehicleservice.util.VehicleTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

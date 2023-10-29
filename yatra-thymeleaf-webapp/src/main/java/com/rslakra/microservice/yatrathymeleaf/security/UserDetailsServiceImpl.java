@@ -1,7 +1,10 @@
 package com.rslakra.microservice.yatrathymeleaf.security;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.spring.exception.AuthenticationException;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.rslakra.microservice.yatrathymeleaf.dto.account.User;
+import com.rslakra.microservice.yatrathymeleaf.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,14 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final Map<String, AuthUserDetails> userRegistry = new HashMap<>();
 
     /**
      * @param passwordEncoder
      */
-    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder) {
-        LOGGER.debug("UserDetailsServiceImpl({})", passwordEncoder);
+    public UserDetailsServiceImpl(PasswordEncoder passwordEncoder, UserService userService) {
+        LOGGER.debug("UserDetailsServiceImpl({}, {})", passwordEncoder, userService);
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
     /**
@@ -60,6 +65,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
      * @param userName
+     * @param user
+     * @return
+     */
+    private UserDetails buildUserDetails(String userName, User user) {
+        if (BeanUtils.isNull(user)) {
+            return userRegistry.get(userName);
+        }
+
+        return new AuthUserDetails.Builder()
+            .withFirstName(user.getFirstName())
+            .withLastName(user.getLastName())
+            .withEmail(user.getEmail())
+            .withUsername(user.getEmail())
+            .withPassword(passwordEncoder.encode(user.getPassword()))
+            .withAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")))
+            .build();
+    }
+
+    /**
+     * @param userName
      * @return
      * @throws UsernameNotFoundException
      */
@@ -70,7 +95,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new InvalidRequestException("The userName should provide!");
         }
 
-        AuthUserDetails userDetails = userRegistry.get(userName);
+        User user = userService.getByEmail(userName);
+        LOGGER.debug("user: {}", user);
+
+        if (BeanUtils.isNull(user)) {
+            throw new AuthenticationException("Invalid user!");
+        }
+
+        UserDetails userDetails = buildUserDetails(userName, user);
         if (BeanUtils.isNull(userDetails)) {
             throw new UsernameNotFoundException(userName);
         }

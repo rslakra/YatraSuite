@@ -4,12 +4,12 @@ import static com.rslakra.microservice.common.Constants.ERR_INVALID_VEHICLE_ID;
 import static com.rslakra.microservice.framework.CommonUtils.deserialize;
 import static com.rslakra.microservice.framework.CommonUtils.toUUID;
 
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.controller.rest.AbstractRestController;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.filter.Filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.controller.rest.AbstractRestController;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.filter.Filter;
 import com.rslakra.microservice.common.Constants;
 import com.rslakra.microservice.common.YatraUtils;
 import com.rslakra.microservice.common.exception.DeserializationException;

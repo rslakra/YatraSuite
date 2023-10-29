@@ -1,11 +1,11 @@
 package com.rslakra.microservice.rideservice.service;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.exception.NoRecordFoundException;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.persistence.Operation;
-import com.rslakra.frameworks.spring.service.AbstractServiceImpl;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.exception.NoRecordFoundException;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.persistence.Operation;
+import com.devamatre.framework.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.common.Constants;
 import com.rslakra.microservice.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.common.exception.NotFoundException;
@@ -139,14 +139,14 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
     @Override
     public List<Ride> getByFilter(Filter filter) {
         LOGGER.debug("+getByFilter({})", filter);
-        List<Ride> rides = null;
+        List<Ride> rides;
         if (filter.hasKeys(RideFilter.EMAIL, RideFilter.VEHICLE_ID)) {
-            UUID vehicleId = UUID.fromString(filter.getValue(RideFilter.VEHICLE_ID));
-            rides = rideRepository.getActiveRides(filter.getValue(RideFilter.EMAIL), vehicleId);
+            UUID vehicleId = UUID.fromString(filter.getValue(RideFilter.VEHICLE_ID, String.class));
+            rides = rideRepository.getActiveRides(filter.getValue(RideFilter.EMAIL, String.class), vehicleId);
         } else if (filter.hasKey(RideFilter.EMAIL)) {
-            rides = rideRepository.findRidesByUser(filter.getValue(RideFilter.EMAIL));
+            rides = rideRepository.findRidesByUser(filter.getValue(RideFilter.EMAIL, String.class));
         } else if (filter.hasKey(RideFilter.VEHICLE_ID)) {
-            UUID vehicleId = UUID.fromString(filter.getValue(RideFilter.VEHICLE_ID));
+            UUID vehicleId = UUID.fromString(filter.getValue(RideFilter.VEHICLE_ID).toString());
             rides = rideRepository.getActiveRidesByVehicle(vehicleId);
         } else {
             rides = rideRepository.findAll();

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrawebapp.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

@@ -1,6 +1,8 @@
 package com.rslakra.microservice.vehicleservice.controller;
 
-import com.rslakra.frameworks.core.BeanUtils;
+import com.devamatre.framework.core.BeanUtils;
+import com.rslakra.microservice.framework.TimeUtils;
+import com.rslakra.microservice.framework.advice.AbstractResponse;
 import com.rslakra.microservice.vehicleservice.dto.LocationHistoryDTO;
 import com.rslakra.microservice.vehicleservice.dto.VehicleDetailDTO;
 import com.rslakra.microservice.vehicleservice.dto.VehicleWithHistoryDTO;
@@ -9,8 +11,6 @@ import com.rslakra.microservice.vehicleservice.persistence.entity.LocationHistor
 import com.rslakra.microservice.vehicleservice.persistence.entity.Vehicle;
 import com.rslakra.microservice.vehicleservice.persistence.entity.VehicleInfo;
 import com.rslakra.microservice.vehicleservice.persistence.entity.VehicleWithLocation;
-import com.rslakra.microservice.framework.TimeUtils;
-import com.rslakra.microservice.framework.advice.AbstractResponse;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;

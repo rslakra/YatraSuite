@@ -1,9 +1,9 @@
 package com.rslakra.microservice.rideservice.kafka.event;
 
+import com.devamatre.framework.core.Payload;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.microservice.rideservice.persistence.repository.EventRepository;
 import com.rslakra.microservice.rideservice.persistence.entity.EventEntity;
+import com.rslakra.microservice.rideservice.persistence.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,19 +1,20 @@
 package com.rslakra.microservice.userservice.service.impl;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.core.Sets;
-import com.rslakra.frameworks.core.enums.EntityStatus;
-import com.rslakra.frameworks.core.enums.RoleType;
-import com.rslakra.frameworks.spring.exception.DuplicateRecordException;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.exception.NoRecordFoundException;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.persistence.Operation;
-import com.rslakra.frameworks.spring.service.AbstractServiceImpl;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.core.Sets;
+import com.devamatre.framework.core.enums.EntityStatus;
+import com.devamatre.framework.core.enums.RoleType;
+import com.devamatre.framework.spring.exception.DuplicateRecordException;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.exception.NoRecordFoundException;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.persistence.Operation;
+import com.devamatre.framework.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.common.exception.NotFoundException;
 import com.rslakra.microservice.common.exception.UserAlreadyExistsException;
 import com.rslakra.microservice.userservice.Constants;
+import com.rslakra.microservice.userservice.filter.UserFilter;
 import com.rslakra.microservice.userservice.persistence.entity.Phone;
 import com.rslakra.microservice.userservice.persistence.entity.Role;
 import com.rslakra.microservice.userservice.persistence.entity.User;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +46,7 @@ import java.util.stream.Collectors;
  * @created 10/9/21 5:50 PM
  */
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<User> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements UserService {
 
     // LOGGER
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -188,7 +190,25 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      */
     @Override
     public List<User> getByFilter(Filter filter) {
-        return userRepository.findAll();
+        LOGGER.debug("+getByFilter({})", filter);
+        List<User> users = Collections.emptyList();
+        if (filter.hasKeys(UserFilter.EMAIL, UserFilter.FIRST_NAME, UserFilter.LAST_NAME)) {
+        } else if (filter.hasKeys(UserFilter.FIRST_NAME, UserFilter.LAST_NAME)) {
+        } else if (filter.hasKey(UserFilter.ID)) {
+            User user = getById(filter.getLong(Filter.ID));
+            users = Arrays.asList(user);
+        } else if (filter.hasKey(UserFilter.EMAIL)) {
+            users = Arrays.asList(getByEmail(filter.getValue(UserFilter.EMAIL, String.class)));
+        } else if (filter.hasKey(UserFilter.FIRST_NAME)) {
+            users = getByFirstName(filter.getValue(UserFilter.FIRST_NAME, String.class));
+        } else if (filter.hasKey(UserFilter.LAST_NAME)) {
+            users = getByLastName(filter.getValue(UserFilter.LAST_NAME, String.class));
+        } else {
+            users = userRepository.findAll();
+        }
+
+        LOGGER.debug("-getByFilter(), users:{}", users);
+        return users;
     }
 
     /**
@@ -208,8 +228,12 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      * @return
      */
     public User getById(final Long userId) {
-        return userRepository.findById(userId)
+        LOGGER.debug("+getById({})", userId);
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new NoRecordFoundException("userId:%d", userId));
+        loadUserPhones(user);
+        LOGGER.debug("-getById(), user: {}", user);
+        return user;
     }
 
     /**
@@ -219,9 +243,15 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      * @return
      */
     public List<User> getByFirstName(String firstName) {
-        LOGGER.debug("getByFirstName({})", firstName);
-        Objects.requireNonNull(firstName);
-        return userRepository.getByFirstName(firstName);
+        LOGGER.debug("+getByFirstName({})", firstName);
+        if (BeanUtils.isEmpty(firstName)) {
+            throw new InvalidRequestException("The firstName should provide!");
+        }
+
+        List<User> users = userRepository.getByFirstName(firstName);
+        users.forEach(user -> loadUserPhones(user));
+        LOGGER.debug("-getByFirstName(), users:{}", users);
+        return users;
     }
 
     /**
@@ -231,9 +261,27 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
      * @return
      */
     public List<User> getByLastName(String lastName) {
-        LOGGER.debug("getByLastName({})", lastName);
-        Objects.requireNonNull(lastName);
-        return userRepository.getByLastName(lastName);
+        LOGGER.debug("+getByLastName({})", lastName);
+        if (BeanUtils.isEmpty(lastName)) {
+            throw new InvalidRequestException("The lastName should provide!");
+        }
+
+        List<User> users = userRepository.getByLastName(lastName);
+        users.forEach(user -> loadUserPhones(user));
+        LOGGER.debug("-getByLastName(), users:{}", users);
+        return users;
+    }
+
+    /**
+     * @param user
+     */
+    private void loadUserPhones(User user) {
+        LOGGER.debug("+loadUserPhones({})", user);
+        if (BeanUtils.isNotNull(user) && BeanUtils.isEmpty(user.getPhones())) {
+            List<Phone> phones = phoneRepository.findByUserId(user.getId());
+            user.setPhones(Sets.asSet(phones));
+        }
+        LOGGER.debug("-loadUserPhones({})", user);
     }
 
     /**
@@ -246,11 +294,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User> implements UserSe
         LOGGER.debug("+getByEmail({})", email);
         Objects.requireNonNull(email);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NoRecordFoundException("email:%s", email));
-        if (BeanUtils.isNotNull(user) && BeanUtils.isEmpty(user.getPhones())) {
-            List<Phone> phones = phoneRepository.findByUserId(user.getId());
-            user.setPhones(Sets.asSet(phones));
-        }
-
+        loadUserPhones(user);
         LOGGER.debug("-getByEmail(), user: {}", user);
         return user;
     }

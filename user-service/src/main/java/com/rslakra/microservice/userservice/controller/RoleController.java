@@ -1,12 +1,12 @@
 package com.rslakra.microservice.userservice.controller;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.spring.controller.rest.AbstractRestController;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.parser.Parser;
-import com.rslakra.frameworks.spring.parser.csv.CsvParser;
-import com.rslakra.frameworks.spring.parser.excel.ExcelParser;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.spring.controller.rest.AbstractRestController;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.parser.Parser;
+import com.devamatre.framework.spring.parser.csv.CsvParser;
+import com.devamatre.framework.spring.parser.excel.ExcelParser;
 import com.rslakra.microservice.userservice.filter.RoleFilter;
 import com.rslakra.microservice.userservice.parser.RoleParser;
 import com.rslakra.microservice.userservice.persistence.entity.Role;
@@ -34,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -47,7 +45,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("${restPrefix}/roles")
-public class RoleController extends AbstractRestController<Role> {
+public class RoleController extends AbstractRestController<Role, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
     private final RoleService roleService;
@@ -76,8 +74,8 @@ public class RoleController extends AbstractRestController<Role> {
      * @return
      */
     @Override
-    public String getByFilter(Filter filter) {
-        return null;
+    public List<Role> getByFilter(Filter filter) {
+        return roleService.getByFilter(filter);
     }
 
     /**
@@ -87,7 +85,7 @@ public class RoleController extends AbstractRestController<Role> {
      */
     @Override
     public Page<Role> getByFilter(Filter filter, Pageable pageable) {
-        return null;
+        return roleService.getByFilter(filter, pageable);
     }
 
     /**
@@ -98,21 +96,8 @@ public class RoleController extends AbstractRestController<Role> {
      */
     @GetMapping("/filter")
     @Override
-    public List<Role> getByFilter(@RequestParam Map<String, String> allParams) {
-        LOGGER.debug("+getByFilter({})", allParams);
-        List<Role> roles = Collections.emptyList();
-        RoleFilter roleFilter = new RoleFilter(allParams);
-        if (roleFilter.hasKeys(RoleFilter.ID, RoleFilter.NAME)) {
-        } else if (roleFilter.hasKey(RoleFilter.ID)) {
-            roles = Arrays.asList(roleService.getById(roleFilter.getLong(RoleFilter.ID)));
-        } else if (roleFilter.hasKey(RoleFilter.NAME)) {
-            roles = Arrays.asList(roleService.getByName(roleFilter.getValue(RoleFilter.NAME)));
-        } else {
-            roles = roleService.getAll();
-        }
-
-        LOGGER.debug("-getByFilter(), roles: {}", roles);
-        return roles;
+    public List<Role> getByFilter(@RequestParam Map<String, Object> allParams) {
+        return getByFilter(new RoleFilter(allParams));
     }
 
     /**
@@ -123,8 +108,8 @@ public class RoleController extends AbstractRestController<Role> {
      */
     @GetMapping("/pageable")
     @Override
-    public Page<Role> getByFilter(Map<String, String> allParams, Pageable pageable) {
-        return roleService.getByFilter(null, pageable);
+    public Page<Role> getByFilter(@RequestParam Map<String, Object> allParams, Pageable pageable) {
+        return getByFilter(new RoleFilter(allParams), pageable);
     }
 
     /**

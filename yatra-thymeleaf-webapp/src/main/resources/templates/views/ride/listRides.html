@@ -44,7 +44,7 @@
                 <div th:case="*">
                     <tr th:each="ride : ${rides}" th:id="|ride_${ride.id}|">
                         <th scope="row">Vehicle ID: <span th:text="${ride.vehicleId}"></span></th>
-                        <table>
+                        <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th>Start Time</th>
@@ -56,8 +56,11 @@
                             <tr>
                                 <td th:text="${ride.startTime}"></td>
                                 <td th:text="${ride.endTime}"></td>
-                                <td>
-                                    <a class="href-link" th:href="@{|/ui/rides?email=${ride.userEmail}|}">View Ride</a>
+                                <td th:if="${ride.endTime} == null">
+                                    <a class="href-link" th:href="@{|/ui/rides/${ride.id}|}">
+                                        <i class="fa fa-pencil" style="font-size:24px;color:red">View Ride</i>
+                                    </a>
+                                <!--                                    <a class="href-link" th:href="@{|/ui/rides?email=${ride.userEmail}|}">View Ride</a>-->
                                 </td>
                             </tr>
                             </tbody>

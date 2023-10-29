@@ -1,9 +1,9 @@
 package com.rslakra.microservice.rideservice.controller;
 
-import static com.rslakra.frameworks.core.RandomUtils.nextDateTime;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomEmail;
-import static com.rslakra.frameworks.core.RandomUtils.nextRandomUuid;
-import static com.rslakra.frameworks.spring.unittest.TestUtils.anyBigDecimal;
+import static com.devamatre.framework.core.RandomUtils.nextDateTime;
+import static com.devamatre.framework.core.RandomUtils.nextRandomEmail;
+import static com.devamatre.framework.core.RandomUtils.nextRandomUuid;
+import static com.devamatre.framework.spring.unittest.TestUtils.anyBigDecimal;
 import static com.rslakra.microservice.rideservice.util.RideTestUtils.createEndRideRequest;
 import static com.rslakra.microservice.rideservice.util.RideTestUtils.createRide;
 import static com.rslakra.microservice.rideservice.util.RideTestUtils.createRideRequest;

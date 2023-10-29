@@ -2,13 +2,13 @@ package com.rslakra.microservice.yatrathymeleaf.controller;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import com.rslakra.frameworks.core.BeanUtils;
-import com.rslakra.frameworks.core.Payload;
-import com.rslakra.frameworks.core.enums.EntityStatus;
-import com.rslakra.frameworks.spring.controller.web.AbstractWebController;
-import com.rslakra.frameworks.spring.exception.InvalidRequestException;
-import com.rslakra.frameworks.spring.filter.Filter;
-import com.rslakra.frameworks.spring.parser.Parser;
+import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.framework.core.Payload;
+import com.devamatre.framework.core.enums.EntityStatus;
+import com.devamatre.framework.spring.controller.web.AbstractWebController;
+import com.devamatre.framework.spring.exception.InvalidRequestException;
+import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.framework.spring.parser.Parser;
 import com.rslakra.microservice.yatrathymeleaf.dto.account.Role;
 import com.rslakra.microservice.yatrathymeleaf.service.RoleService;
 import org.apache.logging.log4j.LogManager;

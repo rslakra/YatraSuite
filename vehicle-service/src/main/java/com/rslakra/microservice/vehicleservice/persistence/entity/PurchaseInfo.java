@@ -1,6 +1,6 @@
 package com.rslakra.microservice.vehicleservice.persistence.entity;
 
-import com.rslakra.frameworks.core.ToString;
+import com.devamatre.framework.core.ToString;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

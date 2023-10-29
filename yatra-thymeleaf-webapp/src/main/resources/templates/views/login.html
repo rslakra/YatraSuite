@@ -61,6 +61,13 @@
     <div class="page-body"> <!-- pageBody:start -->
         <div class="row">
             <div class="col-md-6">
+                <div th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+                <div th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+
                 <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
                 <th:block th:fragment="form">
                     <form th:action="@{|/login|}" th:object="${loginRequest}" method="post">
