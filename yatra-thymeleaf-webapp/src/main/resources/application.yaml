@@ -1,0 +1,60 @@
+#----------------< Logger Configuration >----------------
+logging:
+  level:
+    org.springframework.web: INFO
+
+#----------------< API Configuration >----------------
+uiPrefix: /ui
+apiPrefix: /api
+restPrefix: /rest
+
+#----------------< UserService Configuration >----------------
+# Server Settings
+# <code>http://localhost:31608</code>
+server:
+  port: 31608
+  #  servlet:
+  #    context-path: /user-service
+  #  error:
+  #    include-binding-errors: always
+  #    include-stacktrace: never
+#    include-message: always
+
+#management:
+#  server:
+#    port: 31608
+#    address: 127.0.0.1
+
+
+#----------------< Spring Configuration >----------------
+spring:
+
+  #----------------< Thymeleaf Settings >----------------
+  thymeleaf:
+    cache: false
+
+#----------------< Jackson Settings >----------------
+#  jackson:
+#    property-naming-strategy: SNAKE_CASE
+
+
+#----------------< API Services Configuration >----------------
+auth-service:
+  baseServiceUrl: localhost
+  port: 31601
+
+role-service:
+  baseServiceUrl: localhost
+  port: 31601
+
+user-service:
+  baseServiceUrl: localhost
+  port: 31601
+
+vehicle-service:
+  baseServiceUrl: localhost
+  port: 31605
+
+rides-service:
+  baseServiceUrl: localhost
+  port: 31603

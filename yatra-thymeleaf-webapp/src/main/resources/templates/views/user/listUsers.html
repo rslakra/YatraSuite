@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Users'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <!-- Top Buttons-Bar -->
+    <div class="action-button margin-top-bottom">
+        <!-- New User -->
+        <a class="btn btn-default" th:href="@{|/ui/users/create|}">Add User</a>
+        <!-- Upload Users -->
+        <a class="href-link" th:href="@{/ui/users/upload}">Upload Users</a>
+        <!-- Download Users (.csv) -->
+        <a class="href-link" th:href="@{/ui/users/download?fileType=csv}">Download Users (.csv)</a>
+        <!-- Download Users (.xlsx) -->
+        <a class="href-link" th:href="@{/ui/users/download?fileType=excel}">Download Users (.xlsx)</a>
+    </div>
+
+    <div class="page-body"> <!-- pageBody:start -->
+        <!-- List Users -->
+        <table class="table table-striped table-bordered" id="users">
+            <thead>
+            <tr>
+                <th scope="col">Email</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Middle Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Phones</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:switch="${users.size()}">
+                <div th:case="0">
+                    <tr>
+                        <td colspan="8">
+                            <h2>No Records Found!</h2>
+                        </td>
+                    </tr>
+                </div>
+                <div th:case="*">
+                    <tr th:each="user : ${users}" th:id="|user_${user.id}|">
+                        <th scope="row">
+                            <span class="inline-editable" id="email" data-type="email" data-title="Email"
+                                  th:attr="data-url=@{/ui/users}, data-pk=${user.id}, data-value=${user.email}"
+                                  th:text="${user.email}">Email</span>
+                        </th>
+                        <td class="text-right">
+                            <span class="inline-editable" id="firstName" data-type="text" data-title="First Name"
+                                  th:attr="data-url=@{/ui/users}, data-pk=${user.id}, data-value=${user.firstName}"
+                                  th:text="${user.firstName}">First Name</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="middleName" data-type="text" data-title="Middle Name"
+                                  th:attr="data-url=@{/ui/users}, data-pk=${user.id}, data-value=${user.middleName}"
+                                  th:text="${user.middleName}">Middle Name</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="lastName" data-type="text" data-title="Last Name"
+                                  th:attr="data-url=@{/ui/users}, data-pk=${user.id}, data-value=${user.lastName}"
+                                  th:text="${user.lastName}">Last Name</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="status" data-type="text" data-title="Status"
+                                  th:attr="data-url=@{/ui/users}, data-pk=${user.id}, data-value=${user.status}"
+                                  th:text="${user.status}">Status</span>
+                        </td>
+                        <td class="text-right">
+                            <div th:if="${user.phoneNumbers != null}">
+                                <ul>
+                                    <li th:each="phone : *{phoneNumbers}" th:text="${phone}">Phone Number</li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="action-button action-button-fixed-size">
+                            <a class="href-link" th:href="@{|/ui/users/${user.id}/update|}"
+                               th:attr="aria-label=${user.id == null ? 'Add' : 'Edit ' + user.email}">
+                                <i class="fa fa-pencil" style="font-size:24px;color:red">Edit</i>
+                            </a>
+                            <a class="href-link" th:href="@{|/ui/users/${user.id}/delete|}"
+                               th:attr="aria-label=${'Delete ' + user.email}">
+                                <i class="fa fa-trash" style="font-size:24px;color:red">Delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+    </div> <!-- pageBody:end -->
+
+    <!--Back Button -->
+    <div class="action-button">
+        <a class="btn btn-default" th:href="@{|/|}">Back</a>
+    </div>
+
+    </th:block> <!-- bodyContents:end-->
+
+    <!-- fragment:bodyEnd:start-->
+    <th:block layout:fragment="bodyEnd"> <!-- bodyEnd:start-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="uiModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Edit User</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal Body</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block> <!-- bodyEnd:end-->
+    <!-- fragment:bodyEnd:end-->
+</html>

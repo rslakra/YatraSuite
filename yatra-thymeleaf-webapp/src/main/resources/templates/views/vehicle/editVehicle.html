@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Edit Vehicle'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <div class="row">
+        <div class="col-md-6">
+            <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
+            <th:block th:fragment="form">
+                <form th:action="@{|/ui/vehicles/save|}" th:object="${vehicle}" method="post">
+                    <div class="form-group">
+                        <input class="form-control" type="hidden" name="id" th:field="*{id}"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="vehicleType">Type</label>
+                        <select class="form-control" th:field="*{vehicleDetail.type}">
+                            <option th:each="vehicleType : ${vehicle.vehicleTypes}"
+                                    th:value="${vehicleType}" th:text="${vehicleType}"
+                                    th:selected="${vehicleDetail != null && vehicleType  == vehicleDetail.type}"></option>
+                        </select>
+                        <!-- <input class="form-control" type="text" th:field="*{vehicleDetail.type}" placeholder="Type"/>-->
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="color">Color</label>
+                        <input class="form-control" type="text" th:field="*{vehicleDetail.color}" placeholder="Color"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="manufacturer">Brand</label>
+                        <input class="form-control" type="text"
+                               th:field="*{vehicleDetail.purchaseInfo.manufacturer}" placeholder="Brand"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="wear">Wear</label>
+                        <input class="form-control" type="text" th:field="*{vehicleDetail.wear}" placeholder="Wear"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="serialNumber">Serial Number</label>
+                        <input class="form-control" type="number" th:field="*{serialNumber}"
+                               placeholder="Serial Number"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="purchasedOn">Purchased On</label>
+                        <input class="form-control" type="date"
+                               th:field="*{vehicleDetail.purchaseInfo.purchasedOn}"
+                               placeholder="Purchased On"/>
+<!--                        <input class="form-control" type="date"-->
+<!--                               th:field="*{#temporals.format(vehicleDetail.purchaseInfo.purchasedOn,'yyyy-MM-dd HH:mm:ss')}"-->
+<!--                               placeholder="Purchased On"/>-->
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="battery">Battery (%)</label>
+                        <input class="form-control" type="number" th:field="*{battery}" placeholder="Battery (%)"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="latitude">Latitude</label>
+                        <input class="form-control" type="text" th:field="*{latitude}" placeholder="Latitude"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" th:for="longitude">Longitude</label>
+                        <input class="form-control" type="text" th:field="*{longitude}" placeholder="Longitude"/>
+                    </div>
+                    <div class="form-group submit-cancel">
+                        <input class="btn btn-primary" type="submit" value="Save Changes"/>
+                        <a class="btn btn-default btn-cancel" th:href="@{/ui/vehicles}">Cancel</a>
+                    </div>
+                </form>
+            </th:block>
+        </div>
+    </div>
+</th:block> <!-- bodyContents:end-->
+</html>

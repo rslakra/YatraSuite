@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- create sequences -->
+    <changeSet author="rslakra" id="create_sequences">
+        <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <!-- rides -->
+    <changeSet author="rslakra" id="create_rides_table">
+        <createTable tableName="rides">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_ride_id"
+                             unique="true" uniqueConstraintName="uk_ride_id"
+                             nullable="false"/>
+            </column>
+            <column name="user_email" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vehicle_id" type="java.util.UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="datetime"/>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- events -->
+    <changeSet author="rslakra" id="create_events_table">
+        <createTable tableName="events">
+            <column name="id" type="java.util.UUID" autoIncrement="false">
+                <constraints primaryKey="true" primaryKeyName="pk_events_id"
+                             unique="true" uniqueConstraintName="uk_events_id"
+                             nullable="false"/>
+            </column>
+            <column name="event_type" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_data" type="json">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

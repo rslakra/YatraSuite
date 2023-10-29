@@ -1,0 +1,50 @@
+#----------------< Logger Configuration >----------------
+logging:
+  level:
+    org.springframework.web: INFO
+
+#----------------< API Configuration >----------------
+apiPrefix: /ui
+restPrefix: /api
+
+#----------------< UserService Configuration >----------------
+# Server Settings
+# <code>http://localhost:31607</code>
+server:
+  port: 31607
+  #  servlet:
+  #    context-path: /user-service
+  #  error:
+  #    include-binding-errors: always
+  #    include-stacktrace: never
+#    include-message: always
+
+#management:
+#  server:
+#    port: 31608
+#    address: 127.0.0.1
+
+
+#----------------< Spring Configuration >----------------
+#spring:
+#----------------< Jackson Settings >----------------
+#  jackson:
+#    property-naming-strategy: SNAKE_CASE
+
+
+#----------------< API Services Configuration >----------------
+auth-service:
+  baseServiceUrl: localhost
+  port: 31601
+
+user-service:
+  baseServiceUrl: localhost
+  port: 31601
+
+vehicle-service:
+  baseServiceUrl: localhost
+  port: 31605
+
+rides-service:
+  baseServiceUrl: localhost
+  port: 31603

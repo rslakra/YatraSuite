@@ -1,0 +1,50 @@
+.modal-body {
+  .submit-cancel {
+    margin-top: 2em;
+    margin-bottom: 0;
+    text-align: right;
+  }
+
+  .btn:not(.btn-cancel) {
+    float: right;
+    margin-left: 5px;
+  }
+}
+
+.submit-cancel .btn {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.href-link + .href-link {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.btn + .btn {
+  margin-left: 5px;
+}
+
+.editable-click {
+  cursor: pointer;
+}
+
+span.control-label {
+  font-weight: 600;
+}
+
+.margin-top-bottom {
+  margin: 16px 0px 16px 0px;
+}
+
+.page-header {
+  margin: 16px 0px 16px 0px;
+}
+
+.page-body {
+  margin: 16px 0px 16px 0px;
+}
+
+.page-footer {
+  margin: 16px 0px 16px 0px;
+}

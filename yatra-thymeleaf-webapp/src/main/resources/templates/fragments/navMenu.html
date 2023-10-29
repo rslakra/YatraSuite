@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-sm navbar-light" xmlns:th="http://www.thymeleaf.org">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbar-collapse-menu">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target="#navbar-collapse-menu" aria-expanded="false">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar" aria-hidden="true"></span>
+                    <span class="icon-bar" aria-hidden="true"></span>
+                    <span class="icon-bar" aria-hidden="true"></span>
+                </button>
+                <a class="navbar-brand" th:href="@{/}">Yatra Suite</a>
+            </div>
+
+            <ul class="nav navbar-nav">
+                <li class="nav-item btn" id="ui-roles">
+                    <a class="nav-link text-dark" th:href="@{/ui/roles}">Roles</a>
+                </li>
+                <li class="nav-item btn" id="ui-users">
+                    <a class="nav-link text-dark" th:href="@{/ui/users}">Users</a>
+                </li>
+                <li class="nav-item btn" id="ui-vehicles">
+                    <a class="nav-link text-dark" th:href="@{/ui/vehicles}">Vehicles</a>
+                </li>
+                <li class="nav-item btn" id="ui-rides">
+                    <a class="nav-link text-dark" th:href="@{/ui/rides}">My Rides</a>
+                </li>
+            </ul>
+
+            <!-- navbar right aligned-->
+            <!--            <ul class="nav navbar-nav navbar-right">-->
+            <!--&lt;!&ndash;                <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="navbarDropdown">&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <a class="dropdown-item" th:href="@{/ui/profile}">Your Profile</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    <a class="dropdown-item">Logout</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                </div>&ndash;&gt;-->
+            <!--                <li id="ui-toggle" class="hidden"></li>-->
+            <!--            </ul>-->
+
+            <form class="form-inline nav navbar-nav navbar-right">
+                <a class="btn btn-outline-danger buttoncolor" th:href="@{/ui/vehicles/create}">+ New Vehicle</a>
+                <span style="color: grey; padding-left: 10px; padding-right: 5px; font-size: 25px;"> | </span>
+                <a class="nav-item dropdown nav-link" href="/" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/images/user.svg"><img src="/images/chevron-down.svg">
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{|/ui/profile|}">Your Profile</a>
+                    <a class="dropdown-item" th:href="@{|/logout|}">Logout</a>
+                </div>
+            </form>
+
+            <!--            &lt;!&ndash; navbar right aligned&ndash;&gt;-->
+            <!--            <ul class="nav navbar-nav navbar-right">-->
+            <!--                <li id="ui-toggle" class="hidden"></li>-->
+            <!--            </ul>-->
+        </div>
+    </div>
+</nav>

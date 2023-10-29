@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Delete User'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <div class="row">
+        <div class="col-md-6">
+            <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
+            <th:block th:fragment="form">
+                <form th:action="@{|/ui/users/${user.id}/delete|}" th:object="${user}" method="post">
+                    <div class="form-group">
+                        <span class="control-label" id="email">Email</span>
+                        <p class="form-control-static" aria-labelledby="email" th:text="*{email}">Email</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="firstName">First Name</span>
+                        <p class="form-control-static" aria-labelledby="firstName" th:text="*{firstName}">First Name</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="middleName">Middle Name</span>
+                        <p class="form-control-static" aria-labelledby="middleName" th:text="*{middleName}">Middle
+                            Name</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="lastName">Last Name</span>
+                        <p class="form-control-static" aria-labelledby="lastName" th:text="*{lastName}">Last Name</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="status">Status</span>
+                        <p class="form-control-static" aria-labelledby="status" th:text="*{status}">Status</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="phoneNumbers">Phones</span>
+                        <p class="form-control-static" aria-labelledby="phoneNumbers"
+                           th:text="*{phoneNumbers}">Phones</p>
+                    </div>
+                    <div class="form-group submit-cancel">
+                        <input class="btn btn-danger" type="submit" value="Delete"/>
+                        <a class="btn btn-default btn-cancel" th:href="@{/ui/users}">Cancel</a>
+                    </div>
+                </form>
+            </th:block>
+        </div>
+    </div>
+</th:block> <!-- bodyContents:end-->
+</html>

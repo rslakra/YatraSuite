@@ -1,0 +1,1 @@
+web: java -jar target/common-yatra-service-0.0.1-SNAPSHOT.jar

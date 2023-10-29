@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Delete Vehicle'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <div class="row">
+        <div class="col-md-6">
+            <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
+            <th:block th:fragment="form">
+                <form th:action="@{|/ui/vehicles/${vehicle.id}/delete|}" th:object="${vehicle}" method="post">
+                    <div class="form-group">
+                        <span class="control-label" id="type">Type</span>
+                        <p class="form-control-static" aria-labelledby="type" th:text="*{vehicleDetail.type}">Type</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="color">Color</span>
+                        <p class="form-control-static" aria-labelledby="color" th:text="*{vehicleDetail.color}">
+                            Color</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="brand">Brand</span>
+                        <p class="form-control-static" aria-labelledby="brand"
+                           th:text="*{vehicleDetail.purchaseInfo.manufacturer}">Brand</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="wear">Wear</span>
+                        <p class="form-control-static" aria-labelledby="wear" th:text="*{vehicleDetail.wear}">Wear</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="serialNumber">Serial Number</span>
+                        <p class="form-control-static" aria-labelledby="serialNumber" th:text="*{serialNumber}">Serial
+                            Number</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="purchasedOn">Purchased On</span>
+                        <p class="form-control-static" aria-labelledby="purchasedOn"
+                           th:text="*{vehicleDetail.purchaseInfo.purchasedOn}">Purchased On</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="battery">Battery</span>
+                        <p class="form-control-static" aria-labelledby="battery" th:text="*{battery}">Battery</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="latitude">Latitude</span>
+                        <p class="form-control-static" aria-labelledby="latitude" th:text="*{latitude}">Latitude</p>
+                    </div>
+                    <div class="form-group">
+                        <span class="control-label" id="longitude">Longitude</span>
+                        <p class="form-control-static" aria-labelledby="longitude" th:text="*{longitude}">Longitude</p>
+                    </div>
+                    <div class="form-group submit-cancel">
+                        <input class="btn btn-danger" type="submit" value="Delete"/>
+                        <a class="btn btn-default btn-cancel" th:href="@{/ui/vehicles}">Cancel</a>
+                    </div>
+                </form>
+            </th:block>
+        </div>
+    </div>
+</th:block> <!-- bodyContents:end-->
+</html>

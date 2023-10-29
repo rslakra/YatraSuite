@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Roles'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <!-- Top Buttons-Bar -->
+    <div class="action-button margin-top-bottom">
+        <!-- New Role -->
+        <a class="btn btn-default" th:href="@{|/ui/roles/create|}">Add Role</a>
+        <!-- Upload Roles -->
+        <a class="href-link" th:href="@{/ui/roles/upload}">Upload Roles</a>
+        <!-- Download Roles (.csv) -->
+        <a class="href-link" th:href="@{/ui/roles/download?fileType=csv}">Download Roles (.csv)</a>
+        <!-- Download Roles (.xlsx) -->
+        <a class="href-link" th:href="@{/ui/roles/download?fileType=excel}">Download Roles (.xlsx)</a>
+    </div>
+
+    <div class="page-body"> <!-- pageBody:start -->
+        <!-- List Roles -->
+        <table class="table table-striped table-bordered" id="roles">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:switch="${roles.size()}">
+                <div th:case="0">
+                    <tr>
+                        <td colspan="3">
+                            <h2>No Records Found!</h2>
+                        </td>
+                    </tr>
+                </div>
+                <div th:case="*">
+                    <tr th:each="role : ${roles}" th:id="|role_${role.id}|">
+                        <th scope="row">
+                            <span class="inline-editable" id="name" data-type="text" data-title="Name"
+                                  th:attr="data-url=@{/ui/roles}, data-pk=${role.id}, data-value=${role.name}"
+                                  th:text="${role.name}">Role Name</span>
+                        </th>
+                        <td class="text-right">
+                            <span class="inline-editable" id="status" data-type="text" data-title="Status"
+                                  data-clear="false"
+                                  th:attr="data-url=@{/ui/roles}, data-pk=${role.id}, data-value=${role.status}"
+                                  th:text="${role.status}">Status</span>
+                        </td>
+                        <td class="action-button action-button-fixed-size">
+                            <a class="href-link" th:href="@{|/ui/roles/${role.id}|}"
+                               th:attr="aria-label=${role.id == null ? 'Add' : 'Edit ' + role.name}">
+                                <i class="fa fa-pencil" style="font-size:24px;color:red">Edit</i>
+                            </a>
+                            <a class="href-link" th:href="@{|/ui/roles/${role.id}/delete|}"
+                               th:attr="aria-label=${'Delete ' + role.name}">
+                                <i class="fa fa-trash" style="font-size:24px;color:red">Delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+    </div> <!-- pageBody:end -->
+
+    <!--Back Button -->
+    <div class="action-button">
+        <a class="btn btn-default" th:href="@{|/|}">Back</a>
+    </div>
+
+</th:block> <!-- bodyContents:end-->
+
+<!-- fragment:bodyEnd:start-->
+<th:block layout:fragment="bodyEnd"> <!-- bodyEnd:start-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="uiModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Edit Role</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Modal Body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block> <!-- bodyEnd:end-->
+<!-- fragment:bodyEnd:end-->
+</html>

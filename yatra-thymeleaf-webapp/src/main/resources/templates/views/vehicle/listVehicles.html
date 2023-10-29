@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Vehicles'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <!-- Top Buttons-Bar -->
+    <div class="action-button margin-top-bottom">
+        <!-- New Vehicle -->
+        <a class="btn btn-default" th:href="@{|/ui/vehicles/create|}">Add Vehicle</a>
+        <!-- Upload Vehicles -->
+        <a class="href-link" th:href="@{/ui/vehicles/upload}">Upload Vehicles</a>
+        <!-- Download Vehicles (.csv) -->
+        <a class="href-link" th:href="@{/ui/vehicles/download?fileType=csv}">Download Vehicles (.csv)</a>
+        <!-- Download Vehicles (.xlsx) -->
+        <a class="href-link" th:href="@{/ui/vehicles/download?fileType=excel}">Download Vehicles (.xlsx)</a>
+    </div>
+
+    <div class="page-body"> <!-- pageBody:start -->
+        <!-- List Vehicles -->
+        <table class="table table-striped table-bordered" id="vehicles">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Type</th>
+                <th scope="col">Color</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Wear</th>
+                <th scope="col">Serial Number</th>
+                <th scope="col">Purchase Date</th>
+                <th scope="col">Battery (%)</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:switch="${vehicles.size()}">
+                <div th:case="0">
+                    <tr>
+                        <td colspan="11">
+                            <h2>No Records Found!</h2>
+                        </td>
+                    </tr>
+                </div>
+                <div th:case="*">
+                    <tr th:each="vehicle : ${vehicles}" th:id="|vehicle_${vehicle.id}|">
+                        <th scope="row">
+                            <span class="inline-editable" id="id" data-type="text" data-title="ID"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.id}"
+                                  th:text="${vehicle.id}">ID</span>
+                        </th>
+                        <td class="text-right">
+                            <span class="inline-editable" id="type" data-type="text" data-title="Type"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.type}"
+                                  th:text="${vehicle.vehicleDetail.type}">Type</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="color" data-type="text" data-title="Color"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.color}"
+                                  th:text="${vehicle.vehicleDetail.color}">Color</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="manufacturer" data-type="text" data-title="Brand"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.purchaseInfo.manufacturer}"
+                                  th:text="${vehicle.vehicleDetail.purchaseInfo.manufacturer}">Brand</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="wear" data-type="text" data-title="Wear"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.wear}"
+                                  th:text="${vehicle.vehicleDetail.wear}">Wear</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="serialNumber" data-type="text" data-title="Serial Number"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.purchaseInfo.serialNumber}"
+                                  th:text="${vehicle.vehicleDetail.purchaseInfo.serialNumber}">Serial Number</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="purchasedOn" data-type="text" data-title="Purchased On"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.vehicleDetail.purchaseInfo.purchasedOn}"
+                                  th:text="${vehicle.vehicleDetail.purchaseInfo.purchasedOn}">Purchased On</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="battery" data-type="text" data-title="Battery (%)"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.battery}"
+                                  th:text="${vehicle.battery}">Battery (%)</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="latitude" data-type="text" data-title="Latitude"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.latitude}"
+                                  th:text="${vehicle.latitude}">Latitude</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="inline-editable" id="longitude" data-type="text" data-title="Longitude"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.longitude}"
+                                  th:text="${vehicle.longitude}">Longitude</span>
+                        </td>
+                        <td class="action-button action-button-fixed-size">
+                            <a class="href-link" th:href="@{|/ui/vehicles/${vehicle.id}|}"
+                               th:attr="aria-label=${vehicle.id == null ? 'Add' : 'Edit ' + vehicle.vehicleDetail.type}">
+                                <i class="fa fa-pencil" style="font-size:24px;color:red">Edit</i>
+                            </a>
+                            <a class="href-link" th:href="@{|/ui/vehicles/${vehicle.id}/delete|}"
+                               th:attr="aria-label=${'Delete ' + vehicle.vehicleDetail.type}">
+                                <i class="fa fa-trash" style="font-size:24px;color:red">Delete</i>
+                            </a>
+                        </td>
+                    </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+    </div> <!-- pageBody:end -->
+
+    <!--Back Button -->
+    <div class="action-button">
+        <a class="btn btn-default" th:href="@{|/|}">Back</a>
+    </div>
+
+</th:block> <!-- bodyContents:end-->
+
+<!-- fragment:bodyEnd:start-->
+<th:block layout:fragment="bodyEnd"> <!-- bodyEnd:start-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="uiModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Edit Vehicle</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Modal Body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block> <!-- bodyEnd:end-->
+<!-- fragment:bodyEnd:end-->
+</html>

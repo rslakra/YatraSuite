@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Profile'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <div class="row">
+        <div class="col-md-6">
+            <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
+            <th:block th:fragment="form">
+                <form th:action="@{|/ui/users/${user.id}/delete|}" th:object="${user}" method="post">
+                    <h2 th:text="|*{firstName} *{lastName}|"></h2>
+                    <p th:text="|Logged-in as: *{email}|"></p>
+                    <div class="form-group">
+                        <!-- User's Profile -->
+                        <table class="table table-striped table-bordered" id="users">
+                            <thead>
+                            <tr>
+                                <th scope="col">Phone Number(s)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="phone : *{phoneNumbers}" th:id="|phone_${phone}|">
+                                <td th:text="${phone}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="form-group submit-cancel">
+                        <input class="btn btn-danger" type="submit" value="Delete Account"/>
+                    </div>
+                </form>
+            </th:block>
+        </div>
+    </div>
+
+</th:block> <!-- bodyContents:end-->
+</html>

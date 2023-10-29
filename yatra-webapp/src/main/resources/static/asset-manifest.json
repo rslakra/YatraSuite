@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/css/yatra-styles.css",
+    "main.js": "/static/js/main.88999e09.chunk.js",
+    "main.js.map": "/static/js/main.88999e09.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c5947bf3.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c5947bf3.js.map",
+    "static/js/2.faf7addc.chunk.js": "/static/js/2.faf7addc.chunk.js",
+    "static/js/2.faf7addc.chunk.js.map": "/static/js/2.faf7addc.chunk.js.map",
+    "index.html": "/index.html",
+    "css/yatra-styles.css.map": "/css/yatra-styles.css.map",
+    "js/2.faf7addc.chunk.js.LICENSE.txt": "/js/2.faf7addc.chunk.js.LICENSE.txt",
+    "media/chevron-down.svg": "/media/chevron-down.svg",
+    "media/index.css": "/media/login-bg.jpg",
+    "media/user.svg": "/media/user.svg"
+  },
+  "entrypoints": [
+    "js/runtime-main.c5947bf3.js",
+    "js/2.faf7addc.chunk.js",
+    "css/yatra-styles.css",
+    "js/main.88999e09.chunk.js"
+  ]
+}

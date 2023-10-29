@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- create sequences -->
+    <changeSet author="rslakra" id="create_sequences">
+        <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1"/>
+    </changeSet>
+
+    <!-- vehicles -->
+    <changeSet author="rslakra" id="create_vehicles_table">
+        <createTable tableName="vehicles">
+            <column name="id" type="java.util.UUID" autoIncrement="false">
+                <constraints primaryKey="true" primaryKeyName="pk_vehicle_id"
+                             unique="true" uniqueConstraintName="uk_vehicle_id"
+                             nullable="false"/>
+            </column>
+            <column name="serial_number" type="java.lang.Integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="battery_level" type="java.lang.Integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_ride_start" type="datetime"/>
+            <column name="last_ride_end" type="datetime"/>
+            <column name="vehicle_info" type="JSON">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <!--        <sqlFile dbms="h2, oracle, mysql" encoding="UTF-8" endDelimiter=";"-->
+        <!--                 relativeToChangelogFile="false" splitStatements="true" stripComments="true"-->
+        <!--                 path="db/v1/001-insert-vehicles.sql"/>-->
+    </changeSet>
+
+    <!-- vehicle_details -->
+    <changeSet author="rslakra" id="create_vehicle_details_table">
+        <createTable tableName="vehicle_details">
+            <!--            <column name="id" type="java.util.UUID" autoIncrement="false">-->
+            <!--                <constraints primaryKey="true" primaryKeyName="pk_vehicle_detail_id"-->
+            <!--                             unique="true" uniqueConstraintName="uk_vehicle_detail_id"-->
+            <!--                             nullable="false"/>-->
+            <!--            </column>-->
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_vehicle_detail_id"
+                             unique="true" uniqueConstraintName="uk_vehicle_details_id"
+                             nullable="false"/>
+            </column>
+            <column name="vehicle_id" type="java.util.UUID">
+                <constraints foreignKeyName="fk_vehicle_vehicle_details"
+                             referencedTableName="vehicles" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <column name="vin" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wear" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="manufacturer" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="purchased_on" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- location_history -->
+    <changeSet author="rslakra" id="create_location_history_table">
+        <createTable tableName="location_history">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_location_history_id"
+                             unique="true" uniqueConstraintName="uk_location_history_id"
+                             nullable="false"/>
+            </column>
+            <column name="vehicle_id" type="java.util.UUID">
+                <constraints foreignKeyName="fk_vehicle_location_history"
+                             referencedTableName="vehicles" referencedColumnNames="id"
+                             validateForeignKey="true" nullable="false"/>
+            </column>
+            <!--            <column name="last_ride_start" type="datetime"/>-->
+            <!--            <column name="last_ride_end" type="datetime"/>-->
+            <column name="latitude" type="java.lang.Double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="java.lang.Double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- vehicle_locations -->
+    <!--    <changeSet author="rslakra" id="create_vehicle_locations_table">-->
+    <!--        <createTable tableName="vehicle_locations">-->
+    <!--            <column name="id" type="bigint" autoIncrement="true">-->
+    <!--                <constraints primaryKey="true" primaryKeyName="pk_vehicle_id"-->
+    <!--                             unique="true" uniqueConstraintName="uk_vehicle_id"-->
+    <!--                             nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="serial_number" type="java.lang.Integer">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="battery_level" type="java.lang.Integer">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="last_ride_start" type="datetime">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="last_ride_end" type="datetime">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="vehicle_info" type="JSON">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="latitude" type="java.lang.Double">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="longitude" type="java.lang.Double">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="created_on" type="bigint">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="created_at" type="datetime">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="created_by" type="varchar(64)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="updated_on" type="bigint">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="updated_at" type="datetime">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--            <column name="updated_by" type="varchar(64)">-->
+    <!--                <constraints nullable="false"/>-->
+    <!--            </column>-->
+    <!--        </createTable>-->
+    <!--    </changeSet>-->
+
+
+</databaseChangeLog>

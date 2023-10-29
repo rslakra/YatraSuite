@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Rides'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+    <!-- Top Buttons-Bar -->
+    <div class="action-button margin-top-bottom">
+        <!-- New Ride -->
+        <a class="btn btn-default" th:href="@{|/ui/rides/create|}">Add Ride</a>
+        <!-- Upload Rides -->
+        <a class="href-link" th:href="@{/ui/rides/upload}">Upload Rides</a>
+        <!-- Download Rides (.csv) -->
+        <a class="href-link" th:href="@{/ui/rides/download?fileType=csv}">Download Rides (.csv)</a>
+        <!-- Download Rides (.xlsx) -->
+        <a class="href-link" th:href="@{/ui/rides/download?fileType=excel}">Download Rides (.xlsx)</a>
+    </div>
+
+    <div class="page-body"> <!-- pageBody:start -->
+        <!-- List Rides -->
+        <br/>
+        <div sec:authorize="isAuthenticated()">
+            <p>
+                You are logged in as,
+                <span sec:authentication="*${authUser.email}"></span>. Go to the
+                <a class="btn btn-default" th:href="@{|/ui/vehicles|}">Vehicles</a>
+                page to start a ride.
+            </p>
+        </div>
+
+        <table class="table table-striped table-bordered" id="rides">
+            <tbody>
+            <div th:switch="${rides.size()}">
+                <div th:case="0">
+                    <tr>
+                        <td colspan="5">
+                            <h2>No Records Found!</h2>
+                        </td>
+                    </tr>
+                </div>
+                <div th:case="*">
+                    <tr th:each="ride : ${rides}" th:id="|ride_${ride.id}|">
+                        <th scope="row">Vehicle ID: <span th:text="${ride.vehicleId}"></span></th>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${ride.startTime}"></td>
+                                <td th:text="${ride.endTime}"></td>
+                                <td>
+                                    <a class="href-link" th:href="@{|/ui/rides?email=${ride.userEmail}|}">View Ride</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+    </div> <!-- pageBody:end -->
+
+    <!--Back Button -->
+    <div class="action-button">
+        <a class="btn btn-default" th:href="@{|/|}">Back</a>
+    </div>
+
+</th:block> <!-- bodyContents:end-->
+
+<!-- fragment:bodyEnd:start-->
+<th:block layout:fragment="bodyEnd"> <!-- bodyEnd:start-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="uiModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Edit Ride</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Modal Body</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block> <!-- bodyEnd:end-->
+<!-- fragment:bodyEnd:end-->
+</html>

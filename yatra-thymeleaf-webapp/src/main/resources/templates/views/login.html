@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:with="http://www.thymeleaf.org/extras/with"
+      layout:decorate="~{layouts/layout}"
+      with:title="'Yatra Suite'">
+<!-- bodyContents:start-->
+<th:block layout:fragment="bodyContents"> <!-- bodyContents:start-->
+
+    <!--    <div class="App">-->
+    <!--        <div class="container" style="margin-left: 160px; height: 100vh;">-->
+    <!--            <div>-->
+    <!--                <div style="line-height: 1.2; padding-top: 100px;">-->
+    <!--                    <img src="data:image/png;base64,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"-->
+    <!--                         style="margin-bottom: 50px;">-->
+    <!--                    <div style="margin-top: 130px; line-height: 2;">-->
+    <!--                        <h1 style="font-weight: 600; font-size: 40px;">Log In</h1>-->
+    <!--                        <div class="col-6-lg" style="width: 600px;">-->
+    <!--                            <div class="alert alert-warning fade show" role="alert" style="padding: 20px;">-->
+    <!--                                You have successfully logged out-->
+    <!--                            </div>-->
+    <!--                            <p style="color: rgb(178, 179, 194);">-->
+    <!--                                Sign in to your account using email you provided during registration-->
+    <!--                            </p>-->
+    <!--                            <div class="form-group">-->
+    <!--                                <label for="email">Email:</label>-->
+    <!--                                <input required="" type="email" class="form-control" id="email"-->
+    <!--                                       aria-describedby="emailHelp" style="height: calc(1.5em + 1.125rem + 2px);">-->
+    <!--                                <div data-lastpass-icon-root="true"-->
+    <!--                                     style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;">-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                            <a type="button" class="btn btn-danger form-control" th:href="@{/ui/auth/login}"-->
+    <!--                               style="width: 100%; background-color: rgb(255, 53, 101); height: calc(1.5em + 1.125rem + 2px);">Sign-->
+    <!--                                In</a>-->
+
+
+    <!--                            <p style="padding: 10px; text-align: center; color: rgb(178, 179, 194);">-->
+    <!--                                Don't have account?-->
+    <!--                                <a class="" th:href="@{/register}" href="#/register" style="color: rgb(255, 53, 101);">Sign-->
+    <!--                                    up</a>-->
+    <!--                            </p>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--                <p style="position: absolute; bottom: 0px; margin-left: 10px; font-size: 14px; margin-bottom: 40px; color: rgb(178, 179, 194);">-->
+    <!--                    © RSL Inc.</p></div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div class="page-body"> &lt;!&ndash; pageBody:start &ndash;&gt;-->
+    <!--        <form class="fo" th:action="@{/login}" method="post">-->
+    <!--            <label for="username">Username</label>:-->
+    <!--            <input type="text" id="username" name="username" autofocus="autofocus"/>-->
+    <!--            <label for="password">Password</label>:-->
+    <!--            <input type="password" id="password" name="password"/>-->
+    <!--            <input type="submit" value="Log in"/>-->
+    <!--        </form>-->
+    <!--    </div> &lt;!&ndash; pageBody:end &ndash;&gt;-->
+
+    <div class="page-body"> <!-- pageBody:start -->
+        <div class="row">
+            <div class="col-md-6">
+                <!--/* only th:fragment form is returned for an XMLHttpRequest */-->
+                <th:block th:fragment="form">
+                    <form th:action="@{|/login|}" th:object="${loginRequest}" method="post">
+                        <div class="form-group">
+                            <label class="control-label" th:for="username">Name</label>
+                            <input class="form-control" type="text" th:field="*{username}" placeholder="Username"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" th:for="password">Password</label>
+                            <input class="form-control" type="text" th:field="*{password}" placeholder="Password"/>
+                        </div>
+                        <hr>
+                        <div class="form-group submit-cancel">
+                            <input class="btn btn-primary" type="submit" value="Log in"/>
+                        </div>
+                    </form>
+                </th:block>
+            </div>
+        </div>
+    </div> <!-- pageBody:end -->
+
+</th:block> <!-- bodyContents:end-->
+</html>
