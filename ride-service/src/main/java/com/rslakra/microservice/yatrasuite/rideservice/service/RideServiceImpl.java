@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.yatrasuite.common.Constants;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
@@ -61,7 +61,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
      * @return
      */
     @Override
-    public Ride validate(Operation operation, Ride ride) {
+    public Ride validate(ServiceOperation operation, Ride ride) {
         LOGGER.debug("+validate({}, {})", operation, ride);
         switch (operation) {
             case CREATE: {
@@ -83,7 +83,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
             break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), ride: {}", ride);
@@ -97,7 +97,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
     @Override
     public Ride create(Ride ride) {
         LOGGER.debug("+create({})", ride);
-        ride = validate(Operation.CREATE, ride);
+        ride = validate(ServiceOperation.CREATE, ride);
         ride = rideRepository.save(ride);
         LOGGER.debug("-create(), ride: {}", ride);
         return ride;
@@ -114,7 +114,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
             throw new InvalidRequestException("The rides should provide!");
         }
 
-        rides.forEach(ride -> validate(Operation.CREATE, ride));
+        rides.forEach(ride -> validate(ServiceOperation.CREATE, ride));
         rides = rideRepository.saveAll(rides);
 
         LOGGER.debug("-create(), rides: {}", rides);
@@ -137,7 +137,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
      * @return
      */
     @Override
-    public List<Ride> getByFilter(Filter filter) {
+    public List<Ride> getByFilter(Filter<Ride> filter) {
         LOGGER.debug("+getByFilter({})", filter);
         List<Ride> rides;
         if (filter.hasKeys(RideFilter.EMAIL, RideFilter.VEHICLE_ID)) {
@@ -183,7 +183,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
     @Override
     public Ride update(Ride ride) {
         LOGGER.debug("+update({})", ride);
-        ride = validate(Operation.UPDATE, ride);
+        ride = validate(ServiceOperation.UPDATE, ride);
         ride = rideRepository.save(ride);
         LOGGER.debug("-update(), ride: {}", ride);
         return ride;
@@ -200,7 +200,7 @@ public class RideServiceImpl extends AbstractServiceImpl<Ride, Long> implements 
             throw new InvalidRequestException("The rides should provide!");
         }
 
-        rides.forEach(ride -> validate(Operation.UPDATE, ride));
+        rides.forEach(ride -> validate(ServiceOperation.UPDATE, ride));
         rides = rideRepository.saveAll(rides);
 
         LOGGER.debug("-update(), rides: {}", rides);

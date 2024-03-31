@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.config.RideServiceConfig;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.ride.Ride;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;
@@ -50,7 +50,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
      * @return
      */
     @Override
-    public Ride validate(Operation operation, Ride ride) {
+    public Ride validate(ServiceOperation operation, Ride ride) {
         LOGGER.debug("+validate({}, {})", operation, ride);
 
         switch (operation) {
@@ -69,7 +69,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), ride:{}", ride);
@@ -87,7 +87,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
             throw new InvalidRequestException("The ride should provide!");
         }
 
-        validate(Operation.CREATE, ride);
+        validate(ServiceOperation.CREATE, ride);
         ride = getRestClient().doPost(RIDES, ride, Ride.class);
         LOGGER.debug("-create(), ride:{}", ride);
         return ride;
@@ -104,7 +104,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
             throw new InvalidRequestException("The users should provide!");
         }
 
-        rides.forEach(ride -> validate(Operation.CREATE, ride));
+        rides.forEach(ride -> validate(ServiceOperation.CREATE, ride));
         rides = getRestClient().doPost(RIDES_BATCH, rides, List.class);
         LOGGER.debug("-create(), rides:{}", rides);
         return rides;
@@ -214,7 +214,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
             throw new InvalidRequestException("The ride should provide!");
         }
 
-        validate(Operation.UPDATE, ride);
+        validate(ServiceOperation.UPDATE, ride);
         getRestClient().doPut(RIDES, ride, Ride.class);
 
         LOGGER.debug("-update(), ride:{}", ride);
@@ -232,7 +232,7 @@ public class RideServiceImpl extends AbstractClientServiceImpl<Ride, Long> imple
             throw new InvalidRequestException("The rides should provide!");
         }
 
-        rides.forEach(ride -> validate(Operation.UPDATE, ride));
+        rides.forEach(ride -> validate(ServiceOperation.UPDATE, ride));
         getRestClient().doPut(RIDES_BATCH, rides, List.class);
 
         LOGGER.debug("-update(), rides:{}", rides);

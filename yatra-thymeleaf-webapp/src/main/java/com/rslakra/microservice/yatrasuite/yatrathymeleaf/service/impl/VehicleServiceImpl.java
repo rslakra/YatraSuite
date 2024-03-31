@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.config.VehicleServiceConfig;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.vehicle.Vehicle;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;
@@ -51,7 +51,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
      * @return
      */
     @Override
-    public Vehicle validate(Operation operation, Vehicle vehicle) {
+    public Vehicle validate(ServiceOperation operation, Vehicle vehicle) {
         LOGGER.debug("+validate({}, {})", operation, vehicle);
 
         switch (operation) {
@@ -70,7 +70,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), vehicle:{}", vehicle);
@@ -88,7 +88,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
             throw new InvalidRequestException("The vehicle should provide!");
         }
 
-        validate(Operation.CREATE, vehicle);
+        validate(ServiceOperation.CREATE, vehicle);
         vehicle = getRestClient().doPost(VEHICLES, vehicle, Vehicle.class);
         LOGGER.debug("-create(), vehicle:{}", vehicle);
         return vehicle;
@@ -105,7 +105,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
             throw new InvalidRequestException("The users should provide!");
         }
 
-        vehicles.forEach(vehicle -> validate(Operation.CREATE, vehicle));
+        vehicles.forEach(vehicle -> validate(ServiceOperation.CREATE, vehicle));
         vehicles = getRestClient().doPost(VEHICLES_BATCH, vehicles, List.class);
         LOGGER.debug("-create(), vehicles:{}", vehicles);
         return vehicles;
@@ -190,7 +190,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
             throw new InvalidRequestException("The vehicle should provide!");
         }
 
-        validate(Operation.UPDATE, vehicle);
+        validate(ServiceOperation.UPDATE, vehicle);
         getRestClient().doPut(VEHICLES, vehicle, Vehicle.class);
 
         LOGGER.debug("-update(), vehicle:{}", vehicle);
@@ -208,7 +208,7 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
             throw new InvalidRequestException("The vehicles should provide!");
         }
 
-        vehicles.forEach(vehicle -> validate(Operation.UPDATE, vehicle));
+        vehicles.forEach(vehicle -> validate(ServiceOperation.UPDATE, vehicle));
         getRestClient().doPut(VEHICLES_BATCH, vehicles, List.class);
 
         LOGGER.debug("-update(), vehicles:{}", vehicles);

@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.config.UserServiceConfig;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.account.User;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;
@@ -49,7 +49,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
      * @return
      */
     @Override
-    public User validate(Operation operation, User user) {
+    public User validate(ServiceOperation operation, User user) {
         switch (operation) {
             case CREATE:
                 if (BeanUtils.isEmpty(user.getEmail())) {
@@ -69,7 +69,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return user;
@@ -88,7 +88,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
             throw new InvalidRequestException("The user should provide!");
         }
 
-        validate(Operation.CREATE, user);
+        validate(ServiceOperation.CREATE, user);
         user = getRestClient().doPost(USERS, user, User.class);
         LOGGER.debug("-create(), user:{}", user);
         return user;
@@ -107,7 +107,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
             throw new InvalidRequestException("The users should provide!");
         }
 
-        users.forEach(user -> validate(Operation.CREATE, user));
+        users.forEach(user -> validate(ServiceOperation.CREATE, user));
         users = getRestClient().doPost(USERS_BATCH, users, List.class);
         LOGGER.debug("-create(), users:{}", users);
         return users;
@@ -190,7 +190,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
             throw new InvalidRequestException("The user should provide!");
         }
 
-        validate(Operation.UPDATE, user);
+        validate(ServiceOperation.UPDATE, user);
         getRestClient().doPut(USERS, user, User.class);
 
         LOGGER.debug("-update(), user:{}", user);
@@ -210,7 +210,7 @@ public class UserServiceImpl extends AbstractClientServiceImpl<User, Long> imple
             throw new InvalidRequestException("The users should provide!");
         }
 
-        users.forEach(user -> validate(Operation.UPDATE, user));
+        users.forEach(user -> validate(ServiceOperation.UPDATE, user));
         getRestClient().doPut(USERS_BATCH, users, List.class);
 
         LOGGER.debug("-update(), users:{}", users);

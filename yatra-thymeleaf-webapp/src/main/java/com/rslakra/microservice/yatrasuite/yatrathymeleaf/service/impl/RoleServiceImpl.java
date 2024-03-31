@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.config.RoleServiceConfig;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.account.Role;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;
@@ -50,7 +50,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
      * @return
      */
     @Override
-    public Role validate(Operation operation, Role role) {
+    public Role validate(ServiceOperation operation, Role role) {
         LOGGER.debug("+validate({}, {})", operation, role);
 
         switch (operation) {
@@ -69,7 +69,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), role:{}", role);
@@ -87,7 +87,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
             throw new InvalidRequestException("The role should provide!");
         }
 
-        validate(Operation.CREATE, role);
+        validate(ServiceOperation.CREATE, role);
         role = getRestClient().doPost(ROLES, role, Role.class);
         LOGGER.debug("-create(), role:{}", role);
         return role;
@@ -104,7 +104,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
             throw new InvalidRequestException("The users should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.CREATE, role));
+        roles.forEach(role -> validate(ServiceOperation.CREATE, role));
         roles = getRestClient().doPost(ROLES_BATCH, roles, List.class);
         LOGGER.debug("-create(), roles:{}", roles);
         return roles;
@@ -183,7 +183,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
             throw new InvalidRequestException("The role should provide!");
         }
 
-        validate(Operation.UPDATE, role);
+        validate(ServiceOperation.UPDATE, role);
         getRestClient().doPut(ROLES, role, Role.class);
 
         LOGGER.debug("-update(), role:{}", role);
@@ -201,7 +201,7 @@ public class RoleServiceImpl extends AbstractClientServiceImpl<Role, Long> imple
             throw new InvalidRequestException("The roles should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.UPDATE, role));
+        roles.forEach(role -> validate(ServiceOperation.UPDATE, role));
         getRestClient().doPut(ROLES_BATCH, roles, List.class);
 
         LOGGER.debug("-update(), roles:{}", roles);

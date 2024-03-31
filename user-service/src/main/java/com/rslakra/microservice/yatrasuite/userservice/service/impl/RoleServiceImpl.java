@@ -5,12 +5,13 @@ import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.yatrasuite.userservice.filter.RoleFilter;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.entity.Role;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.repository.RoleRepository;
 import com.rslakra.microservice.yatrasuite.userservice.service.RoleService;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
      * @return
      */
     @Override
-    public Role validate(Operation operation, Role role) {
+    public Role validate(ServiceOperation operation, Role role) {
         LOGGER.debug("+validate({}, {})", operation, role);
         switch (operation) {
             case CREATE: {
@@ -92,7 +93,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
             break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), role: {}", role);
@@ -108,7 +109,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
     @Override
     public Role create(Role role) {
         LOGGER.debug("+create({})", role);
-        role = validate(Operation.CREATE, role);
+        role = validate(ServiceOperation.CREATE, role);
         role = roleRepository.save(role);
         LOGGER.debug("-create(), role: {}", role);
         return role;
@@ -127,7 +128,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
             throw new InvalidRequestException("The roles should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.CREATE, role));
+        roles.forEach(role -> validate(ServiceOperation.CREATE, role));
         roles = roleRepository.saveAll(roles);
         LOGGER.debug("-create(), roles: {}", roles);
         return roles;
@@ -183,7 +184,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
      * @return
      */
     @Override
-    public List<Role> getByFilter(Filter filter) {
+    public List<Role> getByFilter(Filter<Role> filter) {
         LOGGER.debug("+getByFilter({})", filter);
         List<Role> roles = Collections.emptyList();
         if (filter.hasKeys(Filter.ID, RoleFilter.NAME)) {
@@ -219,9 +220,9 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
     @Override
     public Role update(Role role) {
         LOGGER.debug("+update({})", role);
-        role = validate(Operation.UPDATE, role);
+        role = validate(ServiceOperation.UPDATE, role);
         role = roleRepository.save(role);
-        LOGGER.debug("-upsert(), role:{}", role);
+        LOGGER.debug("-update(), role:{}", role);
         return role;
     }
 
@@ -238,9 +239,9 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
             throw new InvalidRequestException("The roles should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.UPDATE, role));
+        roles.forEach(role -> validate(ServiceOperation.UPDATE, role));
         roles = roleRepository.saveAll(roles);
-        LOGGER.debug("-upsert(), roles:{}", roles);
+        LOGGER.debug("-update(), roles:{}", roles);
         return roles;
     }
 

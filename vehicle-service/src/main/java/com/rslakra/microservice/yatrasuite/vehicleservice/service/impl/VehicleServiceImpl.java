@@ -3,7 +3,7 @@ package com.rslakra.microservice.yatrasuite.vehicleservice.service.impl;
 import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.yatrasuite.common.Constants;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
@@ -64,7 +64,7 @@ public class VehicleServiceImpl extends AbstractServiceImpl<Vehicle, UUID> imple
      * @return
      */
     @Override
-    public Vehicle validate(Operation operation, Vehicle vehicle) {
+    public Vehicle validate(ServiceOperation operation, Vehicle vehicle) {
         return null;
     }
 

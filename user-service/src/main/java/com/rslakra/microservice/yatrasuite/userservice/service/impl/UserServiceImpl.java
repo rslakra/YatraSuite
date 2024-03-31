@@ -9,7 +9,7 @@ import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
@@ -85,7 +85,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
      * @return
      */
     @Override
-    public User validate(Operation operation, User user) {
+    public User validate(ServiceOperation operation, User user) {
         LOGGER.debug("+validate({}, {})", operation, user);
         switch (operation) {
             case CREATE: {
@@ -127,7 +127,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
             break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         LOGGER.debug("-validate(), user: {}", user);
@@ -143,7 +143,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
     @Override
     public User create(User user) {
         LOGGER.debug("+create({})", user);
-        user = validate(Operation.CREATE, user);
+        user = validate(ServiceOperation.CREATE, user);
         user = userRepository.save(user);
         LOGGER.debug("-create(), user: {}", user);
         return user;
@@ -162,7 +162,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
             throw new InvalidRequestException("The users should provide!");
         }
 
-        users.forEach(user -> validate(Operation.CREATE, user));
+        users.forEach(user -> validate(ServiceOperation.CREATE, user));
         users = userRepository.saveAll(users);
 
         LOGGER.debug("-create(), users: {}", users);
@@ -189,7 +189,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
      * @return
      */
     @Override
-    public List<User> getByFilter(Filter filter) {
+    public List<User> getByFilter(Filter<User> filter) {
         LOGGER.debug("+getByFilter({})", filter);
         List<User> users = Collections.emptyList();
         if (filter.hasKeys(UserFilter.EMAIL, UserFilter.FIRST_NAME, UserFilter.LAST_NAME)) {
@@ -329,7 +329,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
     @Override
     public User update(User user) {
         LOGGER.debug("+update({})", user);
-        user = validate(Operation.UPDATE, user);
+        user = validate(ServiceOperation.UPDATE, user);
         user = userRepository.save(user);
         LOGGER.debug("-update(), user: {}", user);
         return user;
@@ -348,7 +348,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
             throw new InvalidRequestException("The users should provide!");
         }
 
-        users.forEach(user -> validate(Operation.UPDATE, user));
+        users.forEach(user -> validate(ServiceOperation.UPDATE, user));
         users = userRepository.saveAll(users);
 
         LOGGER.debug("-update(), users: {}", users);
