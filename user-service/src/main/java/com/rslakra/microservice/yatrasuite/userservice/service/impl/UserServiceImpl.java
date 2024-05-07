@@ -470,8 +470,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
         // save user
         user = userRepository.save(user);
 
-        /*
-         * Not using this relationship here <code>https://www.baeldung.com/jpa-one-to-one</code>
+        /**
+         * Not using one-to-one relations here
+         * <p><code>https://www.baeldung.com/jpa-one-to-one</code></p>
          */
         final Long userId = user.getId();
         // save phones, if available
