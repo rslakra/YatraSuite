@@ -1,9 +1,9 @@
 package com.rslakra.microservice.yatrasuite.rideservice.controller;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextDateTime;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomEmail;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
-import static com.devamatre.appsuite.spring.unittest.TestUtils.anyBigDecimal;
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.spring.unittest.TestUtils.anyBigDecimal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -2,12 +2,12 @@ package com.rslakra.microservice.yatrasuite.yatrathymeleaf.controller;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.Payload;
-import com.devamatre.appsuite.spring.controller.web.AbstractWebController;
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.Payload;
+import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.filter.Filter;
+import com.rslakra.appsuite.spring.parser.Parser;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.vehicle.Vehicle;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.service.VehicleService;
 import org.apache.logging.log4j.LogManager;

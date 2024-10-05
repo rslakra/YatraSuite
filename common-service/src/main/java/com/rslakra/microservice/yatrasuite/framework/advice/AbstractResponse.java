@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.framework.advice;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

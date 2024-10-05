@@ -1,12 +1,12 @@
 package com.rslakra.microservice.yatrasuite.rideservice.util;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomEmail;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomId;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomInt;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomLatitude;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomLongitude;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomPercentage;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomId;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomInt;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomLatitude;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomLongitude;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomPercentage;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
 
 import com.rslakra.microservice.yatrasuite.rideservice.dto.EndRideRequestDto;
 import com.rslakra.microservice.yatrasuite.rideservice.dto.RideRequestDto;

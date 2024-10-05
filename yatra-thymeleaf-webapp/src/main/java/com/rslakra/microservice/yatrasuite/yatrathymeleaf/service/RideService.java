@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.service;
 
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.Payload;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.ride.Ride;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.AbstractClientService;
 

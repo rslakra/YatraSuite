@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.persistence.entity;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.userservice.controller;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.microservice.yatrasuite.common.dto.MessagesDTO;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;

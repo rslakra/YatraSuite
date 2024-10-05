@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.userservice.persistence.repository;
 
-import com.devamatre.appsuite.spring.persistence.repository.BaseRepository;
+import com.rslakra.appsuite.spring.persistence.repository.BaseRepository;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

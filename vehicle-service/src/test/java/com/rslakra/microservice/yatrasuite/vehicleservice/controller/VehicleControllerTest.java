@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.controller;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomId;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

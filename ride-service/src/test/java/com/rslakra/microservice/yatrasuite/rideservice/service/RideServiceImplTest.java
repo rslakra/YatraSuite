@@ -1,11 +1,11 @@
 package com.rslakra.microservice.yatrasuite.rideservice.service;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextDateTime;
-import static com.devamatre.appsuite.core.RandomUtils.nextLongitudeBigDecimal;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomBigDecimal;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomEmail;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomPercentage;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextLongitudeBigDecimal;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomBigDecimal;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomPercentage;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

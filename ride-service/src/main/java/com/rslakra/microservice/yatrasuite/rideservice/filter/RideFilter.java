@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.rideservice.filter;
 
-import com.devamatre.appsuite.core.Payload;
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.core.Payload;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.microservice.yatrasuite.rideservice.persistence.entity.Ride;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.service;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextDateTime;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

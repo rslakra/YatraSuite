@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.framework;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

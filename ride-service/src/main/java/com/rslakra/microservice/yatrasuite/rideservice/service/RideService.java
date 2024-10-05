@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.rideservice.service;
 
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.microservice.yatrasuite.rideservice.persistence.entity.Ride;

@@ -1,6 +1,6 @@
 //package com.rslakra.microservice.vehicleservice.persistence.entity;
 //
-//import com.devamatre.appsuite.core.ToString;
+//import com.rslakra.appsuite.core.ToString;
 //import com.devamatre.framework.spring.persistence.entity.AbstractEntity;
 //import lombok.Getter;
 //import lombok.NoArgsConstructor;

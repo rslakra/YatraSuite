@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.userservice.service;
 
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.entity.Role;
 
 import java.util.List;

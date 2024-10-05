@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.ride;
 
-import com.devamatre.appsuite.core.ToString;
+import com.rslakra.appsuite.core.ToString;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

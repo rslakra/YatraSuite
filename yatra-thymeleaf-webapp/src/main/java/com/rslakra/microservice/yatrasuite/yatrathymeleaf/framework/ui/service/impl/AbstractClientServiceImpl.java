@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.impl;
 
-import com.devamatre.appsuite.spring.client.ApiRestClient;
+import com.rslakra.appsuite.spring.client.ApiRestClient;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.framework.ui.service.AbstractClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

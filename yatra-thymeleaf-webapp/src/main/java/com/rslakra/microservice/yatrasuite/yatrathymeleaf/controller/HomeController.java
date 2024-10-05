@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.controller;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.account.LoginRequest;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.account.RegisterRequest;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.security.AuthUserDetails;

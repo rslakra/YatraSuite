@@ -1,9 +1,9 @@
 package com.rslakra.microservice.yatrasuite.userservice.util;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomEmail;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomFirstName;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomLastName;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomPhoneNumber;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomFirstName;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomLastName;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomPhoneNumber;
 
 import com.rslakra.microservice.yatrasuite.userservice.dto.AuthRequestDTO;
 import com.rslakra.microservice.yatrasuite.userservice.dto.UserDTO;

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.rideservice.kafka.event;
 
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.Payload;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rslakra.microservice.yatrasuite.rideservice.persistence.entity.EventEntity;
 import com.rslakra.microservice.yatrasuite.rideservice.persistence.repository.EventRepository;

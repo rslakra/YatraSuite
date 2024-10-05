@@ -1,13 +1,13 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.util;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextDateTime;
-import static com.devamatre.appsuite.core.RandomUtils.nextLatitudeBigDecimal;
-import static com.devamatre.appsuite.core.RandomUtils.nextLongitudeBigDecimal;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomId;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomInt;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomPercentage;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomString;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextLatitudeBigDecimal;
+import static com.rslakra.appsuite.core.RandomUtils.nextLongitudeBigDecimal;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomId;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomInt;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomPercentage;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomString;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rslakra.microservice.yatrasuite.vehicleservice.dto.NewVehicleDTO;

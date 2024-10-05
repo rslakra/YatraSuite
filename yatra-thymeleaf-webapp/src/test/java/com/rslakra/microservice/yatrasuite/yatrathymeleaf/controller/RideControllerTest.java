@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.controller;
 
-import static com.devamatre.appsuite.core.RandomUtils.nextDateTime;
-import static com.devamatre.appsuite.core.RandomUtils.nextRandomUuid;
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
 
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.ride.Ride;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.service.RideService;

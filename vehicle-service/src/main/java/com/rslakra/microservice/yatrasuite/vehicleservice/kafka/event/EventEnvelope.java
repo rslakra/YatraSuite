@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.kafka.event;
 
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.Payload;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.controller;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.microservice.yatrasuite.framework.TimeUtils;
 import com.rslakra.microservice.yatrasuite.framework.advice.AbstractResponse;
 import com.rslakra.microservice.yatrasuite.vehicleservice.dto.LocationHistoryDTO;

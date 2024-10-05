@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.userservice.filter;
 
-import com.devamatre.appsuite.core.Payload;
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.core.Payload;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.entity.User;
 
 import java.util.Map;

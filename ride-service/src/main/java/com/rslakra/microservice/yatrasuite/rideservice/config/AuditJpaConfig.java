@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.rideservice.config;
 
-import com.devamatre.appsuite.spring.context.AuditorAwareImpl;
+import com.rslakra.appsuite.spring.context.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;

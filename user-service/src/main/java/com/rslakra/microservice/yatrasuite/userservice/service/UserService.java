@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.userservice.service;
 
-import com.devamatre.appsuite.core.enums.RoleType;
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.core.enums.RoleType;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.microservice.yatrasuite.userservice.persistence.entity.User;

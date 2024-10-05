@@ -1,7 +1,7 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.vehicle;
 
-import com.devamatre.appsuite.core.ToString;
-import com.devamatre.appsuite.spring.payload.dto.AbstractEntityDTO;
+import com.rslakra.appsuite.core.ToString;
+import com.rslakra.appsuite.spring.payload.dto.AbstractEntityDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

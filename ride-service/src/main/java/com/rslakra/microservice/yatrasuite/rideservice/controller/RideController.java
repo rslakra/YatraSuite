@@ -1,10 +1,10 @@
 package com.rslakra.microservice.yatrasuite.rideservice.controller;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.Payload;
-import com.devamatre.appsuite.spring.controller.rest.AbstractRestController;
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.filter.Filter;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.Payload;
+import com.rslakra.appsuite.spring.controller.rest.AbstractRestController;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.microservice.yatrasuite.common.Constants;
 import com.rslakra.microservice.yatrasuite.common.YatraUtils;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;

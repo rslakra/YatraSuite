@@ -1,8 +1,8 @@
 package com.rslakra.microservice.yatrasuite.yatrathymeleaf.security;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.spring.exception.AuthenticationException;
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.spring.exception.AuthenticationException;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.dto.account.User;
 import com.rslakra.microservice.yatrasuite.yatrathymeleaf.service.UserService;
 import org.slf4j.Logger;
