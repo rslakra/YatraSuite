@@ -3,7 +3,7 @@ package com.rslakra.microservice.yatrasuite.yatrawebapp.controller;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.yatrawebapp.clients.RidesClient;
+import com.rslakra.microservice.yatrasuite.yatrawebapp.clients.RideClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ import java.util.Map;
 @RequestMapping("${apiPrefix}/rides")
 public class RideController {
 
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
-
-    private RidesClient ridesClient;
+    private static final Logger LOGGER = LogManager.getLogger(RideController.class);
+    private RideClient rideClient;
 
     @Autowired
-    public RideController(RidesClient ridesClient) {
-        this.ridesClient = ridesClient;
+    public RideController(RideClient rideClient) {
+        LOGGER.debug("RideController({})", rideClient);
+        this.rideClient = rideClient;
     }
 
     /**
@@ -49,7 +49,7 @@ public class RideController {
     public ResponseEntity<Map<String, Object>> startRide(@RequestBody Map<String, Object> startRideRequestDTO)
         throws NotFoundException, InvalidUUIDException, InvalidVehicleStateException {
         LOGGER.info("[POST] /ui/rides/start");
-        Map<String, Object> response = ridesClient.startRide(startRideRequestDTO);
+        Map<String, Object> response = rideClient.startRide(startRideRequestDTO);
         return ResponseEntity.ok(response);
     }
 
@@ -62,7 +62,7 @@ public class RideController {
     @PostMapping("/end")
     public ResponseEntity<Map<String, Object>> endRide(@RequestBody @Validated Map<String, Object> endRideRequestDTO) {
         LOGGER.info("[POST] /ui/rides/end");
-        Map<String, Object> response = ridesClient.endRide(endRideRequestDTO);
+        Map<String, Object> response = rideClient.endRide(endRideRequestDTO);
         return ResponseEntity.ok(response);
     }
 
@@ -76,7 +76,7 @@ public class RideController {
     @GetMapping
     public ResponseEntity<List<Map<String, Object>>> getRides(@RequestParam String email) {
         LOGGER.info("[GET] /ui/rides?email={email}");
-        List<Map<String, Object>> rides = ridesClient.getRides(email);
+        List<Map<String, Object>> rides = rideClient.getRides(email);
         return ResponseEntity.ok(rides);
     }
 }

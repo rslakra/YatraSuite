@@ -7,7 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.yatrasuite.yatrawebapp.config.RidesConfig;
+import com.rslakra.microservice.yatrasuite.yatrawebapp.config.RideConfig;
 import com.rslakra.microservice.yatrasuite.yatrawebapp.util.TestHelpers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,18 +20,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-class RidesClientTest {
+class RideClientTest {
 
     @Mock
     private RestTemplateBuilder restTemplateBuilder;
-    private RidesConfig ridesConfig;
-    private RidesClient ridesClient;
+    private RideConfig rideConfig;
+    private RideClient rideClient;
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        ridesConfig = new RidesConfig("localhost", 1234);
-        ridesClient = new RidesClient(restTemplateBuilder, ridesConfig);
+        rideConfig = new RideConfig("localhost", 1234);
+        rideClient = new RideClient(restTemplateBuilder, rideConfig);
     }
 
     @Test
@@ -39,13 +39,13 @@ class RidesClientTest {
         Map<String, Object> expectedRequest = TestHelpers.createArbitraryMap();
         Map<String, Object> expectedResponse = TestHelpers.createArbitraryMap();
 
-        when(ridesClient.getRestTemplate().postForObject(anyString(), any(), any()))
+        when(rideClient.getRestTemplate().postForObject(anyString(), any(), any()))
             .thenReturn(expectedResponse);
 
-        Map<String, Object> response = ridesClient.startRide(expectedRequest);
+        Map<String, Object> response = rideClient.startRide(expectedRequest);
 
-        verify(ridesClient.getRestTemplate())
-            .postForObject(ridesConfig.getServiceUrl("/api/rides/start"), expectedRequest, Map.class);
+        verify(rideClient.getRestTemplate())
+            .postForObject(rideConfig.getServiceUrl("/api/rides/start"), expectedRequest, Map.class);
 
         assertEquals(expectedResponse, response);
     }
@@ -55,13 +55,13 @@ class RidesClientTest {
         Map<String, Object> expectedRequest = TestHelpers.createArbitraryMap();
         Map<String, Object> expectedResponse = TestHelpers.createArbitraryMap();
 
-        when(ridesClient.getRestTemplate().postForObject(anyString(), any(), any()))
+        when(rideClient.getRestTemplate().postForObject(anyString(), any(), any()))
             .thenReturn(expectedResponse);
 
-        Map<String, Object> response = ridesClient.endRide(expectedRequest);
+        Map<String, Object> response = rideClient.endRide(expectedRequest);
 
-        verify(ridesClient.getRestTemplate())
-            .postForObject(ridesConfig.getServiceUrl("/api/rides/end"), expectedRequest, Map.class);
+        verify(rideClient.getRestTemplate())
+            .postForObject(rideConfig.getServiceUrl("/api/rides/end"), expectedRequest, Map.class);
 
         assertEquals(expectedResponse, response);
     }
@@ -73,13 +73,13 @@ class RidesClientTest {
             expectedResponse =
             IntStream.range(0, 5).mapToObj(i -> TestHelpers.createArbitraryMap()).collect(Collectors.toList());
 
-        when(ridesClient.getRestTemplate().getForObject(anyString(), any()))
+        when(rideClient.getRestTemplate().getForObject(anyString(), any()))
             .thenReturn(expectedResponse.toArray(new Map[0]));
 
-        List<Map<String, Object>> response = ridesClient.getRides(email);
+        List<Map<String, Object>> response = rideClient.getRides(email);
 
-        verify(ridesClient.getRestTemplate())
-            .getForObject(ridesConfig.getServiceUrl(String.format("/api/rides?email=%s", email)), Map[].class);
+        verify(rideClient.getRestTemplate())
+            .getForObject(rideConfig.getServiceUrl(String.format("/api/rides?email=%s", email)), Map[].class);
 
         for (int i = 0; i < expectedResponse.size(); i++) {
             Map<String, Object> expected = expectedResponse.get(i);

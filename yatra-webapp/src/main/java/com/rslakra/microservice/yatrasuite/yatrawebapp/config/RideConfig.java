@@ -4,10 +4,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("rides-service")
-public class RidesConfig extends ServiceConfig {
+@ConfigurationProperties("ride-service")
+public class RideConfig extends ServiceConfig {
 
-    public RidesConfig() {
+    public RideConfig() {
         super();
     }
 
@@ -15,7 +15,7 @@ public class RidesConfig extends ServiceConfig {
      * @param baseServiceUrl
      * @param port
      */
-    public RidesConfig(String baseServiceUrl, Integer port) {
+    public RideConfig(String baseServiceUrl, Integer port) {
         super(baseServiceUrl, port);
     }
 }

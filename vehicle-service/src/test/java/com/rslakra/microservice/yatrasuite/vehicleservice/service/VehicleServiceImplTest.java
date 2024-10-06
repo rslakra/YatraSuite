@@ -1,14 +1,5 @@
 package com.rslakra.microservice.yatrasuite.vehicleservice.service;
 
-import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidValueException;
 import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
 import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
@@ -34,6 +25,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 /**
  * Unit Tests for the VehicleServiceImpl.class
  */
@@ -55,9 +52,9 @@ public class VehicleServiceImplTest {
 
         MockitoAnnotations.openMocks(this);
         vehicleService = new VehicleServiceImpl(
-            vehicleRepository,
-            vehicleWithLocationRepository,
-            locationHistoryRepository);
+                vehicleRepository,
+                vehicleWithLocationRepository,
+                locationHistoryRepository);
     }
 
     @Test
@@ -70,7 +67,7 @@ public class VehicleServiceImplTest {
             vehicleService.getVehicle(id);
         });
 
-        assertEquals("Vehicle id <" + id + "> not found", exception.getMessage());
+        assertEquals("Vehicle id <" + id + "> not found!", exception.getMessage());
         verify(vehicleRepository).findById(id);
     }
 
@@ -107,8 +104,8 @@ public class VehicleServiceImplTest {
     void getVehiclesWithLocation_shouldReturnTheVehicles_ifTheyExist() {
         int numVehicles = 20;
         List<VehicleWithLocation> expected = Stream.generate(() -> VehicleTestUtils.createVehicleWithLocation())
-            .limit(numVehicles)
-            .collect(Collectors.toList());
+                .limit(numVehicles)
+                .collect(Collectors.toList());
 
 //        when(vehicleWithLocationRepository.getVehiclesWithLocation(numVehicles)).thenReturn(expected);
 //
@@ -133,16 +130,16 @@ public class VehicleServiceImplTest {
         VehicleDetailDTO expectedVehicleDetailDTO = VehicleTestUtils.createVehicleInfoDTO();
 
         vehicleService.addVehicle(
-            expectedLocation.getLatitude(),
-            expectedLocation.getLongitude(),
-            expectedVehicle.getBatteryLevel(),
-            expectedVehicleDetailDTO
+                expectedLocation.getLatitude(),
+                expectedLocation.getLongitude(),
+                expectedVehicle.getBatteryLevel(),
+                expectedVehicleDetailDTO
         );
 
         ArgumentCaptor<Vehicle> vehicleArgumentCaptor =
-            ArgumentCaptor.forClass(Vehicle.class);
+                ArgumentCaptor.forClass(Vehicle.class);
         ArgumentCaptor<LocationHistory> locationHistoryArgumentCaptor =
-            ArgumentCaptor.forClass(LocationHistory.class);
+                ArgumentCaptor.forClass(LocationHistory.class);
 
         verify(vehicleRepository).save(vehicleArgumentCaptor.capture());
         verify(locationHistoryRepository).save(locationHistoryArgumentCaptor.capture());
@@ -184,7 +181,7 @@ public class VehicleServiceImplTest {
 
     @Test
     public void removeVehicle_shouldDeleteTheVehicle_IfTheVehicleExistsAndIsValid()
-        throws NotFoundException, InvalidVehicleStateException {
+            throws NotFoundException, InvalidVehicleStateException {
         Vehicle vehicle = VehicleTestUtils.createVehicle();
 
         when(vehicleRepository.findById(vehicle.getId())).thenReturn(Optional.of(vehicle));
@@ -214,7 +211,7 @@ public class VehicleServiceImplTest {
 
     @Test
     public void checkoutVehicle_shouldUpdateTheLastRideStart_ifThereIsNoPreviousRide()
-        throws NotFoundException, InvalidVehicleStateException {
+            throws NotFoundException, InvalidVehicleStateException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime startTime = nextDateTime();
 //        expectedVehicle.setLastRideStart(null);
@@ -233,17 +230,17 @@ public class VehicleServiceImplTest {
 
     @Test
     public void checkoutVehicle_shouldUpdateTheLastRideStart_ifThereIsAnEarlierRide()
-        throws NotFoundException, InvalidVehicleStateException {
+            throws NotFoundException, InvalidVehicleStateException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime earlierTime = nextDateTime();
         LocalDateTime laterTime = nextDateTime().plusSeconds(1000);
-//        expectedVehicle.setLastRideStart(earlierTime);
-//        expectedVehicle.setLastRideEnd(earlierTime);
+        expectedVehicle.setLastRideStart(earlierTime);
+        expectedVehicle.setLastRideEnd(earlierTime);
 
         when(vehicleRepository.findById(expectedVehicle.getId())).thenReturn(Optional.of(expectedVehicle));
 
         Vehicle vehicle = vehicleService.checkoutVehicle(expectedVehicle.getId(), laterTime);
-
+        assertNotNull(vehicle);
         assertEquals(expectedVehicle.getId(), vehicle.getId());
         assertEquals(true, vehicle.isInUse());
 //        assertEquals(laterTime, vehicle.getLastRideStart());
@@ -253,7 +250,7 @@ public class VehicleServiceImplTest {
 
     @Test
     public void checkoutVehicle_shouldNotUpdateTheLastRideStart_ifThereIsALaterRide()
-        throws NotFoundException, InvalidVehicleStateException {
+            throws NotFoundException, InvalidVehicleStateException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime earlierTime = nextDateTime();
         LocalDateTime laterTime = nextDateTime().plusSeconds(1000);
@@ -280,10 +277,10 @@ public class VehicleServiceImplTest {
 
         assertThrows(NotFoundException.class, () -> {
             vehicleService.checkinVehicle(
-                vehicle.getId(),
-                locationHistory.getLatitude(),
-                locationHistory.getLongitude(),
-                vehicle.getBatteryLevel(), LocalDateTime.now()
+                    vehicle.getId(),
+                    locationHistory.getLatitude(),
+                    locationHistory.getLongitude(),
+                    vehicle.getBatteryLevel(), LocalDateTime.now()
             );
         });
 
@@ -292,7 +289,7 @@ public class VehicleServiceImplTest {
 
     @Test
     public void checkinVehicle_shouldMarkTheVehicleNotInUseAndAddLocationHistory()
-        throws NotFoundException, InvalidVehicleStateException, InvalidValueException {
+            throws NotFoundException, InvalidVehicleStateException, InvalidValueException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
 //        expectedVehicle.setLastRideStart(nextDateTime());
 //        expectedVehicle.setLastRideEnd(null);
@@ -301,10 +298,10 @@ public class VehicleServiceImplTest {
         when(vehicleRepository.findById(expectedVehicle.getId())).thenReturn(Optional.of(expectedVehicle));
 
         Vehicle vehicle = vehicleService.checkinVehicle(
-            expectedVehicle.getId(),
-            expectedLocationHistory.getLatitude(),
-            expectedLocationHistory.getLongitude(),
-            expectedVehicle.getBatteryLevel(), LocalDateTime.now()
+                expectedVehicle.getId(),
+                expectedLocationHistory.getLatitude(),
+                expectedLocationHistory.getLongitude(),
+                expectedVehicle.getBatteryLevel(), LocalDateTime.now()
         );
 
         verify(vehicleRepository).save(vehicle);
@@ -313,7 +310,7 @@ public class VehicleServiceImplTest {
         assertEquals(false, vehicle.isInUse());
 
         ArgumentCaptor<LocationHistory> locationHistoryArgumentCaptor =
-            ArgumentCaptor.forClass(LocationHistory.class);
+                ArgumentCaptor.forClass(LocationHistory.class);
 
         verify(locationHistoryRepository).save(locationHistoryArgumentCaptor.capture());
         LocationHistory locationHistory = locationHistoryArgumentCaptor.getValue();

@@ -8,7 +8,9 @@ However, this application requires the vehicles, rides, and users microservices 
 
 ## Requirements
 
-You will need Java.
+- [OpenJDK 11](https://openjdk.org/projects/jdk/11/)
+- [Install Sass](https://sass-lang.com/install/)
+
 
 ## Running the Application
 
@@ -19,3 +21,8 @@ To run the application you can execute the `run.sh` script.
 ```
 
 This will compile the application with Maven, run the tests, and execute.
+
+## References:
+
+- [dart-sass-maven-plugin](https://github.com/cleydyr/dart-sass-maven-plugin)
+- [How to Use Sass with CSS](https://www.freecodecamp.org/news/how-to-use-sass-with-css/)

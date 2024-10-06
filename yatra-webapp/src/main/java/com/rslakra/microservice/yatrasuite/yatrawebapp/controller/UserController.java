@@ -24,11 +24,12 @@ import java.util.Map;
 @RequestMapping("${apiPrefix}/users")
 public class UserController {
 
+    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
     private UserClient userClient;
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Autowired
     public UserController(UserClient userClient) {
+        LOGGER.debug("UserController({})", userClient);
         this.userClient = userClient;
     }
 

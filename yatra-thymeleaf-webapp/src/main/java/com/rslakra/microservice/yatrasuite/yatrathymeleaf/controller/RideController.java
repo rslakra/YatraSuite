@@ -43,7 +43,7 @@ import java.util.UUID;
 @RequestMapping("${uiPrefix}/rides")
 public class RideController extends AbstractWebController<Ride, Long> {
 
-    private final Logger LOGGER = LogManager.getLogger(RideController.class);
+    private static final Logger LOGGER = LogManager.getLogger(RideController.class);
 
     public static final String VIEW_RIDES = "views/ride/listRides";
     public static final String REDIRECT_VIEW_RIDES = "redirect:/ui/rides";

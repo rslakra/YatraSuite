@@ -1,6 +1,6 @@
 package com.rslakra.microservice.yatrasuite.yatrawebapp.clients;
 
-import com.rslakra.microservice.yatrasuite.yatrawebapp.config.RidesConfig;
+import com.rslakra.microservice.yatrasuite.yatrawebapp.config.RideConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class RidesClient extends AbstractRestClient {
+public class RideClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserClient.class);
-
-    private RidesConfig config;
+    private RideConfig config;
 
     @Autowired
-    public RidesClient(RestTemplateBuilder restTemplateBuilder, RidesConfig config) {
+    public RideClient(RestTemplateBuilder restTemplateBuilder, RideConfig config) {
         super(restTemplateBuilder);
         this.config = config;
     }

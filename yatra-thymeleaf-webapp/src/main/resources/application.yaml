@@ -51,10 +51,10 @@ user-service:
   baseServiceUrl: localhost
   port: 31601
 
+ride-service:
+  baseServiceUrl: localhost
+  port: 31603
+
 vehicle-service:
   baseServiceUrl: localhost
   port: 31605
-
-rides-service:
-  baseServiceUrl: localhost
-  port: 31603

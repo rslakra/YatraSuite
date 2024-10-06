@@ -13,6 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import java.util.stream.IntStream;
 
 class VehicleClientTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VehicleClientTest.class);
     @Mock
     private RestTemplateBuilder restTemplateBuilder;
     private VehicleServiceConfig vehicleConfig;
@@ -34,6 +37,7 @@ class VehicleClientTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
         vehicleConfig = new VehicleServiceConfig("localhost", 1234);
+        LOGGER.debug("vehicleConfig={}", vehicleConfig);
         vehicleClient = new VehicleClient(restTemplateBuilder, vehicleConfig);
     }
 

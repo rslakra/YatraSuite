@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("rides-service")
+@ConfigurationProperties("ride-service")
 public class RideServiceConfig extends AbstractServiceConfig {
 
     public RideServiceConfig() {

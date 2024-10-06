@@ -32,11 +32,12 @@ import javax.validation.constraints.Min;
 @Validated
 public class VehicleController {
 
+    private static final Logger LOGGER = LogManager.getLogger(VehicleController.class);
     private VehicleClient vehicleClient;
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Autowired
     public VehicleController(VehicleClient vehicleClient) {
+        LOGGER.debug("VehicleController({})", vehicleClient);
         this.vehicleClient = vehicleClient;
     }
 

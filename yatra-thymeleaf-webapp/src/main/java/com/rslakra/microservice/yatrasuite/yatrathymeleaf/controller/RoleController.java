@@ -44,7 +44,7 @@ import java.util.Map;
 @RequestMapping("${uiPrefix}/roles")
 public class RoleController extends AbstractWebController<Role, Long> {
 
-    private final Logger LOGGER = LogManager.getLogger(RoleController.class);
+    private static final Logger LOGGER = LogManager.getLogger(RoleController.class);
 
     public static final String VIEW_ROLES = "views/role/listRoles";
     public static final String REDIRECT_VIEW_ROLES = "redirect:/ui/roles";
@@ -66,6 +66,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
      */
     @Autowired
     public RoleController(RoleService roleService) {
+        LOGGER.debug("RoleController({})", roleService);
         this.roleService = roleService;
     }
 

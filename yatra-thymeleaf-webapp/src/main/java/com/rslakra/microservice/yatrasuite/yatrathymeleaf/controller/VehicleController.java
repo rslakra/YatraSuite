@@ -45,7 +45,7 @@ import java.util.UUID;
 @Validated
 public class VehicleController extends AbstractWebController<Vehicle, UUID> {
 
-    private final Logger LOGGER = LogManager.getLogger(VehicleController.class);
+    private static final Logger LOGGER = LogManager.getLogger(VehicleController.class);
 
     public static final String VIEW_VEHICLES = "views/vehicle/listVehicles";
     public static final String REDIRECT_VIEW_VEHICLES = "redirect:/ui/vehicles";
@@ -67,6 +67,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
      */
     @Autowired
     public VehicleController(VehicleService vehicleService) {
+        LOGGER.debug("VehicleController({})", vehicleService);
         this.vehicleService = vehicleService;
     }
 

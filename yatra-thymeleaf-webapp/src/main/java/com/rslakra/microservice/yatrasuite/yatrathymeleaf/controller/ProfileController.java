@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping("${uiPrefix}/profile")
 public class ProfileController extends AbstractWebController<User, Long> {
 
-    private final Logger LOGGER = LogManager.getLogger(ProfileController.class);
+    private static final Logger LOGGER = LogManager.getLogger(ProfileController.class);
     public static final String VIEW_USER_PROFILE = "views/user/userProfile";
     public static final String MODEL_ATTR_USER = "user";
 
@@ -40,6 +40,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
      */
     @Autowired
     public ProfileController(UserService userService) {
+        LOGGER.debug("ProfileController({})", userService);
         this.userService = userService;
     }
 

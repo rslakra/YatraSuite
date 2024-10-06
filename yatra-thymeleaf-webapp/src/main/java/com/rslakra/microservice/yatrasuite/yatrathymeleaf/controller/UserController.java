@@ -46,7 +46,7 @@ import java.util.Map;
 @RequestMapping("${uiPrefix}/users")
 public class UserController extends AbstractWebController<User, Long> {
 
-    private final Logger LOGGER = LogManager.getLogger(UserController.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
     public static final String VIEW_USERS = "views/user/listUsers";
     public static final String REDIRECT_VIEW_USERS = "redirect:/ui/users";
@@ -68,6 +68,7 @@ public class UserController extends AbstractWebController<User, Long> {
      */
     @Autowired
     public UserController(UserService userService) {
+        LOGGER.debug("UserController({})", userService);
         this.userService = userService;
     }
 

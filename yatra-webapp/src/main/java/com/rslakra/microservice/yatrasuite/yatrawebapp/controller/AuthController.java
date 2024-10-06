@@ -21,11 +21,12 @@ import java.util.Map;
 @RequestMapping("${apiPrefix}/auth")
 public class AuthController {
 
+    private static final Logger LOGGER = LogManager.getLogger(AuthController.class);
     private AuthClient authClient;
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     @Autowired
     public AuthController(AuthClient authClient) {
+        LOGGER.debug("AuthController({})", authClient);
         this.authClient = authClient;
     }
 

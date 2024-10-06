@@ -18,7 +18,6 @@ import java.util.UUID;
 public class VehicleClient extends AbstractRestClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VehicleClient.class);
-
     private final VehicleServiceConfig serviceConfig;
 
     /**

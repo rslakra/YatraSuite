@@ -3,3 +3,5 @@ user-service
 vehicle-service
 ride-service
 web-app
+#yatra-webapp
+#yatra-thymeleaf-webapp
