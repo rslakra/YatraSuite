@@ -14,10 +14,10 @@ However, this application requires the vehicles, rides, and users microservices 
 
 ## Running the Application
 
-To run the application you can execute the `run.sh` script.
+To run the application you can execute the `runMaven.sh` script.
 
 ```
-./run.sh
+./runMaven.sh
 ```
 
 This will compile the application with Maven, run the tests, and execute.
