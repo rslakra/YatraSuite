@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.8</version>
+        <version>2.7.18</version>
         <!-- lookup parent from repository -->
         <relativePath/>
     </parent>
@@ -34,10 +34,10 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- maven plugins -->
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-checkstyle-plugin.version>3.5.0</maven-checkstyle-plugin.version>
 
-        <maven-release-plugin.version>3.0.0</maven-release-plugin.version>
+        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 
         <!-- checkstyle -->
         <code-styles.dir>https://raw.githubusercontent.com/rslakra/code-styles/master</code-styles.dir>
@@ -51,7 +51,7 @@
         <common-service.version>0.0.10</common-service.version>
 
         <!-- lombok -->
-        <lombok.version>1.18.28</lombok.version>
+        <lombok.version>1.18.34</lombok.version>
 
         <!-- liquibase -->
         <liquibase.version>4.19.0</liquibase.version>
@@ -63,8 +63,8 @@
         <commons-csv.version>1.9.0</commons-csv.version>
         <opencsv.version>5.7.0</opencsv.version>
         <!-- excel parser version -->
-        <poi.version>5.2.3</poi.version>
-        <poi-ooxml.version>5.2.3</poi-ooxml.version>
+        <poi.version>5.4.0</poi.version>
+        <poi-ooxml.version>5.4.0</poi-ooxml.version>
 
         <!-- h2 -->
         <h2.version>2.2.220</h2.version>
