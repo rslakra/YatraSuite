@@ -1,27 +1,46 @@
-# YatraSuite
+YatraSuite
+===
+
+The ```microservice``` for travelling management.
 
 
-## API Calls
+## Services
+
+---
+
+```
+    /
+    ├── common-service
+    ├── ride-service
+    ├── user-service
+    ├── vehicle-service
+    ├── yatra-thymeleaf-webapp
+    ├── yatra-webapp
+    └── README.md
+```
+
+### API Calls
 
 - Get All Records
+
 ```shell
 curl http://localhost:8080/api/v1/yatrasuite
 ```
 
 - Filter by ID
+
 ```shell
 curl http://localhost:8080/api/v1/yatrasuite/2
 ```
 
-## Services
 
-### common-service
-### ride-service
-### vehicle-service
-### yatra-thymeleaf-service
-### yatra-webapp
+# Reference
+
+---
 
 
 # Author
+
+---
 
 - Rohtash Lakra
