@@ -47,7 +47,7 @@
         <!-- appsuite-spring -->
         <appsuite-spring.version>0.0.18</appsuite-spring.version>
         <!-- common-service -->
-        <common-service.version>0.0.19</common-service.version>
+        <common-service.version>0.0.22</common-service.version>
 
         <!-- lombok -->
         <lombok.version>1.18.34</lombok.version>
@@ -98,7 +98,7 @@
 
         <!-- common-service -->
         <dependency>
-            <groupId>com.rslakra.microservice.yatrasuite</groupId>
+            <groupId>com.rslakra.logistics.yatrasuite</groupId>
             <artifactId>common-service</artifactId>
             <version>${common-service.version}</version>
         </dependency>
