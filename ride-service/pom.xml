@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
     <!-- ride-service -->
-    <groupId>com.rslakra.microservice.yatrasuite</groupId>
+    <groupId>com.rslakra.logistics.yatrasuite</groupId>
     <artifactId>ride-service</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>

@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
     <!-- yatra-thymeleaf-webapp -->
-    <groupId>com.rslakra.microservice.yatrasuite</groupId>
+    <groupId>com.rslakra.logistics.yatrasuite</groupId>
     <artifactId>yatra-thymeleaf-webapp</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
