@@ -1,7 +1,7 @@
 package com.rslakra.logistics.yatrasuite.userservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rslakra.microservice.yatrasuite.common.dto.MessagesDTO;
+import com.rslakra.logistics.yatrasuite.common.dto.MessagesDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

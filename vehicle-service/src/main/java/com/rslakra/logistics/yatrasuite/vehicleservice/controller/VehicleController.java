@@ -1,30 +1,17 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.controller;
 
-import static com.rslakra.microservice.yatrasuite.common.Constants.ERR_INVALID_VEHICLE_ID;
-import static com.rslakra.microservice.yatrasuite.framework.CommonUtils.deserialize;
-import static com.rslakra.microservice.yatrasuite.framework.CommonUtils.toUUID;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.core.Payload;
 import com.rslakra.appsuite.spring.controller.rest.AbstractRestController;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.filter.Filter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rslakra.microservice.yatrasuite.common.Constants;
-import com.rslakra.microservice.yatrasuite.common.YatraUtils;
-import com.rslakra.microservice.yatrasuite.common.exception.DeserializationException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidValueException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.framework.CommonUtils;
-import com.rslakra.microservice.yatrasuite.framework.advice.AbstractResponse;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.NewVehicleDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleCheckin;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleIdDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleWithHistoryDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleWithLocationDTO;
+import com.rslakra.logistics.yatrasuite.common.Constants;
+import com.rslakra.logistics.yatrasuite.common.YatraUtils;
+import com.rslakra.logistics.yatrasuite.common.exception.*;
+import com.rslakra.logistics.yatrasuite.framework.CommonUtils;
+import com.rslakra.logistics.yatrasuite.framework.advice.AbstractResponse;
+import com.rslakra.logistics.yatrasuite.vehicleservice.dto.*;
 import com.rslakra.logistics.yatrasuite.vehicleservice.kafka.event.EventType;
 import com.rslakra.logistics.yatrasuite.vehicleservice.kafka.event.KafkaMessage;
 import com.rslakra.logistics.yatrasuite.vehicleservice.kafka.event.RideEndedEvent;
@@ -40,25 +27,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
 import javax.validation.constraints.Min;
+import java.time.LocalDateTime;
+import java.util.*;
+
+import static com.rslakra.logistics.yatrasuite.common.Constants.ERR_INVALID_VEHICLE_ID;
+import static com.rslakra.logistics.yatrasuite.framework.CommonUtils.deserialize;
+import static com.rslakra.logistics.yatrasuite.framework.CommonUtils.toUUID;
 
 /**
  * The <code>Vehicles</code> controller manages the vehicle activities.
@@ -137,7 +115,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
             LOGGER.debug("userEmail:{}", userEmail);
         }
 
-//        return vehicleService.getByFilter(null);
+        //        return vehicleService.getByFilter(null);
         LOGGER.debug("-getByFilter(), vehicles: {}", vehicles);
         return vehicles;
     }
@@ -223,14 +201,14 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @PostMapping
     public ResponseEntity<VehicleIdDTO> addVehicle(@RequestBody NewVehicleDTO newVehicleDTO)
-        throws InvalidValueException {
+            throws InvalidValueException {
         LOGGER.debug("addVehicle({})", newVehicleDTO);
         LOGGER.info("[POST] /api/vehicles");
         YatraUtils.validateSerialNumber(newVehicleDTO.getSerialNumber());
         Vehicle vehicle = vehicleService.addVehicle(YatraUtils.asBigDecimalLatitude(newVehicleDTO.getLatitude()),
-                                                    YatraUtils.asBigDecimalLongitude(newVehicleDTO.getLongitude()),
-                                                    YatraUtils.asIntegerBatteryLevel(newVehicleDTO.getBatteryLevel()),
-                                                    new VehicleDetailDTO(newVehicleDTO));
+                YatraUtils.asBigDecimalLongitude(newVehicleDTO.getLongitude()),
+                YatraUtils.asIntegerBatteryLevel(newVehicleDTO.getBatteryLevel()),
+                new VehicleDetailDTO(newVehicleDTO));
         return ResponseEntity.ok(VehicleIdDTO.fromVehicle(vehicle));
     }
 
@@ -243,7 +221,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @GetMapping
     public ResponseEntity<List<VehicleWithLocationDTO>> getVehiclesWithLocation(
-        @RequestParam(value = "max_vehicles", required = false) @Min(1) Integer maxVehicles) {
+            @RequestParam(value = "max_vehicles", required = false) @Min(1) Integer maxVehicles) {
         LOGGER.info("[GET] /api/vehicles");
         List<VehicleWithLocation> vehicleWithLocations = vehicleService.getVehiclesWithLocation(maxVehicles);
         return ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDTOList(vehicleWithLocations));
@@ -259,7 +237,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @GetMapping("/{vehicleId}")
     public ResponseEntity<VehicleWithHistoryDTO> getVehicleLocationHistory(@PathVariable String vehicleId)
-        throws InvalidUUIDException, NotFoundException {
+            throws InvalidUUIDException, NotFoundException {
         LOGGER.info("[GET] /api/vehicles/{}", vehicleId);
         Vehicle vehicle = vehicleService.getVehicle(toUUID(vehicleId, ERR_INVALID_VEHICLE_ID), true);
         return ResponseEntity.ok(VehicleUtils.toVehicleWithHistoryDTO(vehicle));
@@ -273,7 +251,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @GetMapping("/location/{vehicleId}")
     public ResponseEntity<VehicleWithLocationDTO> getVehicleWithLocation(@PathVariable String vehicleId)
-        throws NotFoundException, InvalidUUIDException {
+            throws NotFoundException, InvalidUUIDException {
         LOGGER.info("[GET] /api/vehicles/location/{}", vehicleId);
         Vehicle vehicle = vehicleService.getVehicle(toUUID(vehicleId, ERR_INVALID_VEHICLE_ID), true);
         return ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDto(vehicle));
@@ -293,17 +271,17 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @PutMapping("/check-in")
     public ResponseEntity<VehicleWithLocationDTO> checkinVehicle(@RequestBody VehicleCheckin vehicleCheckin)
-        throws NotFoundException {
+            throws NotFoundException {
         LOGGER.debug("+checkinVehicle({})", vehicleCheckin);
         Vehicle
-            vehicle =
-            vehicleService.checkinVehicle(vehicleCheckin.getVehicleId(), vehicleCheckin.getLatitude(),
-                                          vehicleCheckin.getLongitude(), vehicleCheckin.getBatteryLevel(),
-                                          LocalDateTime.now());
+                vehicle =
+                vehicleService.checkinVehicle(vehicleCheckin.getVehicleId(), vehicleCheckin.getLatitude(),
+                        vehicleCheckin.getLongitude(), vehicleCheckin.getBatteryLevel(),
+                        LocalDateTime.now());
         vehicleService.fillLocationHistory(vehicle);
         ResponseEntity<VehicleWithLocationDTO>
-            responseEntity =
-            ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDto(vehicle));
+                responseEntity =
+                ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDto(vehicle));
         LOGGER.debug("-checkinVehicle(), responseEntity:{}", responseEntity);
         return responseEntity;
     }
@@ -322,7 +300,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @PutMapping("/check-out/{vehicleId}")
     public ResponseEntity<VehicleWithLocationDTO> checkoutVehicle(@PathVariable Optional<UUID> vehicleId)
-        throws NotFoundException, InvalidValueException {
+            throws NotFoundException, InvalidValueException {
         LOGGER.debug("-checkoutVehicle({})", vehicleId);
         if (!vehicleId.isPresent()) {
             throw new InvalidValueException("The vehicle ID should provide!");
@@ -331,8 +309,8 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
         Vehicle vehicle = vehicleService.checkoutVehicle(vehicleId.get(), LocalDateTime.now());
         vehicleService.fillLocationHistory(vehicle);
         ResponseEntity<VehicleWithLocationDTO>
-            responseEntity =
-            ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDto(vehicle));
+                responseEntity =
+                ResponseEntity.ok(VehicleUtils.toVehicleWithLocationDto(vehicle));
         LOGGER.debug("-checkoutVehicle(), responseEntity:{}", responseEntity);
         return responseEntity;
     }
@@ -348,7 +326,7 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      */
     @DeleteMapping("/{vehicleId}")
     public ResponseEntity<AbstractResponse> removeVehicle(@PathVariable String vehicleId)
-        throws InvalidUUIDException, NotFoundException, InvalidVehicleStateException {
+            throws InvalidUUIDException, NotFoundException, InvalidVehicleStateException {
         LOGGER.info("[DELETE] /api/vehicles/{vehicleId}");
         vehicleService.removeVehicle(toUUID(vehicleId, ERR_INVALID_VEHICLE_ID));
         String response = String.format(Constants.MSG_DELETED_VEHICLE, vehicleId);
@@ -362,23 +340,23 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
      * @throws InvalidVehicleStateException If the vehicle is in a state that is invalid for the given message
      * @throws NotFoundException            If the vehicle referred to in the message doesn't exist
      */
-//    @KafkaListener(topics = "yatra-suite.public.events")
+    //    @KafkaListener(topics = "yatra-suite.public.events")
     public void handleRideEvent(KafkaMessage message) throws NotFoundException, DeserializationException {
         switch (EventType.ofString(message.getMessage().getEventType())) {
             case RideStarted:
                 LOGGER.debug("[KAFKA] Received {}", message.getMessage().getEventType());
                 RideStartedEvent
-                    rideStarted =
-                    deserialize(mapper, message.getMessage().getEventData(), RideStartedEvent.class);
+                        rideStarted =
+                        deserialize(mapper, message.getMessage().getEventData(), RideStartedEvent.class);
                 vehicleService.checkoutVehicle(rideStarted.getVehicleId(), rideStarted.getStartTime());
                 break;
             case RideEnded:
                 LOGGER.debug("[KAFKA] Received {}", message.getMessage().getEventType());
                 RideEndedEvent
-                    rideEnded =
-                    deserialize(mapper, message.getMessage().getEventData(), RideEndedEvent.class);
+                        rideEnded =
+                        deserialize(mapper, message.getMessage().getEventData(), RideEndedEvent.class);
                 vehicleService.checkinVehicle(rideEnded.getVehicleId(), rideEnded.getLatitude(),
-                                              rideEnded.getLongitude(), rideEnded.getBattery(), rideEnded.getEndTime());
+                        rideEnded.getLongitude(), rideEnded.getBattery(), rideEnded.getEndTime());
                 break;
             default:
                 LOGGER.warn("[KAFKA] Received an unknown message: {}", message.getMessage().getEventType());

@@ -6,7 +6,7 @@ USERNAME="$(whoami)"
 PROJECT_PATH="$(pwd)"
 USER_HOME="/Users/${USERNAME}"
 #echo "USERNAME: ${USERNAME}, USER_HOME: ${USER_HOME}, PROJECT_PATH: ${PROJECT_PATH}"
-INPUT="${PROJECT_PATH}/micro-services.txt"
+INPUT="${PROJECT_PATH}/services.txt"
 SERVICE_NAME=""
 SERVICE_PATH=""
 cd "${PROJECT_PATH}"
@@ -24,7 +24,8 @@ do
 		echo
 		if [ -d "$SERVICE_PATH" ]; then
 		  cd "${SERVICE_PATH}"
-		  mvn clean package
+      #	./buildMaven.sh
+		  mvn clean package -DskipTests=true
 			cd "${SERVICES_PATH}"
 		fi
 		echo

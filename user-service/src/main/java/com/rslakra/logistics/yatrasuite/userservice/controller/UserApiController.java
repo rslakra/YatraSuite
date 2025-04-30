@@ -1,9 +1,9 @@
 package com.rslakra.logistics.yatrasuite.userservice.controller;
 
 import com.rslakra.appsuite.core.BeanUtils;
-import com.rslakra.microservice.yatrasuite.common.dto.MessagesDTO;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
+import com.rslakra.logistics.yatrasuite.common.dto.MessagesDTO;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.logistics.yatrasuite.userservice.Constants;
 import com.rslakra.logistics.yatrasuite.userservice.dto.UserDTO;
 import com.rslakra.logistics.yatrasuite.userservice.dto.UserResponseDTO;
@@ -15,13 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
@@ -57,9 +51,9 @@ public class UserApiController {
         LOGGER.info("[POST] /api/users");
 
         User
-            user =
-            userService.addUser(userDTO.getEmail(), userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(),
-                                userDTO.getPhoneNumbers());
+                user =
+                userService.addUser(userDTO.getEmail(), userDTO.getEmail(), userDTO.getFirstName(), userDTO.getLastName(),
+                        userDTO.getPhoneNumbers());
 
         return ResponseEntity.ok(toUserDto(user));
     }
@@ -103,7 +97,7 @@ public class UserApiController {
         /* copy phone numbers, if available. */
         if (BeanUtils.isNotEmpty(user.getPhones())) {
             userDTO.setPhoneNumbers(
-                user.getPhones().stream().map(phone -> phone.getNumber()).collect(Collectors.toList()));
+                    user.getPhones().stream().map(phone -> phone.getNumber()).collect(Collectors.toList()));
         }
 
         return userDTO;

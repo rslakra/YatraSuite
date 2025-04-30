@@ -11,8 +11,8 @@ import com.rslakra.appsuite.spring.exception.NoRecordFoundException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.appsuite.spring.service.AbstractServiceImpl;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.logistics.yatrasuite.userservice.Constants;
 import com.rslakra.logistics.yatrasuite.userservice.filter.UserFilter;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.entity.Phone;
@@ -32,13 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -51,7 +45,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
     // LOGGER
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final String[] ignoredProperties = new String[]{
-        "id", "password", "createdOn", "createdAt", "createdBy", "updatedOn", "updatedAt", "updatedBy"
+            "id", "password", "createdOn", "createdAt", "createdBy", "updatedOn", "updatedAt", "updatedBy"
     };
 
     private final static ModelMapper MODEL_MAPPER = new ModelMapper();
@@ -230,7 +224,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
     public User getById(final Long userId) {
         LOGGER.debug("+getById({})", userId);
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new NoRecordFoundException("userId:%d", userId));
+                .orElseThrow(() -> new NoRecordFoundException("userId:%d", userId));
         loadUserPhones(user);
         LOGGER.debug("-getById(), user: {}", user);
         return user;
@@ -455,7 +449,7 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public User addUser(String email, String password, String firstName, String lastName, List<String> phoneNumbers)
-        throws UserAlreadyExistsException {
+            throws UserAlreadyExistsException {
         // first check if it already exists
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
@@ -478,8 +472,8 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long> implements 
         // save phones, if available
         if (BeanUtils.isNotEmpty(phoneNumbers)) {
             Set<Phone>
-                phoneSet =
-                phoneNumbers.stream().map(phoneNumber -> new Phone(userId, phoneNumber)).collect(Collectors.toSet());
+                    phoneSet =
+                    phoneNumbers.stream().map(phoneNumber -> new Phone(userId, phoneNumber)).collect(Collectors.toSet());
             user.setPhones(phoneSet);
 
             List<Phone> phones = phoneRepository.saveAll(user.getPhones());

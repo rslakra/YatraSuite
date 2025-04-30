@@ -1,8 +1,8 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.service;
 
 import com.rslakra.appsuite.spring.service.AbstractService;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.LocationHistory;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.Vehicle;
@@ -36,7 +36,7 @@ public interface VehicleService extends AbstractService<Vehicle, UUID> {
 
     Vehicle checkinVehicle(UUID vehicleId, BigDecimal latitude, BigDecimal longitude, Integer batteryLevel,
                            LocalDateTime endTime)
-        throws NotFoundException;
+            throws NotFoundException;
 
     Vehicle checkoutVehicle(UUID vehicleId, LocalDateTime leftAt) throws NotFoundException;
 

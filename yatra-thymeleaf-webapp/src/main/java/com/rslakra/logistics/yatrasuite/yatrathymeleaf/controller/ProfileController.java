@@ -4,7 +4,7 @@ import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.account.User;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.framework.AuthUtils;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.UserService;

@@ -1,8 +1,8 @@
 package com.rslakra.logistics.yatrasuite.yatrawebapp.controller;
 
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidUUIDException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.yatrawebapp.clients.RideClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

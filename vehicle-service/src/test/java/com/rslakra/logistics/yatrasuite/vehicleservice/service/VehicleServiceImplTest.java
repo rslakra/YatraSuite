@@ -1,8 +1,9 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.service;
 
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidValueException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidValueException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.LocationHistory;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.Vehicle;
@@ -92,12 +93,12 @@ public class VehicleServiceImplTest {
     void getVehiclesWithLocation_shouldReturnAnEmptyList_ifThereAreNoVehicles() {
         int numVehicles = 20;
 
-//        when(vehicleWithLocationRepository.getVehiclesWithLocation(numVehicles)).thenReturn(new ArrayList<>());
-//
-//        List<VehicleWithLocation> vehicles = vehicleService.getVehiclesWithLocation(numVehicles);
-//
-//        assertEquals(0, vehicles.size());
-//        verify(vehicleWithLocationRepository).getVehiclesWithLocation(numVehicles);
+        //        when(vehicleWithLocationRepository.getVehiclesWithLocation(numVehicles)).thenReturn(new ArrayList<>());
+        //
+        //        List<VehicleWithLocation> vehicles = vehicleService.getVehiclesWithLocation(numVehicles);
+        //
+        //        assertEquals(0, vehicles.size());
+        //        verify(vehicleWithLocationRepository).getVehiclesWithLocation(numVehicles);
     }
 
     @Test
@@ -107,21 +108,21 @@ public class VehicleServiceImplTest {
                 .limit(numVehicles)
                 .collect(Collectors.toList());
 
-//        when(vehicleWithLocationRepository.getVehiclesWithLocation(numVehicles)).thenReturn(expected);
-//
-//        List<VehicleWithLocation> vehicles = vehicleService.getVehiclesWithLocation(numVehicles);
-//
-//        verify(vehicleWithLocationRepository).getVehiclesWithLocation(numVehicles);
-//        for (int i = 0; i < numVehicles; i++) {
-//            assertEquals(expected.get(i).getId(), vehicles.get(i).getId());
-//        }
+        //        when(vehicleWithLocationRepository.getVehiclesWithLocation(numVehicles)).thenReturn(expected);
+        //
+        //        List<VehicleWithLocation> vehicles = vehicleService.getVehiclesWithLocation(numVehicles);
+        //
+        //        verify(vehicleWithLocationRepository).getVehiclesWithLocation(numVehicles);
+        //        for (int i = 0; i < numVehicles; i++) {
+        //            assertEquals(expected.get(i).getId(), vehicles.get(i).getId());
+        //        }
     }
 
-//    @Test
-//    void getVehiclesWithLocation_shouldRequestTheMaximum_ifNumRecordsIsNull() {
-//        List<VehicleWithLocation> vehicles = vehicleService.getVehicles(null);
-//        verify(vehicleWithLocationRepository).getVehiclesWithLocation(VehicleService.MAX_VEHICLES_TO_RETURN);
-//    }
+    //    @Test
+    //    void getVehiclesWithLocation_shouldRequestTheMaximum_ifNumRecordsIsNull() {
+    //        List<VehicleWithLocation> vehicles = vehicleService.getVehicles(null);
+    //        verify(vehicleWithLocationRepository).getVehiclesWithLocation(VehicleService.MAX_VEHICLES_TO_RETURN);
+    //    }
 
     @Test
     void addVehicle_shouldSaveTheVehicleAndLocationHistory() throws InvalidValueException {
@@ -136,10 +137,8 @@ public class VehicleServiceImplTest {
                 expectedVehicleDetailDTO
         );
 
-        ArgumentCaptor<Vehicle> vehicleArgumentCaptor =
-                ArgumentCaptor.forClass(Vehicle.class);
-        ArgumentCaptor<LocationHistory> locationHistoryArgumentCaptor =
-                ArgumentCaptor.forClass(LocationHistory.class);
+        ArgumentCaptor<Vehicle> vehicleArgumentCaptor = ArgumentCaptor.forClass(Vehicle.class);
+        ArgumentCaptor<LocationHistory> locationHistoryArgumentCaptor = ArgumentCaptor.forClass(LocationHistory.class);
 
         verify(vehicleRepository).save(vehicleArgumentCaptor.capture());
         verify(locationHistoryRepository).save(locationHistoryArgumentCaptor.capture());
@@ -167,8 +166,8 @@ public class VehicleServiceImplTest {
     @Test
     public void removeVehicle_shouldThrowAnException_IfTheVehicleIsInUse() {
         Vehicle vehicle = VehicleTestUtils.createVehicle();
-//        vehicle.setLastRideStart(nextDateTime());
-//        vehicle.setLastRideEnd(null);
+        //        vehicle.setLastRideStart(nextDateTime());
+        //        vehicle.setLastRideEnd(null);
 
         when(vehicleRepository.findById(vehicle.getId())).thenReturn(Optional.of(vehicle));
 
@@ -200,9 +199,9 @@ public class VehicleServiceImplTest {
         assertThrows(NotFoundException.class, () -> {
             LocalDateTime lastRideStart = LocalDateTime.now();
             LocationHistory locationHistory = vehicle.getLastLocationHistory();
-//            if (BeanUtils.isNotNull(locationHistory)) {
-//                lastRideStart = locationHistory.getLastRideStart();
-//            }
+            if (BeanUtils.isNotNull(locationHistory)) {
+                lastRideStart = locationHistory.getVehicle().getLastRideStart();
+            }
             vehicleService.checkoutVehicle(vehicle.getId(), lastRideStart);
         });
 
@@ -214,8 +213,8 @@ public class VehicleServiceImplTest {
             throws NotFoundException, InvalidVehicleStateException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime startTime = nextDateTime();
-//        expectedVehicle.setLastRideStart(null);
-//        expectedVehicle.setLastRideEnd(null);
+        expectedVehicle.setLastRideStart(null);
+        expectedVehicle.setLastRideEnd(null);
 
         when(vehicleRepository.findById(expectedVehicle.getId())).thenReturn(Optional.of(expectedVehicle));
 
@@ -223,14 +222,14 @@ public class VehicleServiceImplTest {
 
         assertEquals(expectedVehicle.getId(), vehicle.getId());
         assertEquals(true, vehicle.isInUse());
-//        assertEquals(startTime, vehicle.getLastRideStart());
-//        assertNull(vehicle.getLastRideEnd());
+        assertEquals(startTime, vehicle.getLastRideStart());
+        assertNull(vehicle.getLastRideEnd());
         verify(vehicleRepository).save(vehicle);
     }
 
     @Test
     public void checkoutVehicle_shouldUpdateTheLastRideStart_ifThereIsAnEarlierRide()
-            throws NotFoundException, InvalidVehicleStateException {
+            throws NotFoundException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime earlierTime = nextDateTime();
         LocalDateTime laterTime = nextDateTime().plusSeconds(1000);
@@ -243,8 +242,8 @@ public class VehicleServiceImplTest {
         assertNotNull(vehicle);
         assertEquals(expectedVehicle.getId(), vehicle.getId());
         assertEquals(true, vehicle.isInUse());
-//        assertEquals(laterTime, vehicle.getLastRideStart());
-//        assertEquals(earlierTime, vehicle.getLastRideEnd());
+        //        assertEquals(laterTime, vehicle.getLastRideStart());
+        //        assertEquals(earlierTime, vehicle.getLastRideEnd());
         verify(vehicleRepository).save(vehicle);
     }
 
@@ -254,8 +253,8 @@ public class VehicleServiceImplTest {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
         LocalDateTime earlierTime = nextDateTime();
         LocalDateTime laterTime = nextDateTime().plusSeconds(1000);
-//        expectedVehicle.setLastRideStart(laterTime);
-//        expectedVehicle.setLastRideEnd(laterTime);
+        //        expectedVehicle.setLastRideStart(laterTime);
+        //        expectedVehicle.setLastRideEnd(laterTime);
 
         when(vehicleRepository.findById(expectedVehicle.getId())).thenReturn(Optional.of(expectedVehicle));
 
@@ -263,8 +262,8 @@ public class VehicleServiceImplTest {
 
         assertEquals(expectedVehicle.getId(), vehicle.getId());
         assertEquals(false, vehicle.isInUse());
-//        assertEquals(laterTime, vehicle.getLastRideStart());
-//        assertEquals(laterTime, vehicle.getLastRideEnd());
+        //        assertEquals(laterTime, vehicle.getLastRideStart());
+        //        assertEquals(laterTime, vehicle.getLastRideEnd());
         verify(vehicleRepository).save(vehicle);
     }
 
@@ -291,8 +290,8 @@ public class VehicleServiceImplTest {
     public void checkinVehicle_shouldMarkTheVehicleNotInUseAndAddLocationHistory()
             throws NotFoundException, InvalidVehicleStateException, InvalidValueException {
         Vehicle expectedVehicle = VehicleTestUtils.createVehicle();
-//        expectedVehicle.setLastRideStart(nextDateTime());
-//        expectedVehicle.setLastRideEnd(null);
+        //        expectedVehicle.setLastRideStart(nextDateTime());
+        //        expectedVehicle.setLastRideEnd(null);
         LocationHistory expectedLocationHistory = VehicleTestUtils.createLocationHistory(expectedVehicle);
 
         when(vehicleRepository.findById(expectedVehicle.getId())).thenReturn(Optional.of(expectedVehicle));
@@ -316,7 +315,7 @@ public class VehicleServiceImplTest {
         LocationHistory locationHistory = locationHistoryArgumentCaptor.getValue();
         assertEquals(expectedLocationHistory.getLatitude(), locationHistory.getLatitude());
         assertEquals(expectedLocationHistory.getLongitude(), locationHistory.getLongitude());
-//        assertEquals(expectedLocationHistory.getLastRecordedAt(), locationHistory.getLastRecordedAt());
+        //        assertEquals(expectedLocationHistory.getLastRecordedAt(), locationHistory.getLastRecordedAt());
         assertEquals(expectedLocationHistory.getVehicle().getId(), locationHistory.getVehicle().getId());
     }
 }

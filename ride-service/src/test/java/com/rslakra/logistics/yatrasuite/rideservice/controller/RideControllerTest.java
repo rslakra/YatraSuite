@@ -14,11 +14,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.yatrasuite.common.Constants;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidValueException;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.Constants;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidUUIDException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidValueException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.rideservice.dto.EndRideRequestDto;
 import com.rslakra.logistics.yatrasuite.rideservice.dto.RideDto;
 import com.rslakra.logistics.yatrasuite.rideservice.dto.RideRequestDto;

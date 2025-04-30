@@ -1,4 +1,4 @@
-//package com.rslakra.microservice.vehicleservice.persistence.entity;
+//package com.rslakra.logistics.vehicleservice.persistence.entity;
 //
 //import com.rslakra.appsuite.core.ToString;
 //import com.devamatre.framework.spring.persistence.entity.AbstractEntity;

@@ -3,8 +3,8 @@ package com.rslakra.logistics.yatrasuite.yatrawebapp.util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.rslakra.microservice.yatrasuite.common.YatraUtils;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidValueException;
+import com.rslakra.logistics.yatrasuite.common.YatraUtils;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidValueException;
 import org.junit.jupiter.api.Test;
 
 /**

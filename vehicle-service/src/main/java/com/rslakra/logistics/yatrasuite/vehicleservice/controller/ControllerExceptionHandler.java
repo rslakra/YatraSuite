@@ -1,6 +1,6 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.controller;
 
-import com.rslakra.microservice.yatrasuite.framework.advice.AbstractResponseExceptionHandler;
+import com.rslakra.logistics.yatrasuite.framework.advice.AbstractResponseExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**

@@ -87,7 +87,7 @@ spring:
           json:
             value:
               default:
-                type: com.rslakra.microservice.vehicleservice.kafka.event.KafkaMessage
+                type: com.rslakra.logistics.vehicleservice.kafka.event.KafkaMessage
 
     #The bean 'jpaAuditingHandler', defined in null, could not be registered.
     # A bean with that name has already been defined in null and overriding is disabled.

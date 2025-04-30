@@ -1,6 +1,6 @@
 package com.rslakra.logistics.yatrasuite.userservice.controller;
 
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.userservice.dto.AuthRequestDTO;
 import com.rslakra.logistics.yatrasuite.userservice.dto.AuthResponseDTO;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.entity.User;
@@ -44,7 +44,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO authRequestDTO)
-        throws NotFoundException {
+            throws NotFoundException {
         LOGGER.info("[POST] /api/auth/login");
 
         User user = userService.getUser(authRequestDTO.getEmail());

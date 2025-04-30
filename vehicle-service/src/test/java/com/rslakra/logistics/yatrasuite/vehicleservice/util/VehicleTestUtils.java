@@ -1,14 +1,5 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.util;
 
-import static com.rslakra.appsuite.core.RandomUtils.nextDateTime;
-import static com.rslakra.appsuite.core.RandomUtils.nextLatitudeBigDecimal;
-import static com.rslakra.appsuite.core.RandomUtils.nextLongitudeBigDecimal;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomId;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomInt;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomPercentage;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomString;
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomUuid;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.rslakra.logistics.yatrasuite.vehicleservice.dto.NewVehicleDTO;
 import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
@@ -25,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static com.rslakra.appsuite.core.RandomUtils.*;
 
 public enum VehicleTestUtils {
     INSTANCE;
@@ -50,13 +43,13 @@ public enum VehicleTestUtils {
         vehicle.setId(nextRandomUuid());
         vehicle.setSerialNumber(nextRandomInt(10000));
         vehicle.setBatteryLevel(nextRandomPercentage());
-//        vehicle.setLastRideStart(nextDateTime());
-//        vehicle.setLastRideEnd(nextDateTime().plusSeconds(1000));
+        //        vehicle.setLastRideStart(nextDateTime());
+        //        vehicle.setLastRideEnd(nextDateTime().plusSeconds(1000));
         vehicle.setVehicleInfo(createVehicleInfoDTO().toVehicleInfo());
 
         List<LocationHistory> locations = IntStream.range(0, nextRandomInt(5) + 1)
-            .mapToObj(i -> createLocationHistory(vehicle))
-            .collect(Collectors.toList());
+                .mapToObj(i -> createLocationHistory(vehicle))
+                .collect(Collectors.toList());
 
         vehicle.setLocationHistories(locations);
 
@@ -65,12 +58,12 @@ public enum VehicleTestUtils {
 
     public static VehicleWithLocation createVehicleWithLocation() {
         VehicleWithLocation vehicleWithLocation = new VehicleWithLocation();
-//        vehicleWithLocation.setId(nextRandomId());
+        //        vehicleWithLocation.setId(nextRandomId());
         vehicleWithLocation.setSerialNumber(nextRandomInt(10000));
         vehicleWithLocation.setBatteryLevel(nextRandomPercentage());
         vehicleWithLocation.setLastRideStart(nextDateTime());
         vehicleWithLocation.setLastRideEnd(nextDateTime().plusSeconds(1000));
-//        vehicleWithLocation.setVehicleInfo(createVehicleInfoDTO().toVehicleInfo());
+        //        vehicleWithLocation.setVehicleInfo(createVehicleInfoDTO().toVehicleInfo());
         return vehicleWithLocation;
     }
 
@@ -78,9 +71,9 @@ public enum VehicleTestUtils {
         LocationHistory locationHistory = new LocationHistory();
         locationHistory.setId(nextRandomId());
         locationHistory.setVehicle(vehicle);
-//        locationHistory.setLastRecordedAt(nextDateTime().plusSeconds(1000));
-//        locationHistory.setLastRideStart(nextDateTime());
-//        locationHistory.setLastRideEnd(nextDateTime().plusSeconds(1000));
+        //        locationHistory.setLastRecordedAt(nextDateTime().plusSeconds(1000));
+        //        locationHistory.setLastRideStart(nextDateTime());
+        //        locationHistory.setLastRideEnd(nextDateTime().plusSeconds(1000));
         locationHistory.setLatitude(nextLatitudeBigDecimal());
         locationHistory.setLongitude(nextLongitudeBigDecimal());
         return locationHistory;
@@ -93,7 +86,7 @@ public enum VehicleTestUtils {
         try {
             vehicleDetailDTO = new VehicleDetailDTO(vehicleInfo);
         } catch (JsonProcessingException ex) {
-//            throw new RuntimeException(e);
+            throw new RuntimeException(ex);
         }
 
         return vehicleDetailDTO;

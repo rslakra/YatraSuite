@@ -1,6 +1,6 @@
 package com.rslakra.logistics.yatrasuite.yatrawebapp.clients;
 
-import com.rslakra.microservice.yatrasuite.framework.advice.RestTemplateResponseErrorHandler;
+import com.rslakra.logistics.yatrasuite.framework.advice.RestTemplateResponseErrorHandler;
 import lombok.Getter;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;

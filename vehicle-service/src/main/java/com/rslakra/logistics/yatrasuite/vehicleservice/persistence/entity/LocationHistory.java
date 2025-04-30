@@ -6,15 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * The <code>LocationHistory</code> entity stores the vehicle's history details.
@@ -44,16 +37,10 @@ public class LocationHistory extends AbstractEntity<Long> {
      *
      * @return
      */
-//    @Transient
-//    public Boolean isInUse() {
-//        if (BeanUtils.isNull(getLastRideStart())) {
-//            return false;
-//        } else if (BeanUtils.isNull(getLastRideEnd())) {
-//            return true;
-//        } else {
-//            return getLastRideEnd().isAfter(getLastRideStart());
-//        }
-//    }
+    @Transient
+    public Boolean isInUse() {
+        return vehicle.isInUse();
+    }
 
 
     /**
@@ -63,13 +50,13 @@ public class LocationHistory extends AbstractEntity<Long> {
      */
     @Override
     public String toString() {
-        return ToString.of(Vehicle.class)
-            .add("id", getId())
-//            .add("lastRideStart", getLastRideStart())
-//            .add("lastRideEnd", getLastRideEnd())
-            .add("latitude", getLatitude())
-            .add("longitude", getLongitude())
-            .toString();
+        return ToString.of(LocationHistory.class)
+                .add("id", getId())
+                //            .add("lastRideStart", getLastRideStart())
+                //            .add("lastRideEnd", getLastRideEnd())
+                .add("latitude", getLatitude())
+                .add("longitude", getLongitude())
+                .toString();
     }
 
 }

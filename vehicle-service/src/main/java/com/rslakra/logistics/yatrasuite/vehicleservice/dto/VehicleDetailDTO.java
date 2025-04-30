@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rslakra.microservice.yatrasuite.framework.TimeUtils;
+import com.rslakra.logistics.yatrasuite.framework.TimeUtils;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.VehicleInfo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -108,12 +108,12 @@ public class VehicleDetailDTO {
     /**
      * @return
      */
-//    public VehicleDetail toVehicleInfo() {
-//        VehicleDetail vehicleDetail = MODEL_MAPPER.map(this, VehicleDetail.class);
-//        vehicleDetail.setManufacturer(getPurchaseInfo().getManufacturer());
-//        vehicleDetail.setPurchasedOn(getPurchaseInfo().getPurchasedOn());
-//        return vehicleDetail;
-//    }
+    //    public VehicleDetail toVehicleInfo() {
+    //        VehicleDetail vehicleDetail = MODEL_MAPPER.map(this, VehicleDetail.class);
+    //        vehicleDetail.setManufacturer(getPurchaseInfo().getManufacturer());
+    //        vehicleDetail.setPurchasedOn(getPurchaseInfo().getPurchasedOn());
+    //        return vehicleDetail;
+    //    }
     public VehicleInfo toVehicleInfo() {
         VehicleInfo vehicleDetail = MODEL_MAPPER.map(this, VehicleInfo.class);
         this.purchaseInfo = new PurchaseInfo();

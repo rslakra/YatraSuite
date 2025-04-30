@@ -1,4 +1,4 @@
-//package com.rslakra.microservice.rideservice.hibernate;
+//package com.rslakra.logistics.rideservice.hibernate;
 //
 //import lombok.Getter;
 //import lombok.Setter;

@@ -55,7 +55,7 @@ spring:
     # spring.jpa.open-in-view is enabled by default.
     open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
-    #    database-platform: com.rslakra.microservice.rideservice.hibernate.JsonH2Dialect
+    #    database-platform: com.rslakra.logistics.rideservice.hibernate.JsonH2Dialect
     #    defer-datasource-initialization: true
     show-sql: true
 

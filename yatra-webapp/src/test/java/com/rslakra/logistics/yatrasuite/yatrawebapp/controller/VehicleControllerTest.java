@@ -8,7 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidUUIDException;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidUUIDException;
 import com.rslakra.logistics.yatrasuite.yatrawebapp.clients.VehicleClient;
 import com.rslakra.logistics.yatrasuite.yatrawebapp.util.TestHelpers;
 import org.junit.jupiter.api.BeforeEach;

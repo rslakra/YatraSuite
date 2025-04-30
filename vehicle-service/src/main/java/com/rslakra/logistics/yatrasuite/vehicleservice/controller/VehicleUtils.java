@@ -1,12 +1,9 @@
 package com.rslakra.logistics.yatrasuite.vehicleservice.controller;
 
 import com.rslakra.appsuite.core.BeanUtils;
-import com.rslakra.microservice.yatrasuite.framework.TimeUtils;
-import com.rslakra.microservice.yatrasuite.framework.advice.AbstractResponse;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.LocationHistoryDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleWithHistoryDTO;
-import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleWithLocationDTO;
+import com.rslakra.logistics.yatrasuite.framework.TimeUtils;
+import com.rslakra.logistics.yatrasuite.framework.advice.AbstractResponse;
+import com.rslakra.logistics.yatrasuite.vehicleservice.dto.*;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.LocationHistory;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.Vehicle;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.VehicleInfo;
@@ -37,8 +34,8 @@ public enum VehicleUtils {
      */
     public static List<VehicleWithLocationDTO> toVehicleWithLocationDTOs(List<Vehicle> vehicles) {
         return vehicles.stream()
-            .map(vehicle -> toVehicleWithLocationDto(vehicle))
-            .collect(Collectors.toList());
+                .map(vehicle -> toVehicleWithLocationDto(vehicle))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -48,26 +45,20 @@ public enum VehicleUtils {
      * @return List of VehicleWithLocationDTO's
      */
     public static List<VehicleWithLocationDTO> toVehicleWithLocationDTOList(
-        List<VehicleWithLocation> vehicleWithLocations) {
+            List<VehicleWithLocation> vehicleWithLocations) {
         return vehicleWithLocations.stream()
-            .map(vehicleWithLocation -> toVehicleWithLocationDTO(vehicleWithLocation))
-            .collect(Collectors.toList());
+                .map(vehicleWithLocation -> toVehicleWithLocationDTO(vehicleWithLocation))
+                .collect(Collectors.toList());
     }
 
     /**
      * @param vehicleDetail
      * @return
      */
-//    public static VehicleDetailDTO toVehicleDetailDto(VehicleDetail vehicleDetail) {
-//        VehicleDetailDTO vehicleDetailDTO = MODEL_MAPPER.map(vehicleDetail, VehicleDetailDTO.class);
-//        vehicleDetailDTO.setPurchaseInfo(MODEL_MAPPER.map(vehicleDetail, PurchaseInfo.class));
-////        vehicleDetailDTO.getPurchaseInfo().setSerialNumber(vehicle.getSerialNumber());
-//        return vehicleDetailDTO;
-//    }
     public static VehicleDetailDTO toVehicleDetailDto(VehicleInfo vehicleDetail) {
         VehicleDetailDTO vehicleDetailDTO = MODEL_MAPPER.map(vehicleDetail, VehicleDetailDTO.class);
-//        vehicleDetailDTO.setPurchaseInfo(MODEL_MAPPER.map(vehicleDetail, PurchaseInfo.class));
-//        vehicleDetailDTO.getPurchaseInfo().setSerialNumber(vehicleDetail.getPurchaseInfo().getSerialNumber());
+        vehicleDetailDTO.setPurchaseInfo(MODEL_MAPPER.map(vehicleDetail, PurchaseInfo.class));
+        vehicleDetailDTO.getPurchaseInfo().setSerialNumber(vehicleDetail.getPurchaseInfo().getSerialNumber());
         return vehicleDetailDTO;
     }
 
@@ -76,7 +67,7 @@ public enum VehicleUtils {
      * @return
      */
     public static VehicleDetailDTO toVehicleDetailDto(Vehicle vehicle) {
-//        VehicleDetailDTO vehicleDetail = toVehicleDetailDto(vehicle.getVehicleDetail());
+        //                VehicleDetailDTO vehicleDetail = toVehicleDetailDto(vehicle.getVehicleDetail());
         VehicleDetailDTO vehicleDetail = toVehicleDetailDto(vehicle.getVehicleInfo());
         vehicleDetail.getPurchaseInfo().setSerialNumber(vehicle.getSerialNumber());
         return vehicleDetail;
@@ -101,16 +92,16 @@ public enum VehicleUtils {
     public static VehicleWithLocationDTO toVehicleWithLocationDto(Vehicle vehicle) {
         VehicleWithLocationDTO vehicleWithLocationDTO = MODEL_MAPPER.map(vehicle, VehicleWithLocationDTO.class);
         vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicle));
-//        vehicleWithLocationDTO.setVin(vehicle.getVehicleDetail().getVin());
+        //        vehicleWithLocationDTO.setVin(vehicle.getVehicleDetail().getVin());
         vehicleWithLocationDTO.setInUse(vehicle.isInUse());
 
         // get the location history info (already sorted, descending by timestamp)
         if (!vehicle.getLocationHistories().isEmpty()) {
             LocationHistory locationHistory = vehicle.getLocationHistories().get(0);
-//            vehicleWithLocationDTO.setLastRecordedAt(TimeUtils.toLocalDateTime(locationHistory.getUpdatedAt()));
+            //            vehicleWithLocationDTO.setLastRecordedAt(TimeUtils.toLocalDateTime(locationHistory.getUpdatedAt()));
             vehicleWithLocationDTO.setTimestamp(TimeUtils.toLocalDateTime(locationHistory.getUpdatedAt()));
-//            vehicleWithLocationDTO.setLastRideStart(locationHistory.getLastRideStart());
-//            vehicleWithLocationDTO.setLastRideEnd(locationHistory.getLastRideEnd());
+            //            vehicleWithLocationDTO.setLastRideStart(locationHistory.getLastRideStart());
+            //            vehicleWithLocationDTO.setLastRideEnd(locationHistory.getLastRideEnd());
             vehicleWithLocationDTO.setLastLatitude(locationHistory.getLatitude());
             vehicleWithLocationDTO.setLastLongitude(locationHistory.getLongitude());
         }
@@ -126,10 +117,10 @@ public enum VehicleUtils {
      */
     public static VehicleWithLocationDTO toVehicleWithLocationDTO(VehicleWithLocation vehicleWithLocation) {
         VehicleWithLocationDTO
-            vehicleWithLocationDTO =
-            MODEL_MAPPER.map(vehicleWithLocation, VehicleWithLocationDTO.class);
-//        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicleWithLocation.getVehicleDetail()));
-//        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicleWithLocation.getVehicleDetail()).toMap());
+                vehicleWithLocationDTO =
+                MODEL_MAPPER.map(vehicleWithLocation, VehicleWithLocationDTO.class);
+        //        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicleWithLocation.getVehicleDetail()));
+        //        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicleWithLocation.getVehicleDetail()).toMap());
 
         return vehicleWithLocationDTO;
     }
@@ -142,8 +133,8 @@ public enum VehicleUtils {
         List<LocationHistoryDTO> locationHistoryDTOList = new ArrayList<>();
         if (BeanUtils.isNotEmpty(locationHistories)) {
             locationHistoryDTOList = locationHistories.stream()
-                .map(locationHistory -> toLocationHistoryDto(locationHistory))
-                .collect(Collectors.toList());
+                    .map(locationHistory -> toLocationHistoryDto(locationHistory))
+                    .collect(Collectors.toList());
         }
 
         return locationHistoryDTOList;
@@ -157,11 +148,11 @@ public enum VehicleUtils {
      */
     public static VehicleWithHistoryDTO toVehicleWithHistoryDTO(Vehicle vehicle) {
         VehicleWithHistoryDTO vehicleWithLocationDTO = MODEL_MAPPER.map(vehicle, VehicleWithHistoryDTO.class);
-//        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicle));
-//        vehicleWithLocationDTO.setVin(vehicle.getVehicleDetail().getVin());
+        //        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicle));
+        //        vehicleWithLocationDTO.setVin(vehicle.getVehicleDetail().getVin());
         vehicleWithLocationDTO.setInUse(vehicle.isInUse());
         vehicleWithLocationDTO.setLocationDetails(fromLocationHistory(vehicle.getLocationHistories()));
-//        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicle.getVehicleDetail()).toMap());
+        //        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicle.getVehicleDetail()).toMap());
         return vehicleWithLocationDTO;
     }
 

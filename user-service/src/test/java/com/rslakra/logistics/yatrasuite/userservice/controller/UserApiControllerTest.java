@@ -1,14 +1,7 @@
 package com.rslakra.logistics.yatrasuite.userservice.controller;
 
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.logistics.yatrasuite.userservice.dto.UserDTO;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.entity.User;
 import com.rslakra.logistics.yatrasuite.userservice.service.UserService;
@@ -17,6 +10,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests <code>UserApiController</code>
@@ -55,7 +53,7 @@ class UserApiControllerTest {
         assertEquals(expected.getEmail(), user.getEmail());
         assertEquals(expected.getFirstName(), user.getFirstName());
         assertEquals(expected.getLastName(), user.getLastName());
-//        assertEquals(expected.getPhones(), user.getPhoneNumbers());
+        //        assertEquals(expected.getPhones(), user.getPhoneNumbers());
     }
 
     @Test
@@ -63,7 +61,7 @@ class UserApiControllerTest {
         UserDTO dto = UserTestUtils.createUserDTO();
 
         when(userService.addUser(dto.getEmail(), dto.getEmail(), dto.getFirstName(), dto.getLastName(),
-                                 dto.getPhoneNumbers())).thenThrow(new UserAlreadyExistsException("BOOM"));
+                dto.getPhoneNumbers())).thenThrow(new UserAlreadyExistsException("BOOM"));
 
         assertThrows(UserAlreadyExistsException.class, () -> {
             controller.addUser(dto);
@@ -76,16 +74,16 @@ class UserApiControllerTest {
         UserDTO dto = UserTestUtils.toUserDTO(user);
 
         when(userService.addUser(dto.getEmail(), dto.getEmail(), dto.getFirstName(), dto.getLastName(),
-                                 dto.getPhoneNumbers())).thenReturn(user);
+                dto.getPhoneNumbers())).thenReturn(user);
 
         UserDTO result = controller.addUser(dto).getBody();
 
         verify(userService).addUser(dto.getEmail(), dto.getEmail(), dto.getFirstName(), dto.getLastName(),
-                                    dto.getPhoneNumbers());
+                dto.getPhoneNumbers());
         assertEquals(dto.getEmail(), result.getEmail());
         assertEquals(dto.getFirstName(), result.getFirstName());
         assertEquals(dto.getLastName(), result.getLastName());
-//        assertEquals(dto.getPhoneNumbers(), result.getPhoneNumbers());
+        //        assertEquals(dto.getPhoneNumbers(), result.getPhoneNumbers());
     }
 
     @Test

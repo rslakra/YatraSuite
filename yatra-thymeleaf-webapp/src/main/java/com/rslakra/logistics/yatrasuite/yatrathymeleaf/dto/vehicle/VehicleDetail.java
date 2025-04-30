@@ -2,7 +2,7 @@ package com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle;
 
 import com.rslakra.appsuite.core.ToString;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.rslakra.microservice.yatrasuite.framework.TimeUtils;
+import com.rslakra.logistics.yatrasuite.framework.TimeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

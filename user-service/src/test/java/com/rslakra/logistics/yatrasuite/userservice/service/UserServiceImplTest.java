@@ -1,15 +1,7 @@
 package com.rslakra.logistics.yatrasuite.userservice.service;
 
-import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.entity.User;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.repository.PhoneRepository;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.repository.RoleRepository;
@@ -24,6 +16,12 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
 import java.util.Optional;
+
+import static com.rslakra.appsuite.core.RandomUtils.nextRandomEmail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit Tests for <code>UserServiceImpl</code>
@@ -54,7 +52,7 @@ public class UserServiceImplTest {
 
         Exception exception = assertThrows(UserAlreadyExistsException.class, () -> {
             userService.addUser(expected.getEmail(), null, expected.getFirstName(), expected.getLastName(),
-                                UserTestUtils.toPhoneNumbers(expected));
+                    UserTestUtils.toPhoneNumbers(expected));
         });
 
         assertEquals("User email <" + expected.getEmail() + "> already exists", exception.getMessage());
@@ -68,7 +66,7 @@ public class UserServiceImplTest {
         when(userRepository.save(any(User.class))).thenReturn(expected);
 
         userService.addUser(expected.getEmail(), null, expected.getFirstName(), expected.getLastName(),
-                            UserTestUtils.toPhoneNumbers(expected));
+                UserTestUtils.toPhoneNumbers(expected));
 
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());

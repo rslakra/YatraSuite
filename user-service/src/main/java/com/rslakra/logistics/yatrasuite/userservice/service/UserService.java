@@ -2,8 +2,8 @@ package com.rslakra.logistics.yatrasuite.userservice.service;
 
 import com.rslakra.appsuite.core.enums.RoleType;
 import com.rslakra.appsuite.spring.service.AbstractService;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
-import com.rslakra.microservice.yatrasuite.common.exception.UserAlreadyExistsException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.exception.UserAlreadyExistsException;
 import com.rslakra.logistics.yatrasuite.userservice.persistence.entity.User;
 
 import java.util.List;
@@ -84,7 +84,7 @@ public interface UserService extends AbstractService<User, Long> {
      * @throws UserAlreadyExistsException
      */
     User addUser(String email, String password, String firstName, String lastName, List<String> phoneNumbers)
-        throws UserAlreadyExistsException;
+            throws UserAlreadyExistsException;
 
     /**
      * @param email

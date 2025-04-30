@@ -5,9 +5,9 @@ import com.rslakra.appsuite.spring.exception.NoRecordFoundException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.appsuite.spring.service.AbstractServiceImpl;
-import com.rslakra.microservice.yatrasuite.common.Constants;
-import com.rslakra.microservice.yatrasuite.common.exception.InvalidVehicleStateException;
-import com.rslakra.microservice.yatrasuite.common.exception.NotFoundException;
+import com.rslakra.logistics.yatrasuite.common.Constants;
+import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
+import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.vehicleservice.dto.VehicleDetailDTO;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.LocationHistory;
 import com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.Vehicle;
@@ -167,7 +167,7 @@ public class VehicleServiceImpl extends AbstractServiceImpl<Vehicle, UUID> imple
         vehicle.setId(UUID.randomUUID());
         vehicle.setSerialNumber(vehicleDetailDTO.getPurchaseInfo().getSerialNumber());
         vehicle.setBatteryLevel(batteryLevel);
-//        vehicle.setVehicleDetail(vehicleDetailDTO.toVehicleInfo());
+        //        vehicle.setVehicleDetail(vehicleDetailDTO.toVehicleInfo());
         vehicle.setVehicleInfo(vehicleDetailDTO.toVehicleInfo());
         vehicle.addLocationHistory(createLocationHistory(vehicle, latitude, longitude));
         LOGGER.debug("vehicle:{}", vehicle);
@@ -204,8 +204,8 @@ public class VehicleServiceImpl extends AbstractServiceImpl<Vehicle, UUID> imple
             List<LocationHistory> locationHistories = locationHistoryRepository.findAll();
             vehicles.stream().forEach(vehicle -> {
                 List<LocationHistory> locationHistoryList = locationHistories.stream()
-                    .filter(locationHistory -> locationHistory.getVehicle().getId().equals(vehicle.getId()))
-                    .collect(Collectors.toList());
+                        .filter(locationHistory -> locationHistory.getVehicle().getId().equals(vehicle.getId()))
+                        .collect(Collectors.toList());
                 vehicle.setLocationHistories(locationHistoryList);
             });
         }
@@ -292,7 +292,7 @@ public class VehicleServiceImpl extends AbstractServiceImpl<Vehicle, UUID> imple
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public Vehicle checkinVehicle(UUID vehicleId, BigDecimal latitude, BigDecimal longitude, Integer batteryLevel,
                                   LocalDateTime endTime)
-        throws NotFoundException {
+            throws NotFoundException {
         Vehicle vehicle = getVehicle(vehicleId);
         addLocationHistory(vehicle, latitude, longitude);
 

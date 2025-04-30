@@ -1,4 +1,4 @@
-//package com.rslakra.microservice.rideservice.hibernate;
+//package com.rslakra.logistics.rideservice.hibernate;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.devamatre.framework.core.BeanUtils;
