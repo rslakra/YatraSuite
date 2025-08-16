@@ -4,6 +4,7 @@ import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.account.User;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.framework.AuthUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * REST Controller to manage user activities
@@ -28,13 +30,13 @@ import java.util.Map;
 @Controller
 @RequestMapping("${uiPrefix}/profile")
 public class ProfileController extends AbstractWebController<User, Long> {
-
+    
     private static final Logger LOGGER = LogManager.getLogger(ProfileController.class);
     public static final String VIEW_USER_PROFILE = "views/user/userProfile";
     public static final String MODEL_ATTR_USER = "user";
-
+    
     private final UserService userService;
-
+    
     /**
      * @param userService
      */
@@ -43,7 +45,17 @@ public class ProfileController extends AbstractWebController<User, Long> {
         LOGGER.debug("ProfileController({})", userService);
         this.userService = userService;
     }
-
+    
+    /**
+     * @param serviceOperation
+     * @param user
+     * @return
+     */
+    @Override
+    public User validate(ServiceOperation serviceOperation, User user) {
+        return super.validate(serviceOperation, user);
+    }
+    
     /**
      * @return
      */
@@ -51,7 +63,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
     public Parser<User> getParser() {
         return null;
     }
-
+    
     /**
      * @param user
      * @return
@@ -60,7 +72,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
     public String save(User user) {
         return null;
     }
-
+    
     /**
      * @param model
      * @return
@@ -69,7 +81,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
     public String getAll(Model model) {
         return null;
     }
-
+    
     /**
      * Gets a user.
      *
@@ -89,7 +101,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
         LOGGER.debug("-getProfile(), userProfile:{}, user:{}", VIEW_USER_PROFILE, user);
         return VIEW_USER_PROFILE;
     }
-
+    
     /**
      * @param model
      * @param filter
@@ -99,7 +111,7 @@ public class ProfileController extends AbstractWebController<User, Long> {
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -109,17 +121,17 @@ public class ProfileController extends AbstractWebController<User, Long> {
     public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * @param model
-     * @param aLong
+     * @param userId
      * @return
      */
     @Override
-    public String editObject(Model model, Long aLong) {
-        return null;
+    public String editObject(Model model, Optional<Long> userId) {
+        return "";
     }
-
+    
     /**
      * @param model
      * @param aLong

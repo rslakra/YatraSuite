@@ -24,8 +24,8 @@ do
 		echo
 		if [ -d "$SERVICE_PATH" ]; then
 		  cd "${SERVICE_PATH}"
-      #	./buildMaven.sh
-		  mvn clean package -DskipTests=true
+      ./buildMaven.sh
+      # mvn clean package -DskipTests=true
 			cd "${SERVICES_PATH}"
 		fi
 		echo

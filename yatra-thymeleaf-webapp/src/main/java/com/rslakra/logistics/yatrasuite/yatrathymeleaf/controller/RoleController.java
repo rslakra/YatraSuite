@@ -1,7 +1,5 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.core.Payload;
 import com.rslakra.appsuite.core.enums.EntityStatus;
@@ -9,6 +7,7 @@ import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.account.Role;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.RoleService;
 import org.apache.logging.log4j.LogManager;
@@ -22,19 +21,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * REST Controller to manage user activities
@@ -43,9 +38,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("${uiPrefix}/roles")
 public class RoleController extends AbstractWebController<Role, Long> {
-
+    
     private static final Logger LOGGER = LogManager.getLogger(RoleController.class);
-
+    
     public static final String VIEW_ROLES = "views/role/listRoles";
     public static final String REDIRECT_VIEW_ROLES = "redirect:/ui/roles";
     public static final String VIEW_ROLE_FORM = "views/role/editRole";
@@ -58,9 +53,9 @@ public class RoleController extends AbstractWebController<Role, Long> {
     public static final String ID = "id";
     public static final String PATH_ID = "/{id}";
     public static final String X_REQUESTED_WITH_XML_HTTP_REQUEST = "X-Requested-With=XMLHttpRequest";
-
+    
     private final RoleService roleService;
-
+    
     /**
      * @param roleService
      */
@@ -69,7 +64,17 @@ public class RoleController extends AbstractWebController<Role, Long> {
         LOGGER.debug("RoleController({})", roleService);
         this.roleService = roleService;
     }
-
+    
+    /**
+     * @param serviceOperation
+     * @param role
+     * @return
+     */
+    @Override
+    public Role validate(ServiceOperation serviceOperation, Role role) {
+        return super.validate(serviceOperation, role);
+    }
+    
     /**
      * Saves the <code>T</code> object.
      *
@@ -86,10 +91,10 @@ public class RoleController extends AbstractWebController<Role, Long> {
         } else {
             role = roleService.create(role);
         }
-
+        
         return REDIRECT_VIEW_ROLES;
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -106,7 +111,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
         LOGGER.debug("-getAll(), listRoles:{}", VIEW_ROLES);
         return VIEW_ROLES;
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -118,7 +123,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -128,7 +133,8 @@ public class RoleController extends AbstractWebController<Role, Long> {
     public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
-
+    
+    
     /**
      * Displays Create/Update object page.
      *
@@ -138,11 +144,11 @@ public class RoleController extends AbstractWebController<Role, Long> {
      */
     @GetMapping(path = {"/create", PATH_ID + "/update"})
     @Override
-    public String editObject(Model model, @PathVariable(value = ID, required = false) Long id) {
+    public String editObject(Model model, @PathVariable(value = ID, required = false) Optional<Long> id) {
         LOGGER.debug("+editObject({}, {})", model, id);
         Role role = null;
-        if (BeanUtils.isNotNull(id)) {
-            role = roleService.getById(id);
+        if (id.isPresent()) {
+            role = roleService.getById(id.get());
             if (BeanUtils.isNull(role)) {
                 throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
             }
@@ -153,19 +159,19 @@ public class RoleController extends AbstractWebController<Role, Long> {
         LOGGER.debug("-editObject(), editObject:{}, role:{}", VIEW_ROLE_FORM, role);
         return VIEW_ROLE_FORM;
     }
-
+    
     /**
      * @param model
      * @param id
      * @return
      */
     @GetMapping(value = PATH_ID, headers = {X_REQUESTED_WITH_XML_HTTP_REQUEST})
-    public String editObjectPartially(Model model, @PathVariable(ID) Long id) {
+    public String editObjectPartially(Model model, @PathVariable(ID) Optional<Long> id) {
         LOGGER.info("Requesting role={} via XHR request.", id);
         // Let Thymeleaf only return the th:fragment="form" within the view
         return editObject(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * @param id
      * @param paramName
@@ -180,7 +186,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
         if (BeanUtils.isNull(role)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         // validate the param key/value and edit it.
         if ("name".equalsIgnoreCase(paramName)) {
             role.setName(paramValue);
@@ -190,11 +196,11 @@ public class RoleController extends AbstractWebController<Role, Long> {
             LOGGER.warn("Invalid Update Role Request! Parameter name=[{}], value=[{}]", paramName, paramValue);
             return;
         }
-
+        
         role = roleService.update(role);
         LOGGER.debug("-saveObjectPartially(), role:{}", role);
     }
-
+    
     /**
      * Displays Delete Role Page.
      *
@@ -209,12 +215,12 @@ public class RoleController extends AbstractWebController<Role, Long> {
         if (BeanUtils.isNull(role)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         model.addAttribute(MODEL_ATTR_ROLE, role);
         LOGGER.debug("-showDeletePage(), deleteRolePage:{}", VIEW_ROLE_DELETE);
         return VIEW_ROLE_DELETE;
     }
-
+    
     /**
      * @param model
      * @param id
@@ -226,7 +232,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
         // Let Thymeleaf only return the th:fragment="form" within the view
         return showDeletePage(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -241,12 +247,12 @@ public class RoleController extends AbstractWebController<Role, Long> {
         if (BeanUtils.isEmpty(id)) {
             throw new InvalidRequestException("The ID should provide!");
         }
-
+        
         roleService.delete(id);
         LOGGER.debug("-delete(), redirectView:{}", REDIRECT_VIEW_ROLES);
         return REDIRECT_VIEW_ROLES;
     }
-
+    
     /**
      * @return
      */
@@ -254,7 +260,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
     public Parser<Role> getParser() {
         return null;
     }
-
+    
     /**
      * Displays the upload <code>Roles</code> UI.
      *
@@ -264,7 +270,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
     public String showUploadPage() {
         return VIEW_UPLOAD_ROLES;
     }
-
+    
     /**
      * Uploads the file of <code>Roles</code>.
      *
@@ -295,11 +301,11 @@ public class RoleController extends AbstractWebController<Role, Long> {
 //            payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
 //            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
 //        }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -330,10 +336,10 @@ public class RoleController extends AbstractWebController<Role, Long> {
 //        if (Objects.nonNull(inputStreamResource)) {
 //            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
 //        }
-
+        
         return responseEntity;
     }
-
+    
     /**
      * Displays role's section.
      *

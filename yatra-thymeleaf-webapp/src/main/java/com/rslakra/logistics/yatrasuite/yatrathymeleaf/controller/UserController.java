@@ -1,7 +1,5 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.core.Payload;
 import com.rslakra.appsuite.core.enums.EntityStatus;
@@ -9,6 +7,7 @@ import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.account.User;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.UserService;
@@ -23,20 +22,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * REST Controller to manage user activities
@@ -45,9 +39,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("${uiPrefix}/users")
 public class UserController extends AbstractWebController<User, Long> {
-
+    
     private static final Logger LOGGER = LogManager.getLogger(UserController.class);
-
+    
     public static final String VIEW_USERS = "views/user/listUsers";
     public static final String REDIRECT_VIEW_USERS = "redirect:/ui/users";
     public static final String VIEW_USER_FORM = "views/user/editUser";
@@ -60,9 +54,9 @@ public class UserController extends AbstractWebController<User, Long> {
     public static final String ID = "id";
     public static final String PATH_ID = "/{id}";
     public static final String X_REQUESTED_WITH_XML_HTTP_REQUEST = "X-Requested-With=XMLHttpRequest";
-
+    
     private final UserService userService;
-
+    
     /**
      * @param userService
      */
@@ -71,7 +65,17 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.debug("UserController({})", userService);
         this.userService = userService;
     }
-
+    
+    /**
+     * @param serviceOperation
+     * @param user
+     * @return
+     */
+    @Override
+    public User validate(ServiceOperation serviceOperation, User user) {
+        return super.validate(serviceOperation, user);
+    }
+    
     /**
      * Saves the <code>T</code> object.
      *
@@ -91,10 +95,10 @@ public class UserController extends AbstractWebController<User, Long> {
             }
             user = userService.create(user);
         }
-
+        
         return REDIRECT_VIEW_USERS;
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -111,7 +115,7 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.debug("-getAll(), listUsers:{}", VIEW_USERS);
         return VIEW_USERS;
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -123,7 +127,7 @@ public class UserController extends AbstractWebController<User, Long> {
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -133,7 +137,7 @@ public class UserController extends AbstractWebController<User, Long> {
     public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Displays Create/Update object page.
      *
@@ -143,11 +147,11 @@ public class UserController extends AbstractWebController<User, Long> {
      */
     @GetMapping(path = {"/create", PATH_ID + "/update"})
     @Override
-    public String editObject(Model model, @PathVariable(value = ID, required = false) Long id) {
+    public String editObject(Model model, @PathVariable(value = ID, required = false) Optional<Long> id) {
         LOGGER.debug("+editObject({}, {})", model, id);
         User user = null;
-        if (BeanUtils.isNotNull(id)) {
-            user = userService.getById(id);
+        if (id.isPresent()) {
+            user = userService.getById(id.get());
             if (BeanUtils.isNull(user)) {
                 throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
             }
@@ -158,19 +162,19 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.debug("-editObject(), editObject:{}, user:{}", VIEW_USER_FORM, user);
         return VIEW_USER_FORM;
     }
-
+    
     /**
      * @param model
      * @param id
      * @return
      */
     @GetMapping(value = PATH_ID, headers = {X_REQUESTED_WITH_XML_HTTP_REQUEST})
-    public String editObjectPartially(Model model, @PathVariable(ID) Long id) {
+    public String editObjectPartially(Model model, @PathVariable(ID) Optional<Long> id) {
         LOGGER.info("Requesting user={} via XHR request.", id);
         // Let Thymeleaf only return the th:fragment="form" within the view
         return editObject(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * @param id
      * @param paramName
@@ -185,7 +189,7 @@ public class UserController extends AbstractWebController<User, Long> {
         if (BeanUtils.isNull(user)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         // validate the param key/value and edit it.
         if ("email".equalsIgnoreCase(paramName)) {
             user.setEmail(paramValue);
@@ -201,11 +205,11 @@ public class UserController extends AbstractWebController<User, Long> {
             LOGGER.warn("Invalid User's Update Request! Parameter name=[{}], value=[{}]", paramName, paramValue);
             return;
         }
-
+        
         user = userService.update(user);
         LOGGER.debug("-saveObjectPartially(), user:{}", user);
     }
-
+    
     /**
      * Displays Delete User Page.
      *
@@ -220,12 +224,12 @@ public class UserController extends AbstractWebController<User, Long> {
         if (BeanUtils.isNull(user)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         model.addAttribute(MODEL_ATTR_USER, user);
         LOGGER.debug("-showDeletePage(), deleteUserPage:{}", VIEW_USER_DELETE);
         return VIEW_USER_DELETE;
     }
-
+    
     /**
      * @param model
      * @param id
@@ -237,7 +241,7 @@ public class UserController extends AbstractWebController<User, Long> {
         // Let Thymeleaf only return the th:fragment="form" within the view
         return showDeletePage(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * Gets a user.
      *
@@ -250,7 +254,7 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.info("[GET] /ui/users/{email}");
         return ResponseEntity.ok(userService.getByEmail(email));
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -269,7 +273,7 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.debug("-delete(), redirectView:{}", REDIRECT_VIEW_USERS);
         return REDIRECT_VIEW_USERS;
     }
-
+    
     /**
      * Deletes a user.
      *
@@ -285,7 +289,7 @@ public class UserController extends AbstractWebController<User, Long> {
         LOGGER.debug("-delete(), user:{}", user);
         return ResponseEntity.ok(user);
     }
-
+    
     /**
      * @return
      */
@@ -293,7 +297,7 @@ public class UserController extends AbstractWebController<User, Long> {
     public Parser<User> getParser() {
         return null;
     }
-
+    
     /**
      * Displays the upload <code>Users</code> UI.
      *
@@ -303,7 +307,7 @@ public class UserController extends AbstractWebController<User, Long> {
     public String showUploadPage() {
         return VIEW_UPLOAD_USERS;
     }
-
+    
     /**
      * Uploads the file of <code>Users</code>.
      *
@@ -334,11 +338,11 @@ public class UserController extends AbstractWebController<User, Long> {
 //            payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
 //            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
 //        }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -369,9 +373,9 @@ public class UserController extends AbstractWebController<User, Long> {
 //        if (Objects.nonNull(inputStreamResource)) {
 //            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
 //        }
-
+        
         return responseEntity;
     }
-
+    
 }
 

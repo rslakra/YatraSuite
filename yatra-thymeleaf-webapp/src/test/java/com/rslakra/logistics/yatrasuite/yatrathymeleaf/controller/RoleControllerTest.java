@@ -1,10 +1,5 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.rslakra.appsuite.core.enums.EntityStatus;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.account.Role;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.RoleService;
@@ -19,18 +14,22 @@ import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RoleControllerTest {
-
-    private static final Long ROLE_ID = Long.valueOf(0);
+    
+    private static final Optional<Long> ROLE_ID = Optional.of(Long.valueOf(0));
     @Mock
     private RoleService roleService;
     @InjectMocks
     private RoleController controller;
     private Model model;
     private Role role;
-
+    
     /**
      *
      */
@@ -41,7 +40,7 @@ class RoleControllerTest {
         role.setName("RoleName");
         role.setStatus(EntityStatus.INACTIVE);
     }
-
+    
     @Test
     void shouldShowAllRoles() {
         List<Role> roles = new ArrayList<>();
@@ -50,11 +49,11 @@ class RoleControllerTest {
         assertThat(view).isEqualTo(RoleController.VIEW_ROLES);
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
     }
-
+    
     private void mockFindRole() {
         when(roleService.getById(Long.valueOf(0))).thenReturn(role);
     }
-
+    
     @Test
     void shouldShowRoleFormPage() {
         mockFindRole();
@@ -63,7 +62,7 @@ class RoleControllerTest {
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
 //        assertThat(model).containsEntry(RoleController.MODEL_ATTR_ROLE, role);
     }
-
+    
     @Test
     void shouldShowRoleFormFragment() {
         mockFindRole();
@@ -72,7 +71,7 @@ class RoleControllerTest {
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
 //        assertThat(model).containsEntry(RoleController.MODEL_ATTR_ROLE, role);
     }
-
+    
     @Test
     void shouldEditRole() {
         String view = controller.editObject(model, ROLE_ID);
@@ -80,34 +79,34 @@ class RoleControllerTest {
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
         verify(roleService).update(role);
     }
-
+    
     @Test
     void shouldEditRoleName() {
         mockFindRole();
         String roleName = "Test Role";
         controller.saveObjectPartially(RoleController.ID, "name", roleName);
         assertThat(role.getName()).isEqualTo(roleName);
-
+        
         verify(roleService).update(role);
     }
-
+    
     @Test
     void shouldEditRoleStatus() {
         mockFindRole();
         String roleStaus = EntityStatus.INACTIVE.name();
         controller.saveObjectPartially(RoleController.ID, "status", roleStaus);
         assertThat(role.getStatus().name()).isEqualTo(roleStaus);
-
+        
         verify(roleService).update(role);
     }
-
+    
     @Test
     void shouldNotEditRoleIfParamIsUnknown() {
         mockFindRole();
         controller.saveObjectPartially(RoleController.ID, "unsupported", "UNKNOWN");
         verify(roleService, never()).update(role);
     }
-
+    
     @Test
     void shouldShowDeleteRolePage() {
         mockFindRole();
@@ -117,7 +116,7 @@ class RoleControllerTest {
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
 //        assertThat(model).containsEntry(RoleController.MODEL_ATTR_ROLE, role);
     }
-
+    
     @Test
     void shouldShowDeleteRoleFormFragment() {
         mockFindRole();
@@ -126,14 +125,14 @@ class RoleControllerTest {
         assertThat(model.containsAttribute(RoleController.MODEL_ATTR_ROLES));
 //        assertThat(model).containsEntry(RoleController.MODEL_ATTR_ROLE, role);
     }
-
+    
     @Test
     void shouldDeleteRole() {
-        String view = controller.delete(model, ROLE_ID);
+        String view = controller.delete(model, ROLE_ID.get());
         assertThat(view).isEqualTo(RoleController.VIEW_ROLE_DELETE);
 //        assertThat(view.isRedirectView()).isTrue();
 //        assertThat(view.getUrl()).isEqualTo("/ui/roles");
-        verify(roleService).delete(ROLE_ID);
+        verify(roleService).delete(ROLE_ID.get());
     }
 
 //    @Test

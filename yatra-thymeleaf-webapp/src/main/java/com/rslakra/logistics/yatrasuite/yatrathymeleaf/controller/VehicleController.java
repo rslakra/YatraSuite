@@ -1,13 +1,12 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.core.Payload;
 import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle.Vehicle;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.VehicleService;
 import org.apache.logging.log4j.LogManager;
@@ -21,20 +20,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * REST Controller to manage basic vehicle activities
@@ -44,9 +39,9 @@ import java.util.UUID;
 @RequestMapping("${uiPrefix}/vehicles")
 @Validated
 public class VehicleController extends AbstractWebController<Vehicle, UUID> {
-
+    
     private static final Logger LOGGER = LogManager.getLogger(VehicleController.class);
-
+    
     public static final String VIEW_VEHICLES = "views/vehicle/listVehicles";
     public static final String REDIRECT_VIEW_VEHICLES = "redirect:/ui/vehicles";
     public static final String VIEW_VEHICLE_FORM = "views/vehicle/editVehicle";
@@ -59,9 +54,9 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
     public static final String ID = "id";
     public static final String PATH_ID = "/{id}";
     public static final String X_REQUESTED_WITH_XML_HTTP_REQUEST = "X-Requested-With=XMLHttpRequest";
-
+    
     private final VehicleService vehicleService;
-
+    
     /**
      * @param vehicleService
      */
@@ -70,7 +65,17 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         LOGGER.debug("VehicleController({})", vehicleService);
         this.vehicleService = vehicleService;
     }
-
+    
+    /**
+     * @param serviceOperation
+     * @param vehicle
+     * @return
+     */
+    @Override
+    public Vehicle validate(ServiceOperation serviceOperation, Vehicle vehicle) {
+        return super.validate(serviceOperation, vehicle);
+    }
+    
     /**
      * Saves the <code>T</code> object.
      *
@@ -87,10 +92,10 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         } else {
             vehicle = vehicleService.create(vehicle);
         }
-
+        
         return REDIRECT_VIEW_VEHICLES;
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -107,7 +112,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         LOGGER.debug("-getAll(), listVehicles:{}", VIEW_VEHICLES);
         return VIEW_VEHICLES;
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -119,7 +124,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -129,7 +134,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Displays Create/Update object page.
      *
@@ -139,11 +144,11 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
      */
     @GetMapping(path = {"/create", PATH_ID + "/update"})
     @Override
-    public String editObject(Model model, @PathVariable(value = ID, required = false) UUID id) {
+    public String editObject(Model model, @PathVariable(value = ID, required = false) Optional<UUID> id) {
         LOGGER.debug("+editObject({}, {})", model, id);
         Vehicle vehicle = null;
-        if (BeanUtils.isNotNull(id)) {
-            vehicle = vehicleService.getById(id);
+        if (id.isPresent()) {
+            vehicle = vehicleService.getById(id.get());
             if (BeanUtils.isNull(vehicle)) {
                 throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
             }
@@ -154,19 +159,19 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         LOGGER.debug("-editObject(), editObject:{}, vehicle:{}", VIEW_VEHICLE_FORM, vehicle);
         return VIEW_VEHICLE_FORM;
     }
-
+    
     /**
      * @param model
      * @param id
      * @return
      */
     @GetMapping(value = PATH_ID, headers = {X_REQUESTED_WITH_XML_HTTP_REQUEST})
-    public String editObjectPartially(Model model, @PathVariable(ID) UUID id) {
+    public String editObjectPartially(Model model, @PathVariable(ID) Optional<UUID> id) {
         LOGGER.info("Requesting vehicle={} via XHR request.", id);
         // Let Thymeleaf only return the th:fragment="form" within the view
         return editObject(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * @param id
      * @param paramName
@@ -197,11 +202,11 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
 //            LOGGER.warn("Invalid Vehicle's Update Request! Parameter name=[{}], value=[{}]", paramName, paramValue);
 //            return;
 //        }
-
+        
         vehicle = vehicleService.update(vehicle);
         LOGGER.debug("-saveObjectPartially(), vehicle:{}", vehicle);
     }
-
+    
     /**
      * Displays Delete Vehicle Page.
      *
@@ -216,12 +221,12 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         if (BeanUtils.isNull(vehicle)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         model.addAttribute(MODEL_ATTR_VEHICLE, vehicle);
         LOGGER.debug("-showDeletePage(), deleteVehiclePage:{}", VIEW_VEHICLE_DELETE);
         return VIEW_VEHICLE_DELETE;
     }
-
+    
     /**
      * @param model
      * @param id
@@ -233,7 +238,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
         // Let Thymeleaf only return the th:fragment="form" within the view
         return showDeletePage(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -268,7 +273,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
 //        LOGGER.debug("-delete(), vehicle:{}", vehicle);
 //        return ResponseEntity.ok(vehicle);
 //    }
-
+    
     /**
      * @return
      */
@@ -276,7 +281,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
     public Parser<Vehicle> getParser() {
         return null;
     }
-
+    
     /**
      * Displays the upload <code>Vehicles</code> UI.
      *
@@ -286,7 +291,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
     public String showUploadPage() {
         return VIEW_UPLOAD_VEHICLES;
     }
-
+    
     /**
      * Uploads the file of <code>Vehicles</code>.
      *
@@ -317,11 +322,11 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
 //            payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
 //            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
 //        }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -352,7 +357,7 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
 //        if (Objects.nonNull(inputStreamResource)) {
 //            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
 //        }
-
+        
         return responseEntity;
     }
 

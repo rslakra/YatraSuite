@@ -208,10 +208,10 @@
      * Initializes the toggle storage ui.
      */
     function initStorageType() {
-        const preferredStorageType = getStorageType();
-        if (UiMode.ENRICHED == preferredStorageType) {
-            // uiEnriched();
-        }
+//        const preferredStorageType = getStorageType();
+//        if (StorageType.LOCAL == preferredStorageType) {
+//             uiEnriched();
+//        }
 
         addToggleStorageUiButton();
     }

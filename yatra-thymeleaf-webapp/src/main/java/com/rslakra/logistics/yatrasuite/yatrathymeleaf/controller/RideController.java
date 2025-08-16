@@ -1,13 +1,12 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.controller;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.appsuite.core.Payload;
 import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.filter.Filter;
 import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.common.exception.InvalidUUIDException;
 import com.rslakra.logistics.yatrasuite.common.exception.InvalidVehicleStateException;
 import com.rslakra.logistics.yatrasuite.common.exception.NotFoundException;
@@ -21,19 +20,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 /**
  * REST Controller to manage ride activities
@@ -42,9 +37,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("${uiPrefix}/rides")
 public class RideController extends AbstractWebController<Ride, Long> {
-
+    
     private static final Logger LOGGER = LogManager.getLogger(RideController.class);
-
+    
     public static final String VIEW_RIDES = "views/ride/listRides";
     public static final String REDIRECT_VIEW_RIDES = "redirect:/ui/rides";
     public static final String VIEW_RIDE_FORM = "views/ride/editRide";
@@ -57,9 +52,9 @@ public class RideController extends AbstractWebController<Ride, Long> {
     public static final String ID = "id";
     public static final String PATH_ID = "/{id}";
     public static final String X_REQUESTED_WITH_XML_HTTP_REQUEST = "X-Requested-With=XMLHttpRequest";
-
+    
     private final RideService rideService;
-
+    
     /**
      * @param rideService
      */
@@ -68,7 +63,17 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("RideController({})", rideService);
         this.rideService = rideService;
     }
-
+    
+    /**
+     * @param serviceOperation
+     * @param ride
+     * @return
+     */
+    @Override
+    public Ride validate(ServiceOperation serviceOperation, Ride ride) {
+        return super.validate(serviceOperation, ride);
+    }
+    
     /**
      * @return
      */
@@ -76,7 +81,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
     public Parser<Ride> getParser() {
         return null;
     }
-
+    
     /**
      * Saves the <code>T</code> object.
      *
@@ -93,10 +98,10 @@ public class RideController extends AbstractWebController<Ride, Long> {
         } else {
             ride = rideService.create(ride);
         }
-
+        
         return REDIRECT_VIEW_RIDES;
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -112,7 +117,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("-getAll(), rides:{}", rides);
         return VIEW_RIDES;
     }
-
+    
     /**
      * Returns the list of user's rides.
      *
@@ -128,7 +133,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("-getAll(), listRides={} rides:{}", VIEW_RIDES, rides);
         return VIEW_RIDES;
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -140,7 +145,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -150,7 +155,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
     public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Displays Create/Update object page.
      *
@@ -160,11 +165,11 @@ public class RideController extends AbstractWebController<Ride, Long> {
      */
     @GetMapping(path = {"/create", PATH_ID + "/update"})
     @Override
-    public String editObject(Model model, @PathVariable(value = ID, required = false) Long id) {
+    public String editObject(Model model, @PathVariable(value = ID, required = false) Optional<Long> id) {
         LOGGER.debug("+editObject({}, {})", model, id);
         Ride ride = null;
-        if (BeanUtils.isNotNull(id)) {
-            ride = rideService.getById(id);
+        if (id.isPresent()) {
+            ride = rideService.getById(id.get());
             if (BeanUtils.isNull(ride)) {
                 throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
             }
@@ -175,19 +180,19 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("-editObject(), editObject:{}, ride:{}", VIEW_RIDE_FORM, ride);
         return VIEW_RIDE_FORM;
     }
-
+    
     /**
      * @param model
      * @param id
      * @return
      */
     @GetMapping(value = PATH_ID, headers = {X_REQUESTED_WITH_XML_HTTP_REQUEST})
-    public String editObjectPartially(Model model, @PathVariable(ID) Long id) {
+    public String editObjectPartially(Model model, @PathVariable(ID) Optional<Long> id) {
         LOGGER.info("Requesting ride={} via XHR request.", id);
         // Let Thymeleaf only return the th:fragment="form" within the view
         return editObject(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * @param id
      * @param paramName
@@ -202,7 +207,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
         if (BeanUtils.isNull(ride)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         // validate the param key/value and edit it.
         if ("email".equalsIgnoreCase(paramName)) {
             ride.setUserEmail(paramValue);
@@ -212,11 +217,11 @@ public class RideController extends AbstractWebController<Ride, Long> {
             LOGGER.warn("Invalid Update Ride Request! Parameter name=[{}], value=[{}]", paramName, paramValue);
             return;
         }
-
+        
         ride = rideService.update(ride);
         LOGGER.debug("-saveObjectPartially(), ride:{}", ride);
     }
-
+    
     /**
      * Displays Delete Ride Page.
      *
@@ -231,12 +236,12 @@ public class RideController extends AbstractWebController<Ride, Long> {
         if (BeanUtils.isNull(ride)) {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }
-
+        
         model.addAttribute(MODEL_ATTR_RIDE, ride);
         LOGGER.debug("-showDeletePage(), deleteRidePage:{}", VIEW_RIDE_DELETE);
         return VIEW_RIDE_DELETE;
     }
-
+    
     /**
      * @param model
      * @param id
@@ -248,7 +253,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
         // Let Thymeleaf only return the th:fragment="form" within the view
         return showDeletePage(model, id) + FRAGMENT_FORM;
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -263,12 +268,12 @@ public class RideController extends AbstractWebController<Ride, Long> {
         if (BeanUtils.isEmpty(id)) {
             throw new InvalidRequestException("The ID should provide!");
         }
-
+        
         rideService.delete(id);
         LOGGER.debug("-delete(), redirectView:{}", REDIRECT_VIEW_RIDES);
         return REDIRECT_VIEW_RIDES;
     }
-
+    
     /**
      * Starts a ride on this vehicle for this user.
      *
@@ -280,7 +285,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
      */
     @PostMapping("/start")
     public String startRide(Model model, @RequestBody Map<String, Object> startRideRequest)
-        throws NotFoundException, InvalidUUIDException, InvalidVehicleStateException {
+            throws NotFoundException, InvalidUUIDException, InvalidVehicleStateException {
         LOGGER.debug("+startRide({}, {})", model, startRideRequest);
         LOGGER.info("[POST] /ui/rides/start");
         Payload payload = Payload.newBuilder();
@@ -290,7 +295,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("-startRide(), viewRide:{}, ride: {}", VIEW_RIDE_FORM, ride);
         return VIEW_RIDE_FORM;
     }
-
+    
     /**
      * Ends this specific ride (also calculates time, distance, and speed travelled).
      *
@@ -308,6 +313,6 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("-endRide(), viewRide:{}, ride: {}", VIEW_RIDE_FORM, ride);
         return VIEW_RIDE_FORM;
     }
-
+    
 }
 
