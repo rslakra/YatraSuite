@@ -9,14 +9,19 @@ The ```microservice``` for travelling management.
 ---
 
 ```
-    /
-    ├── common-service
-    ├── ride-service
-    ├── user-service
-    ├── vehicle-service
-    ├── yatra-thymeleaf-webapp
-    ├── yatra-webapp
-    └── README.md
+/
+├── common-service
+├── ride-service
+├── user-service
+├── vehicle-service
+├── yatra-thymeleaf-webapp
+├── yatra-webapp
+│    ├── README.md                  # Instructions and helpful links
+│    └── /
+├── README.md                       # Instructions and helpful links
+├── robots.txt                      # tells which URLs the search engine crawlers can access on your site
+├── <module>                        # The module service
+└── /
 ```
 
 ### API Calls
