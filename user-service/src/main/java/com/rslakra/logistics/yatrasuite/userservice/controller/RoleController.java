@@ -22,18 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,6 +40,7 @@ import java.util.Optional;
 public class RoleController extends AbstractRestController<Role, Long> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleController.class);
+    private final RoleParser roleParser;
     private final RoleService roleService;
 
     /**
@@ -55,6 +48,7 @@ public class RoleController extends AbstractRestController<Role, Long> {
      */
     @Autowired
     public RoleController(final RoleService roleService) {
+        this.roleParser = new RoleParser();
         this.roleService = roleService;
     }
 
@@ -178,8 +172,8 @@ public class RoleController extends AbstractRestController<Role, Long> {
         validate(idOptional);
         roleService.delete(idOptional.get());
         Payload payload = Payload.newBuilder()
-            .withDeleted(Boolean.TRUE)
-            .withMessage("Record with id:%d deleted successfully!", idOptional.get());
+                .withDeleted(Boolean.TRUE)
+                .withMessage("Record with id:%d deleted successfully!", idOptional.get());
         return ResponseEntity.ok(payload);
     }
 
@@ -195,7 +189,6 @@ public class RoleController extends AbstractRestController<Role, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<Role> roles = null;
-            RoleParser roleParser = new RoleParser();
             if (CsvParser.isCSVFile(file)) {
                 roles = roleParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -234,21 +227,25 @@ public class RoleController extends AbstractRestController<Role, Long> {
         String contentDisposition;
         MediaType mediaType;
         RoleParser roleParser = new RoleParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = roleParser.buildCSVResourceStream(roleService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = roleParser.buildStreamResources(roleService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildCSVResourceStream(roleService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(RoleParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = roleParser.buildStreamResources(roleService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
 
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return responseEntity;

@@ -22,18 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +43,7 @@ public class UserController extends AbstractRestController<User, Long> {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     // @Resource
+    private final UserParser userParser;
     private final UserService userService;
 
     /**
@@ -58,6 +51,7 @@ public class UserController extends AbstractRestController<User, Long> {
      */
     @Autowired
     public UserController(UserService userService) {
+        this.userParser = new UserParser();
         this.userService = userService;
     }
 
@@ -67,11 +61,11 @@ public class UserController extends AbstractRestController<User, Long> {
      * @return
      */
     @GetMapping
-//    @Operation(summary = "Get all users", description = "Get all users",
-//        tags = {"User Service"},
-//        responses = {
-//            @ApiResponse(responseCode = "200", description = "Get the users successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
-//        })
+    //    @Operation(summary = "Get all users", description = "Get all users",
+    //        tags = {"User Service"},
+    //        responses = {
+    //            @ApiResponse(responseCode = "200", description = "Get the users successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
+    //        })
     @Override
     public List<User> getAll() {
         LOGGER.debug("+getAll()");
@@ -131,15 +125,15 @@ public class UserController extends AbstractRestController<User, Long> {
      */
     @PostMapping
     @ResponseBody
-//    @Operation(summary = "Create new user", description = "Create new user",
-//        tags = {"User Service"},
-//        responses = {
-//            @ApiResponse(responseCode = "200", description = "Creates the user successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
-//        })
+    //    @Operation(summary = "Create new user", description = "Create new user",
+    //        tags = {"User Service"},
+    //        responses = {
+    //            @ApiResponse(responseCode = "200", description = "Creates the user successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
+    //        })
     @Override
     public ResponseEntity<User> create(
-//        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Create new user", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)), required = true)
-        @Validated @RequestBody User user) {
+            //        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Create new user", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)), required = true)
+            @Validated @RequestBody User user) {
         user = userService.create(user);
         return ResponseEntity.ok(user);
     }
@@ -152,11 +146,11 @@ public class UserController extends AbstractRestController<User, Long> {
      */
     @PostMapping("/batch")
     @ResponseBody
-//    @Operation(summary = "Create new user", description = "Create new user",
-//        tags = {"User Service"},
-//        responses = {
-//            @ApiResponse(responseCode = "200", description = "Creates the user successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
-//        })
+    //    @Operation(summary = "Create new user", description = "Create new user",
+    //        tags = {"User Service"},
+    //        responses = {
+    //            @ApiResponse(responseCode = "200", description = "Creates the user successfully", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class))))
+    //        })
     @Override
     public ResponseEntity<List<User>> create(@Validated @RequestBody List<User> users) {
         users = userService.create(users);
@@ -201,8 +195,8 @@ public class UserController extends AbstractRestController<User, Long> {
         validate(idOptional);
         userService.delete(idOptional.get());
         Payload payload = Payload.newBuilder()
-            .withDeleted(Boolean.TRUE)
-            .withMessage("Record with id:%d deleted successfully!", idOptional.get());
+                .withDeleted(Boolean.TRUE)
+                .withMessage("Record with id:%d deleted successfully!", idOptional.get());
         return ResponseEntity.ok(payload);
     }
 
@@ -218,7 +212,6 @@ public class UserController extends AbstractRestController<User, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<User> userList = null;
-            UserParser userParser = new UserParser();
             if (CsvParser.isCSVFile(file)) {
                 userList = userParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
@@ -258,21 +251,26 @@ public class UserController extends AbstractRestController<User, Long> {
         String contentDisposition;
         MediaType mediaType;
         UserParser userParser = new UserParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(UserParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = userParser.buildCSVResourceStream(userService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(UserParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = userParser.buildStreamResources(userService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
-        }
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(UserParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = userParser.buildCSVResourceStream(userService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(UserParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = userParser.buildStreamResources(userService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
 
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         return responseEntity;

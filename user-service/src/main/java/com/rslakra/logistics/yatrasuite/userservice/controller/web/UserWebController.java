@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,14 +37,14 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/users")
 public class UserWebController extends AbstractWebController<User, Long> {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserWebController.class);
-    
+
     private final UserParser userParser;
-    
+
     // userService
     private final UserService userService;
-    
+
     /**
      * @param userService
      */
@@ -52,7 +53,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
         this.userParser = new UserParser();
         this.userService = userService;
     }
-    
+
     /**
      * @param serviceOperation
      * @param user
@@ -62,7 +63,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
     public User validate(ServiceOperation serviceOperation, User user) {
         return super.validate(serviceOperation, user);
     }
-    
+
     /**
      * Saves the <code>t</code> object.
      *
@@ -79,10 +80,10 @@ public class UserWebController extends AbstractWebController<User, Long> {
         } else {
             user = userService.create(user);
         }
-        
+
         return "redirect:/users/list";
     }
-    
+
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -96,7 +97,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
         model.addAttribute("users", users);
         return "views/account/user/listUsers";
     }
-    
+
     /**
      * @param model
      * @param allParams
@@ -106,7 +107,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
     public String filter(Model model, @RequestParam Map<String, Object> allParams) {
         return null;
     }
-    
+
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -121,7 +122,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
         model.addAttribute("users", users);
         return "views/account/user/listUsers";
     }
-    
+
     /**
      * @param model
      * @param userId
@@ -136,10 +137,10 @@ public class UserWebController extends AbstractWebController<User, Long> {
             user = new User();
         }
         model.addAttribute("user", user);
-        
+
         return "views/account/user/editUser";
     }
-    
+
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -153,7 +154,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
         userService.delete(id);
         return "redirect:/users/list";
     }
-    
+
     /**
      * @return
      */
@@ -161,7 +162,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
     public Parser<User> getParser() {
         return userParser;
     }
-    
+
     /**
      * Displays the upload <code>Users</code> UI.
      *
@@ -171,7 +172,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
     public String showUploadPage() {
         return "views/account/user/uploadUsers";
     }
-    
+
     /**
      * Uploads the file of <code>Roles</code>.
      *
@@ -183,13 +184,12 @@ public class UserWebController extends AbstractWebController<User, Long> {
         Payload payload = Payload.newBuilder();
         try {
             List<User> users = null;
-            UserParser userParser = new UserParser();
             if (CsvParser.isCSVFile(file)) {
                 users = userParser.readCSVStream(file.getInputStream());
             } else if (ExcelParser.isExcelFile(file)) {
                 users = userParser.readStream(file.getInputStream());
             }
-            
+
             // check the task list is available
             if (Objects.nonNull(users)) {
                 users = userService.create(users);
@@ -202,11 +202,11 @@ public class UserWebController extends AbstractWebController<User, Long> {
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-        
+
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-    
+
     /**
      * @return
      */
@@ -214,7 +214,7 @@ public class UserWebController extends AbstractWebController<User, Long> {
     public String showDownloadPage() {
         return null;
     }
-    
+
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -228,24 +228,28 @@ public class UserWebController extends AbstractWebController<User, Long> {
         InputStreamResource inputStreamResource = null;
         String contentDisposition;
         MediaType mediaType;
-        UserParser taskParser = new UserParser();
-        if (CsvParser.isCSVFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(UserParser.CSV_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildCSVResourceStream(userService.getAll());
-        } else if (ExcelParser.isExcelFileType(fileType)) {
-            contentDisposition = Parser.getContentDisposition(UserParser.EXCEL_DOWNLOAD_FILE_NAME);
-            mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
-            inputStreamResource = taskParser.buildStreamResources(userService.getAll());
-        } else {
-            throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+        try {
+            if (CsvParser.isCSVFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(UserParser.CSV_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
+                inputStreamResource = userParser.buildCSVResourceStream(userService.getAll());
+            } else if (ExcelParser.isExcelFileType(fileType)) {
+                contentDisposition = Parser.getContentDisposition(UserParser.EXCEL_DOWNLOAD_FILE_NAME);
+                mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
+                inputStreamResource = userParser.buildStreamResources(userService.getAll());
+            } else {
+                throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
+            }
+
+            // check inputStreamResource is not null
+            if (Objects.nonNull(inputStreamResource)) {
+                responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        
-        // check inputStreamResource is not null
-        if (Objects.nonNull(inputStreamResource)) {
-            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
-        }
-        
+
         return responseEntity;
     }
 }
