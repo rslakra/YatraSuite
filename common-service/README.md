@@ -9,7 +9,7 @@ end implemented with React.js.
 
 To use this application, you will need a working CockroachDB instance.
 
-You will also need Java.
+You will also need [OpenJDK 21](https://openjdk.org/projects/jdk/21/).
 
 ## Initializing the Database
 

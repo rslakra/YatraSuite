@@ -9,7 +9,7 @@ end implemented with React.js.
 
 To use this application, you will need a working CockroachDB instance. In order to publish events to Kafka via CDC, you will need access to the enterprise CDC.
 
-You will also need Java.
+You will also need [OpenJDK 21](https://openjdk.org/projects/jdk/21/).
 
 If you intend to publish events to Kafka via CDC, you will need a local Kafka instance running.
 

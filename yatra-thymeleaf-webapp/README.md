@@ -8,7 +8,7 @@ However, this application requires the vehicles, rides, and users microservices 
 
 ## Requirements
 
-- [OpenJDK 11](https://openjdk.org/projects/jdk/11/)
+- [OpenJDK 21](https://openjdk.org/projects/jdk/21/)
 - [Install Sass](https://sass-lang.com/install/)
 
 
