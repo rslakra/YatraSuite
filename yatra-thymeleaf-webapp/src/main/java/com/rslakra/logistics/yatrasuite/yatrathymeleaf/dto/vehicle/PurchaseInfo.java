@@ -1,11 +1,12 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle;
 
 import com.rslakra.appsuite.core.ToString;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -26,10 +27,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class PurchaseInfo {
 
+    @JsonAlias("serial_number")  // Accept from backend response
     private Integer serialNumber;
     private String manufacturer;
-    @JsonProperty("purchase_date")
+    @JsonAlias("purchase_date")  // Accept from backend response
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")  // For form binding (HTML date input sends yyyy-MM-dd)
     private Date purchasedOn;
 
     /**

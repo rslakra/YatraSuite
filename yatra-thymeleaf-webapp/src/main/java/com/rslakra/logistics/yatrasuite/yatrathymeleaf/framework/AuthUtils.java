@@ -37,7 +37,11 @@ public enum AuthUtils {
         AuthUserDetails authUser = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (BeanUtils.isNotNull(authentication)) {
-            authUser = (AuthUserDetails) authentication.getPrincipal();
+            Object principal = authentication.getPrincipal();
+            // Check if principal is AuthUserDetails (it could be a String like "anonymousUser")
+            if (principal instanceof AuthUserDetails) {
+                authUser = (AuthUserDetails) principal;
+            }
         }
 
         return authUser;

@@ -8,6 +8,7 @@ import org.hibernate.exception.DataException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,7 +36,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
      */
     @ExceptionHandler(InvalidValueException.class)
     public ResponseEntity<Object> handleInvalidValueException(InvalidValueException ex, WebRequest webRequest) {
-        return new ResponseEntity<>(buildResponse(HttpStatus.CONFLICT, ex.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildResponse(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
     /**
@@ -47,7 +48,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
      */
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Object> handleUserExists(UserAlreadyExistsException ex, WebRequest webRequest) {
-        return new ResponseEntity<>(buildResponse(HttpStatus.CONFLICT, ex.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildResponse(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
     /**
@@ -59,7 +60,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
      */
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFound(NotFoundException ex, WebRequest webRequest) {
-        return new ResponseEntity<>(buildResponse(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(buildResponse(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     /**
@@ -71,7 +72,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
      */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest webRequest) {
-        return new ResponseEntity<>(buildResponse(HttpStatus.CONFLICT, ex.getMessage()), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildResponse(HttpStatus.CONFLICT, ex.getMessage()));
     }
 
     /**
@@ -96,7 +97,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
             errorMessage = "SQL Exception: " + sqlException.getMessage();
         }
 
-        return new ResponseEntity<>(buildResponse(HttpStatus.CONFLICT, errorMessage), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildResponse(HttpStatus.CONFLICT, errorMessage));
     }
 
     /**
@@ -114,7 +115,7 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
             errorMessage = "SQL Exception: " + dataException.getSQLException().getMessage();
         }
 
-        return new ResponseEntity<>(buildResponse(HttpStatus.CONFLICT, errorMessage), HttpStatus.CONFLICT);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildResponse(HttpStatus.CONFLICT, errorMessage));
     }
 
     /**
@@ -126,14 +127,14 @@ public abstract class AbstractResponseExceptionHandler extends ResponseEntityExc
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  HttpHeaders headers, HttpStatusCode status,
                                                                   WebRequest webRequest) {
         // Spring already has a method handler for invalid arguments, so we need to override it instead of just handle it
         String errorField = ex.getBindingResult().getFieldError().getField();
         String message = ex.getBindingResult().getFieldError().getDefaultMessage();
         // clean up the error message as the one in the exception is a bit hard to read
         String errorMessage = String.format("Validation error in field <%s> : %s", errorField, message);
-        return new ResponseEntity<>(buildResponse(HttpStatus.BAD_REQUEST, errorMessage), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(buildResponse(HttpStatus.BAD_REQUEST, errorMessage));
     }
 
     /**

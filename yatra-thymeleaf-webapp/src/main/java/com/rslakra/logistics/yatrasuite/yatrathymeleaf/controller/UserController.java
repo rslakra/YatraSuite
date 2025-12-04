@@ -84,7 +84,7 @@ public class UserController extends AbstractWebController<User, Long> {
      */
     @PostMapping({"/", "/save"})
     @Override
-    public String save(@RequestBody @Validated @ModelAttribute("user") User user) {
+    public String save(@Validated @ModelAttribute("user") User user) {
         if (BeanUtils.isNotNull(user.getId())) {
             User oldUser = userService.getById(user.getId());
             BeanUtils.copyProperties(user, oldUser);

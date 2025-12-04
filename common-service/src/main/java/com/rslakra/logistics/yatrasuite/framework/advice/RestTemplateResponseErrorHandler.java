@@ -1,6 +1,7 @@
 package com.rslakra.logistics.yatrasuite.framework.advice;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -21,8 +22,8 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
      */
     @Override
     public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
-        return (httpResponse.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR
-                || httpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR);
+        HttpStatusCode statusCode = httpResponse.getStatusCode();
+        return statusCode.is4xxClientError() || statusCode.is5xxServerError();
     }
 
     /**
@@ -31,16 +32,13 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
      */
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
-        if (httpResponse.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
+        HttpStatusCode statusCode = httpResponse.getStatusCode();
+        if (statusCode.is5xxServerError()) {
             // handle SERVER_ERROR
-            // throw new HttpClientErrorException(httpResponse.getStatusCode());
-            throw new HttpServerErrorException(httpResponse.getStatusCode(), httpResponse.getStatusText());
-        } else if (httpResponse.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
+            throw new HttpServerErrorException((HttpStatus) statusCode, httpResponse.getStatusText());
+        } else if (statusCode.is4xxClientError()) {
             // handle CLIENT_ERROR
-            // if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-            //                throw new RuntimeException(httpResponse.getStatusText());
-            // }
-            throw new HttpClientErrorException(httpResponse.getStatusCode(), httpResponse.getStatusText());
+            throw new HttpClientErrorException((HttpStatus) statusCode, httpResponse.getStatusText());
         }
     }
 }

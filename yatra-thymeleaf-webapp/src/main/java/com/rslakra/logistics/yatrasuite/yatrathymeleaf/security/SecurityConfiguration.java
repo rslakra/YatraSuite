@@ -30,24 +30,26 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .userDetailsService(userDetailsService)
-            .authorizeRequests()
-            .antMatchers("/css/**", "/images/**", "/js/**", "/favicon.ico").permitAll()
-            .antMatchers("/login/**", "/register").permitAll()
-            .antMatchers("/h2").permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.ico").permitAll()
+                .requestMatchers("/.well-known/**").permitAll()
+                .requestMatchers("/login/**", "/register").permitAll()
+                .requestMatchers("/h2").permitAll()
+                .requestMatchers("/error").permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
             .loginPage("/login")
-//            .usernameParameter("email")
+//                .usernameParameter("email")
             .permitAll()
-            .defaultSuccessUrl("/index")
-//            .successForwardUrl("/index")
-            .and()
-            .logout()
+                .defaultSuccessUrl("/index", true)  // true = always redirect to /index, ignore saved requests
+//                .successForwardUrl("/index")
+            )
+            .logout(logout -> logout
             .permitAll()
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/login")
+            );
 
         return http.build();
     }

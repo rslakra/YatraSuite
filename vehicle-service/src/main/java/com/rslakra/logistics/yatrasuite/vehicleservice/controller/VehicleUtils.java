@@ -52,13 +52,26 @@ public enum VehicleUtils {
     }
 
     /**
-     * @param vehicleDetail
-     * @return
+     * Converts VehicleInfo entity to VehicleDetailDTO.
+     *
+     * @param vehicleInfo the VehicleInfo entity
+     * @return VehicleDetailDTO with all fields properly mapped
      */
-    public static VehicleDetailDTO toVehicleDetailDto(VehicleInfo vehicleDetail) {
-        VehicleDetailDTO vehicleDetailDTO = MODEL_MAPPER.map(vehicleDetail, VehicleDetailDTO.class);
-        vehicleDetailDTO.setPurchaseInfo(MODEL_MAPPER.map(vehicleDetail, PurchaseInfo.class));
-        vehicleDetailDTO.getPurchaseInfo().setSerialNumber(vehicleDetail.getPurchaseInfo().getSerialNumber());
+    public static VehicleDetailDTO toVehicleDetailDto(VehicleInfo vehicleInfo) {
+        VehicleDetailDTO vehicleDetailDTO = new VehicleDetailDTO();
+        vehicleDetailDTO.setType(vehicleInfo.getType());
+        vehicleDetailDTO.setColor(vehicleInfo.getColor());
+        vehicleDetailDTO.setWear(vehicleInfo.getWear());
+
+        // Map nested purchaseInfo
+        if (vehicleInfo.getPurchaseInfo() != null) {
+            PurchaseInfo purchaseInfoDTO = new PurchaseInfo();
+            purchaseInfoDTO.setSerialNumber(vehicleInfo.getPurchaseInfo().getSerialNumber());
+            purchaseInfoDTO.setManufacturer(vehicleInfo.getPurchaseInfo().getManufacturer());
+            purchaseInfoDTO.setPurchasedOn(vehicleInfo.getPurchaseInfo().getPurchasedOn());
+            vehicleDetailDTO.setPurchaseInfo(purchaseInfoDTO);
+        }
+
         return vehicleDetailDTO;
     }
 
@@ -116,11 +129,21 @@ public enum VehicleUtils {
      * @return VehicleWithLocationDTO
      */
     public static VehicleWithLocationDTO toVehicleWithLocationDTO(VehicleWithLocation vehicleWithLocation) {
-        VehicleWithLocationDTO
-                vehicleWithLocationDTO =
-                MODEL_MAPPER.map(vehicleWithLocation, VehicleWithLocationDTO.class);
-        //        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicleWithLocation.getVehicleDetail()));
-        //        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicleWithLocation.getVehicleDetail()).toMap());
+        VehicleWithLocationDTO vehicleWithLocationDTO = new VehicleWithLocationDTO();
+        vehicleWithLocationDTO.setId(vehicleWithLocation.getId());
+        vehicleWithLocationDTO.setSerialNumber(vehicleWithLocation.getSerialNumber() != null ? vehicleWithLocation.getSerialNumber() : 0);
+        vehicleWithLocationDTO.setBattery(vehicleWithLocation.getBatteryLevel() != null ? vehicleWithLocation.getBatteryLevel() : 0);
+        vehicleWithLocationDTO.setInUse(vehicleWithLocation.isInUse());
+
+        // Map vehicle info
+        if (vehicleWithLocation.getVehicleInfo() != null) {
+            vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicleWithLocation.getVehicleInfo()));
+        }
+
+        // Map location fields (entity has latitude/longitude, DTO has lastLatitude/lastLongitude)
+        vehicleWithLocationDTO.setLastLatitude(vehicleWithLocation.getLatitude());
+        vehicleWithLocationDTO.setLastLongitude(vehicleWithLocation.getLongitude());
+        vehicleWithLocationDTO.setTimestamp(vehicleWithLocation.getTimestamp());
 
         return vehicleWithLocationDTO;
     }
@@ -147,13 +170,30 @@ public enum VehicleUtils {
      * @return VehicleWithHistoryDTO
      */
     public static VehicleWithHistoryDTO toVehicleWithHistoryDTO(Vehicle vehicle) {
-        VehicleWithHistoryDTO vehicleWithLocationDTO = MODEL_MAPPER.map(vehicle, VehicleWithHistoryDTO.class);
-        //        vehicleWithLocationDTO.setVehicleInfo(toVehicleDetailDto(vehicle));
-        //        vehicleWithLocationDTO.setVin(vehicle.getVehicleDetail().getVin());
-        vehicleWithLocationDTO.setInUse(vehicle.isInUse());
-        vehicleWithLocationDTO.setLocationDetails(fromLocationHistory(vehicle.getLocationHistories()));
-        //        vehicleWithLocationDTO.setVehicleDetail(new JSONObject(vehicle.getVehicleDetail()).toMap());
-        return vehicleWithLocationDTO;
+        VehicleWithHistoryDTO vehicleWithHistoryDTO = new VehicleWithHistoryDTO();
+        vehicleWithHistoryDTO.setId(vehicle.getId());
+        vehicleWithHistoryDTO.setSerialNumber(vehicle.getSerialNumber() != null ? vehicle.getSerialNumber() : 0);
+        vehicleWithHistoryDTO.setBattery(vehicle.getBatteryLevel() != null ? vehicle.getBatteryLevel() : 0);
+        vehicleWithHistoryDTO.setInUse(vehicle.isInUse());
+
+        // Map vehicle info
+        if (vehicle.getVehicleInfo() != null) {
+            vehicleWithHistoryDTO.setVehicleInfo(toVehicleDetailDto(vehicle.getVehicleInfo()));
+        }
+
+        // Map location history
+        List<LocationHistoryDTO> locationHistoryDTOs = fromLocationHistory(vehicle.getLocationHistories());
+        vehicleWithHistoryDTO.setLocationDetails(locationHistoryDTOs);
+
+        // Set latest location at root level for convenience
+        if (BeanUtils.isNotEmpty(locationHistoryDTOs)) {
+            LocationHistoryDTO latestLocation = locationHistoryDTOs.get(0);
+            vehicleWithHistoryDTO.setLastLatitude(latestLocation.getLatitude());
+            vehicleWithHistoryDTO.setLastLongitude(latestLocation.getLongitude());
+            vehicleWithHistoryDTO.setTimestamp(latestLocation.getLastRecordedAt());
+        }
+
+        return vehicleWithHistoryDTO;
     }
 
     /**

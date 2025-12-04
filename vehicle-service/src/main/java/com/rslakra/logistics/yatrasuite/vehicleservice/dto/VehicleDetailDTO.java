@@ -106,21 +106,27 @@ public class VehicleDetailDTO {
     }
 
     /**
-     * @return
+     * Converts this DTO to a VehicleInfo entity.
+     *
+     * @return VehicleInfo entity with purchaseInfo properly set
      */
-    //    public VehicleDetail toVehicleInfo() {
-    //        VehicleDetail vehicleDetail = MODEL_MAPPER.map(this, VehicleDetail.class);
-    //        vehicleDetail.setManufacturer(getPurchaseInfo().getManufacturer());
-    //        vehicleDetail.setPurchasedOn(getPurchaseInfo().getPurchasedOn());
-    //        return vehicleDetail;
-    //    }
     public VehicleInfo toVehicleInfo() {
-        VehicleInfo vehicleDetail = MODEL_MAPPER.map(this, VehicleInfo.class);
-        this.purchaseInfo = new PurchaseInfo();
-        this.purchaseInfo.setSerialNumber(getPurchaseInfo().getSerialNumber());
-        this.purchaseInfo.setManufacturer(getPurchaseInfo().getManufacturer());
-        this.purchaseInfo.setPurchasedOn(getPurchaseInfo().getPurchasedOn());
-        return vehicleDetail;
+        VehicleInfo vehicleInfo = new VehicleInfo();
+        vehicleInfo.setType(this.type);
+        vehicleInfo.setColor(this.color);
+        vehicleInfo.setWear(this.wear);
+
+        // Set purchase info on the entity (not on 'this')
+        if (this.purchaseInfo != null) {
+            com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.PurchaseInfo entityPurchaseInfo =
+                new com.rslakra.logistics.yatrasuite.vehicleservice.persistence.entity.PurchaseInfo();
+            entityPurchaseInfo.setSerialNumber(this.purchaseInfo.getSerialNumber());
+            entityPurchaseInfo.setManufacturer(this.purchaseInfo.getManufacturer());
+            entityPurchaseInfo.setPurchasedOn(this.purchaseInfo.getPurchasedOn());
+            vehicleInfo.setPurchaseInfo(entityPurchaseInfo);
+        }
+
+        return vehicleInfo;
     }
 
 

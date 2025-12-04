@@ -6,6 +6,7 @@ import com.rslakra.appsuite.spring.client.ApiRestClient;
 import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.config.VehicleServiceConfig;
+import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle.NewVehicle;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle.Vehicle;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.framework.ui.service.impl.AbstractClientServiceImpl;
 import com.rslakra.logistics.yatrasuite.yatrathymeleaf.service.VehicleService;
@@ -89,7 +90,10 @@ public class VehicleServiceImpl extends AbstractClientServiceImpl<Vehicle, UUID>
         }
 
         validate(ServiceOperation.CREATE, vehicle);
-        vehicle = getRestClient().doPost(VEHICLES, vehicle, Vehicle.class);
+        // Convert Vehicle to NewVehicle flat structure expected by the backend API
+        NewVehicle newVehicle = NewVehicle.fromVehicle(vehicle);
+        LOGGER.debug("Sending to API: {}", newVehicle);
+        vehicle = getRestClient().doPost(VEHICLES, newVehicle, Vehicle.class);
         LOGGER.debug("-create(), vehicle:{}", vehicle);
         return vehicle;
     }

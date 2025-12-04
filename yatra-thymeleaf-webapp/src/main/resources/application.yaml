@@ -29,6 +29,19 @@ server:
 #----------------< Spring Configuration >----------------
 spring:
 
+  #----------------< Spring Security Settings >----------------
+  # Spring Security Settings
+  # When Spring Security is on the classpath and no custom authentication is configured, Spring Boot creates a 
+  # default user: username = user, password = random.
+  # To change the default user, you can set the following properties:
+  security:
+    user:
+      name: admin
+      password: Admin123
+  # Or if you want to disable security entirely for development, you can exclude the security auto-configuration by adding 
+  # the following to your application.properties:
+  # spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
   #----------------< Thymeleaf Settings >----------------
   thymeleaf:
     cache: false

@@ -79,6 +79,21 @@ spring:
   #  main:
   #    allow-bean-definition-overriding: true
 
+  #----------------< Spring Security Settings >----------------
+  # Spring Security Settings
+  # When Spring Security is on the classpath and no custom authentication is configured, Spring Boot creates a 
+  # default user: username = user, password = random.
+  # To change the default user, you can set the following properties:
+  #  security:
+  #    user:
+  #      name: admin
+  #      password: Admin123
+  # Disable Spring Security auto-configuration for this REST API service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
   #----------------< SQL Settings >----------------
   #  sql:
   #    init:

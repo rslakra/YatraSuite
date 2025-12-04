@@ -51,16 +51,16 @@
 <!--                               placeholder="Purchased On"/>-->
                     </div>
                     <div class="form-group">
-                        <label class="control-label" th:for="battery">Battery (%)</label>
-                        <input class="form-control" type="number" th:field="*{battery}" placeholder="Battery (%)"/>
+                        <label class="control-label" th:for="batteryLevel">Battery (%)</label>
+                        <input class="form-control" type="number" th:field="*{batteryLevel}" placeholder="Battery (%)"/>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" th:for="latitude">Latitude</label>
-                        <input class="form-control" type="text" th:field="*{latitude}" placeholder="Latitude"/>
+                        <label class="control-label" th:for="lastLatitude">Latitude</label>
+                        <input class="form-control" type="text" th:field="*{lastLatitude}" placeholder="Latitude"/>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" th:for="longitude">Longitude</label>
-                        <input class="form-control" type="text" th:field="*{longitude}" placeholder="Longitude"/>
+                        <label class="control-label" th:for="lastLongitude">Longitude</label>
+                        <input class="form-control" type="text" th:field="*{lastLongitude}" placeholder="Longitude"/>
                     </div>
                     <div class="form-group submit-cancel">
                         <input class="btn btn-primary" type="submit" value="Save Changes"/>

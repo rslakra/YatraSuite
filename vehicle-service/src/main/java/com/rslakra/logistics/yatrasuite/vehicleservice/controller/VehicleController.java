@@ -30,7 +30,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -149,12 +149,19 @@ public class VehicleController extends AbstractRestController<Vehicle, UUID> {
     }
 
     /**
-     * @param vehicle
-     * @return
+     * Updates an existing vehicle.
+     *
+     * @param vehicle the vehicle to update
+     * @return the updated vehicle
      */
+    @PutMapping
     @Override
-    public ResponseEntity<Vehicle> update(Vehicle vehicle) {
-        return null;
+    public ResponseEntity<Vehicle> update(@RequestBody Vehicle vehicle) {
+        LOGGER.debug("+update({})", vehicle);
+        LOGGER.info("[PUT] /api/vehicles");
+        Vehicle updatedVehicle = vehicleService.update(vehicle);
+        LOGGER.debug("-update(), updatedVehicle:{}", updatedVehicle);
+        return ResponseEntity.ok(updatedVehicle);
     }
 
     /**

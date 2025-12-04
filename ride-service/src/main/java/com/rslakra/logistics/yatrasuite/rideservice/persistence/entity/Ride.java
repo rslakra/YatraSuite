@@ -9,9 +9,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * Represents <code>rides</code> table.

@@ -83,7 +83,7 @@ public class RoleController extends AbstractWebController<Role, Long> {
      */
     @PostMapping({"/", "/save"})
     @Override
-    public String save(@RequestBody @Validated @ModelAttribute("role") Role role) {
+    public String save(@Validated @ModelAttribute("role") Role role) {
         if (BeanUtils.isNotNull(role.getId())) {
             Role oldRole = roleService.getById(role.getId());
             BeanUtils.copyProperties(role, oldRole);

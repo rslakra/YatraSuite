@@ -90,7 +90,7 @@ public class RideController extends AbstractWebController<Ride, Long> {
      */
     @PostMapping({"/", "/save"})
     @Override
-    public String save(@RequestBody @Validated @ModelAttribute("ride") Ride ride) {
+    public String save(@Validated @ModelAttribute("ride") Ride ride) {
         if (BeanUtils.isNotNull(ride.getId())) {
             Ride oldRide = rideService.getById(ride.getId());
             BeanUtils.copyProperties(ride, oldRide);
@@ -128,7 +128,13 @@ public class RideController extends AbstractWebController<Ride, Long> {
         LOGGER.debug("+getUserRides()");
         String email = AuthUtils.getUserEmail();
         LOGGER.info("[GET] ui/rides?email={}", email);
-        List<Ride> rides = rideService.getRidesByEmail(email);
+        List<Ride> rides;
+        if (BeanUtils.isNotEmpty(email)) {
+            rides = rideService.getRidesByEmail(email);
+        } else {
+            // If user is not authenticated, return all rides
+            rides = rideService.getAll();
+        }
         model.addAttribute(MODEL_ATTR_RIDES, rides);
         LOGGER.debug("-getAll(), listRides={} rides:{}", VIEW_RIDES, rides);
         return VIEW_RIDES;

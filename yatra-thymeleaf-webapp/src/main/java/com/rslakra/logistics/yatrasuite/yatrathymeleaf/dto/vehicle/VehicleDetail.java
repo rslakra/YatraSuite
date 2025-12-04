@@ -1,7 +1,7 @@
 package com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle;
 
 import com.rslakra.appsuite.core.ToString;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.rslakra.logistics.yatrasuite.framework.TimeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +34,8 @@ public class VehicleDetail {
     private String type;
     private String color;
     private String wear;
-    @JsonProperty("purchase_information")
-    private PurchaseInfo purchaseInfo;
+    @JsonAlias("purchase_information")  // Accept from backend response
+    private PurchaseInfo purchaseInfo = new PurchaseInfo();  // Initialize for form binding
 
     /**
      * @param vehicleInfo
@@ -53,7 +53,7 @@ public class VehicleDetail {
      */
     public VehicleDetail(NewVehicle newVehicle) {
         this.vin = newVehicle.getVin();
-        this.type = newVehicle.getType();
+        this.type = newVehicle.getVehicleType();
         this.color = newVehicle.getColor();
         this.wear = newVehicle.getWear();
         this.purchaseInfo = new PurchaseInfo();

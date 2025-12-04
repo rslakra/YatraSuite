@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 /**
  * REST Controller to manage basic vehicle activities

@@ -83,19 +83,19 @@
                                   th:text="${vehicle.vehicleDetail.purchaseInfo.purchasedOn}">Purchased On</span>
                         </td>
                         <td class="text-right">
-                            <span class="inline-editable" id="battery" data-type="text" data-title="Battery (%)"
-                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.battery}"
-                                  th:text="${vehicle.battery}">Battery (%)</span>
+                            <span class="inline-editable" id="batteryLevel" data-type="text" data-title="Battery (%)"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.batteryLevel}"
+                                  th:text="${vehicle.batteryLevel}">Battery (%)</span>
                         </td>
                         <td class="text-right">
-                            <span class="inline-editable" id="latitude" data-type="text" data-title="Latitude"
-                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.latitude}"
-                                  th:text="${vehicle.latitude}">Latitude</span>
+                            <span class="inline-editable" id="lastLatitude" data-type="text" data-title="Latitude"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.lastLatitude}"
+                                  th:text="${vehicle.lastLatitude}">Latitude</span>
                         </td>
                         <td class="text-right">
-                            <span class="inline-editable" id="longitude" data-type="text" data-title="Longitude"
-                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.longitude}"
-                                  th:text="${vehicle.longitude}">Longitude</span>
+                            <span class="inline-editable" id="lastLongitude" data-type="text" data-title="Longitude"
+                                  th:attr="data-url=@{/ui/vehicles}, data-pk=${vehicle.id}, data-value=${vehicle.lastLongitude}"
+                                  th:text="${vehicle.lastLongitude}">Longitude</span>
                         </td>
                         <td class="action-button action-button-fixed-size">
                             <a class="href-link" th:href="@{|/ui/vehicles/${vehicle.id}|}"

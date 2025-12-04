@@ -2,8 +2,8 @@ package com.rslakra.logistics.yatrasuite.yatrathymeleaf.dto.vehicle;
 
 import com.rslakra.appsuite.core.ToString;
 import com.rslakra.appsuite.spring.payload.dto.AbstractEntityDTO;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,22 +23,22 @@ import java.util.UUID;
 public class Vehicle extends AbstractEntityDTO<UUID> {
 
     private String vin;
-    @JsonProperty("serial_number")
+    @JsonAlias("serial_number")  // Accept from backend response
     private int serialNumber;
-    private int battery;
-    @JsonProperty("vehicle_info")
-    private VehicleDetail vehicleDetail;
+    @JsonAlias("battery")  // Accept from backend response
+    private int batteryLevel;
+    @JsonAlias("vehicle_info")  // Accept from backend response
+    private VehicleDetail vehicleDetail = new VehicleDetail();  // Initialize for form binding
     private boolean inUse;
-    @JsonProperty("last_latitude")
-    private BigDecimal latitude;
-    @JsonProperty("last_longitude")
-    private BigDecimal longitude;
-    @JsonProperty("timestamp")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonAlias("last_latitude")  // Accept from backend response
+    private BigDecimal lastLatitude;
+    @JsonAlias("last_longitude")  // Accept from backend response
+    private BigDecimal lastLongitude;
+    @JsonAlias("timestamp")  // Accept from backend response
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime lastRecordedAt;
 
-    @JsonProperty("locationHistory")
+    @JsonAlias("locationHistory")  // Accept from backend response
     private List<LocationHistory> locationHistories;
 
 
@@ -58,9 +58,11 @@ public class Vehicle extends AbstractEntityDTO<UUID> {
             .add("id", getId())
             .add("vin", getVin())
             .add("serialNumber", getSerialNumber())
-            .add("batteryLevel", getBattery())
+            .add("batteryLevel", getBatteryLevel())
             .add("vehicleDetail", getVehicleDetail())
             .add("inUse", isInUse())
+            .add("lastLatitude", getLastLatitude())
+            .add("lastLongitude", getLastLongitude())
             .add("locationHistory", getLocationHistories())
             .toString();
     }

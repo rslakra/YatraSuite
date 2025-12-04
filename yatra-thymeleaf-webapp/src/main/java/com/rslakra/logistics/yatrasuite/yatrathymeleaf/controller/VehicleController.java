@@ -84,7 +84,8 @@ public class VehicleController extends AbstractWebController<Vehicle, UUID> {
      */
     @PostMapping({"/", "/save"})
     @Override
-    public String save(@RequestBody @Validated @ModelAttribute("vehicle") Vehicle vehicle) {
+    public String save(@ModelAttribute("vehicle") Vehicle vehicle) {
+        LOGGER.info("Saving vehicle: {}", vehicle);
         if (BeanUtils.isNotNull(vehicle.getId())) {
             Vehicle oldVehicle = vehicleService.getById(vehicle.getId());
             BeanUtils.copyProperties(vehicle, oldVehicle);

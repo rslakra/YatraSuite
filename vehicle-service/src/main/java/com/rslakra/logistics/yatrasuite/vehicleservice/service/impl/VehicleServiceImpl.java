@@ -123,12 +123,36 @@ public class VehicleServiceImpl extends AbstractServiceImpl<Vehicle, UUID> imple
     }
 
     /**
-     * @param vehicle
-     * @return
+     * Updates an existing vehicle.
+     *
+     * @param vehicle the vehicle with updated fields
+     * @return the updated vehicle
      */
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Vehicle update(Vehicle vehicle) {
-        return null;
+        LOGGER.debug("+update({})", vehicle);
+        if (vehicle == null || vehicle.getId() == null) {
+            throw new IllegalArgumentException("Vehicle and vehicle ID must not be null");
+        }
+
+        // Fetch existing vehicle to ensure it exists
+        Vehicle existingVehicle = getById(vehicle.getId());
+
+        // Update fields (null-safe checks)
+        if (vehicle.isNullSafeSerialNumber()) {
+            existingVehicle.setSerialNumber(vehicle.getSerialNumber());
+        }
+        if (vehicle.isNullSafeBatteryLevel()) {
+            existingVehicle.setBatteryLevel(vehicle.getBatteryLevel());
+        }
+        if (vehicle.getVehicleInfo() != null) {
+            existingVehicle.setVehicleInfo(vehicle.getVehicleInfo());
+        }
+
+        existingVehicle = vehicleRepository.save(existingVehicle);
+        LOGGER.debug("-update(), vehicle:{}", existingVehicle);
+        return existingVehicle;
     }
 
     /**
